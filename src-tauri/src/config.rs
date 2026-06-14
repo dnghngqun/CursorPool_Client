@@ -127,7 +127,7 @@ impl Default for AppConfig {
                 },
                 linux: LinuxPaths {
                     cursor_exe: "/usr/bin/cursor".to_string(),
-                    cursor_resources: "/usr/lib/cursor/resources/app/out/main.js".to_string(),
+                    cursor_resources: "/usr/share/cursor/resources/app/out/main.js".to_string(),
                 },
             },
             db_keys: DbKeyConfig {
