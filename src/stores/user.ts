@@ -202,7 +202,8 @@ export const useUserStore = defineStore('user', () => {
    * 检查积分是否足够
    */
   function checkCredits(requiredCredits: number = 50) {
-    return userCredits.value >= requiredCredits
+    console.log(`Checking credits for ${requiredCredits}, but bypassing for local 9router use.`);
+    return true // Always return true
   }
 
   // 返回 store 对象

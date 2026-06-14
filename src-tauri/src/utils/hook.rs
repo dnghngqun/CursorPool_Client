@@ -171,8 +171,21 @@ impl Hook {
             })
             .to_string();
 
+        // --- NEW REDIRECTION LOGIC ---
+        // 1. Inject TLS override at the beginning if not present
+        let mut final_content = if !modified_content.contains("NODE_TLS_REJECT_UNAUTHORIZED") {
+            format!("process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';\n{}", modified_content)
+        } else {
+            modified_content
+        };
+
+        // 2. Replace API URLs
+        final_content = final_content.replace("https://api2.cursor.sh", "http://localhost:20120");
+        final_content = final_content.replace("https://api.cursor.sh", "http://localhost:20120");
+        // -----------------------------
+
         // 写入修改后的内容
-        if let Err(e) = fs::write(&file_path, &modified_content) {
+        if let Err(e) = fs::write(&file_path, &final_content) {
             let err_msg = format!("写入修改后的内容失败: {}", e);
             error!(target: "hook", "{}", err_msg);
             if let Some(ref client) = client {

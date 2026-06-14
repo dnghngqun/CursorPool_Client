@@ -492,8 +492,8 @@
       </div>
     </n-card>
 
-    <!-- 激活码兑换 -->
-    <n-card>
+    <!-- 激活码兑换 (Hidden for local 9router use) -->
+    <n-card v-if="false">
       <template #header>
         <div class="text-xl font-medium">{{ t('settings.activation') }}</div>
       </template>
