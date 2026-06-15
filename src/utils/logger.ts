@@ -80,7 +80,7 @@ class Logger {
     }
   }
 
-  // 全局错误处理器
+  // 全局Xử lý lỗi器
   static setupErrorHandler() {
     window.onerror = async (message, source, lineno, colno, error) => {
       if (error) {

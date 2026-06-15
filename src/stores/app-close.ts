@@ -43,18 +43,18 @@ export const useAppCloseStore = defineStore('app-close', () => {
         // 如果设置为Thoát，直接Thoát应用
         await exit(0)
       } else {
-        // 如果没有设置或设置为其他值，Hiển thị确认模态窗
+        // 如果没有设置或设置为其他值，Hiển thịXác nhận模态窗
         showConfirmModal.value = true
       }
     } catch (error) {
       Logger.error(`检查关闭类型设置Thất bại: ${error}`)
-      // 如果获取设置Thất bại，Hiển thị确认模态窗
+      // 如果获取设置Thất bại，Hiển thịXác nhận模态窗
       showConfirmModal.value = true
     }
   }
 
   /**
-   * 确认关闭应用
+   * Xác nhận关闭应用
    */
   async function confirmClose() {
     try {
@@ -114,7 +114,7 @@ export const useAppCloseStore = defineStore('app-close', () => {
   }
 
   /**
-   * 取消关闭应用
+   * Hủy关闭应用
    */
   function cancelClose() {
     showConfirmModal.value = false

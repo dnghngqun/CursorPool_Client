@@ -16,18 +16,18 @@ import type {
 import Logger from '../utils/logger'
 import { apiClient } from '@/utils/apiClient'
 
-// 错误处理
+// Xử lý lỗi
 function handleApiResponse<T>(response: ApiResponse<T>): T {
   if (response.status === 200) {
     // Thành công时返回 data
     if (response.data) {
       return response.data
     }
-    // 如果没有data，返回空对象
+    // Trả về đối tượng trống nếu không có dữ liệu
     return {} as T
   }
 
-  // 状态码不为200时抛出错误，优先使用服务器返回的消息
+  // Gây lỗi khi mã trạng thái không phải 200，Ưu tiên sử dụng tin nhắn từ máy chủ
   throw new ApiError(response.msg || 'Kết nối máy chủ thất bại, vui lòng thử lại sau')
 }
 
@@ -42,10 +42,10 @@ export class ApiError extends Error {
   }
 }
 
-// 用户认证相关 API
+// Liên quan đến xác thực người dùng API
 
 /**
- * 检查用户Đăng nhập状态
+ * Kiểm tra trạng thái đăng nhập người dùng
  * @param email 用户邮箱
  * @returns 用户Đăng nhập状态信息
  */
@@ -120,7 +120,7 @@ export async function login(
   }
 }
 
-// 用户信息相关 API
+// Liên quan đến thông tin người dùng API
 export async function getUserInfo(): Promise<UserInfo> {
   try {
     const response = await apiClient.request<ApiResponse<UserInfo>>('get_user_info')
@@ -145,7 +145,7 @@ export async function getAccount(account?: string, usageCount?: string): Promise
   }
 }
 
-// Cursor 平台相关 API
+// Cursor Liên quan đến nền tảng API
 export async function getUsage(token: string): Promise<UsageInfo> {
   try {
     const response = await invoke<ApiResponse<UsageInfo>>('get_usage', {
@@ -167,7 +167,7 @@ export async function getUsage(token: string): Promise<UsageInfo> {
   }
 }
 
-// 系统信息相关 API
+// Liên quan đến thông tin hệ thống API
 export async function getPublicInfo(): Promise<PublicInfo> {
   try {
     const response = await apiClient.request<ApiResponse<PublicInfo>>('get_public_info')
@@ -186,7 +186,7 @@ export async function refreshInbound(): Promise<boolean> {
   }
 }
 
-// 账户管理相关 API
+// Liên quan đến quản lý tài khoản API
 export async function activate(code: string): Promise<void> {
   try {
     const response = await apiClient.request<ApiResponse<void>>('activate', { code })
@@ -208,7 +208,7 @@ export async function changePassword(oldPassword: string, newPassword: string): 
   }
 }
 
-// 机器码和账户切换相关 API
+// Liên quan đến mã máy và chuyển đổi tài khoản API
 export async function resetMachineId(
   params: {
     forceKill?: boolean
@@ -273,7 +273,7 @@ export async function checkCursorRunning(): Promise<boolean> {
   }
 }
 
-// 管理员权限相关 API
+// Liên quan đến quyền Admin API
 export async function checkAdminPrivileges(): Promise<boolean> {
   try {
     return await invoke<boolean>('check_admin_privileges')
@@ -359,7 +359,7 @@ export async function resetPassword(email: string, code: string, password: strin
   }
 }
 
-// 添加关闭和启动Cursor的API
+// Thêm đóng và khởi độngCursor的API
 export async function closeCursor(): Promise<boolean> {
   return await invoke('close_cursor')
 }
@@ -378,10 +378,10 @@ export async function logout(): Promise<void> {
   }
 }
 
-// 使用键值存储实现历史记录功能
+// Sử dụng lưu trữ key-value cho chức năng lịch sử
 
 /**
- * 保存历史记录
+ * Lưu lịch sử
  * @param record 历史记录
  */
 export async function saveHistoryRecord(record: HistoryRecord): Promise<void> {
@@ -398,7 +398,7 @@ export async function saveHistoryRecord(record: HistoryRecord): Promise<void> {
 }
 
 /**
- * 批量保存历史记录
+ * 批量Lưu lịch sử
  * @param records 历史记录数组
  */
 export async function saveHistoryRecords(records: HistoryRecord[]): Promise<void> {
@@ -415,7 +415,7 @@ export async function saveHistoryRecords(records: HistoryRecord[]): Promise<void
 }
 
 /**
- * 获取所有历史记录
+ * Lấy toàn bộ lịch sử
  * @returns 历史记录数组
  */
 export async function getHistoryRecords(): Promise<HistoryRecord[]> {
@@ -428,7 +428,7 @@ export async function getHistoryRecords(): Promise<HistoryRecord[]> {
     try {
       return JSON.parse(data) as HistoryRecord[]
     } catch (e) {
-      Logger.error(`历史记录解析Thất bại: ${e}`)
+      Logger.error(`Giải mã lịch sửThất bại: ${e}`)
       return []
     }
   } catch (error) {
@@ -438,7 +438,7 @@ export async function getHistoryRecords(): Promise<HistoryRecord[]> {
 }
 
 /**
- * 清除所有历史记录
+ * Xóa sạch lịch sử
  */
 export async function clearHistoryRecords(): Promise<void> {
   try {
@@ -450,7 +450,7 @@ export async function clearHistoryRecords(): Promise<void> {
 }
 
 /**
- * 获取历史账户列表
+ * Lấy danh sách tài khoản lịch sử
  */
 export async function getHistoryAccounts(): Promise<HistoryAccountRecord[]> {
   try {
@@ -471,7 +471,7 @@ export async function getHistoryAccounts(): Promise<HistoryAccountRecord[]> {
 }
 
 /**
- * 删除历史账户
+ * Xóa tài khoản lịch sử
  * @param email 要删除的账户邮箱
  */
 export async function removeHistoryAccount(email: string): Promise<void> {
@@ -487,7 +487,7 @@ export async function removeHistoryAccount(email: string): Promise<void> {
 }
 
 /**
- * 清除所有历史账户
+ * Xóa sạch tài khoản lịch sử
  */
 export async function clearHistoryAccounts(): Promise<void> {
   try {
@@ -501,7 +501,7 @@ export async function clearHistoryAccounts(): Promise<void> {
 }
 
 /**
- * 保存用户API Token
+ * Lưu Token API người dùng
  * @param token API Token
  */
 export async function saveUserApiToken(token: string): Promise<void> {
@@ -514,7 +514,7 @@ export async function saveUserApiToken(token: string): Promise<void> {
 }
 
 /**
- * 获取用户API Token
+ * Lấy Token API người dùng
  * @returns API Token，如果Không tồn tại则返回null
  */
 export async function getUserApiToken(): Promise<string | null> {
@@ -527,7 +527,7 @@ export async function getUserApiToken(): Promise<string | null> {
 }
 
 /**
- * 清除用户API Token
+ * Xóa Token API người dùng
  */
 export async function clearUserApiToken(): Promise<void> {
   try {
@@ -541,7 +541,7 @@ export async function clearUserApiToken(): Promise<void> {
 // 添加通用的键值存储 API 方法
 
 /**
- * 设置用户数据
+ * Cài đặt dữ liệu người dùng
  * @param key 键名
  * @param value 值
  */
@@ -556,7 +556,7 @@ export async function setUserData(key: string, value: string): Promise<void> {
 }
 
 /**
- * 获取用户数据
+ * Lấy dữ liệu người dùng
  * @param key 键名
  * @returns 获取的值，如果Không tồn tại则返回 null
  */
@@ -575,7 +575,7 @@ export async function getUserData(key: string): Promise<string | null> {
 }
 
 /**
- * 删除用户数据
+ * Xóa dữ liệu người dùng
  * @param key 键名
  */
 export async function delUserData(key: string): Promise<void> {
@@ -589,7 +589,7 @@ export async function delUserData(key: string): Promise<void> {
 // 使用通用 API 实现的特定功能
 
 /**
- * 检查用户是否已接受免责声明
+ * Kiểm tra người dùng đã chấp nhận miễn trừ trách nhiệm chưa
  * @returns 是否已接受
  */
 export async function checkDisclaimerAccepted(): Promise<boolean> {
@@ -603,41 +603,41 @@ export async function checkDisclaimerAccepted(): Promise<boolean> {
 }
 
 /**
- * 设置用户已接受免责声明
+ * Cài đặt người dùng đã chấp nhận miễn trừ trách nhiệm
  */
 export async function setDisclaimerAccepted(): Promise<void> {
   try {
     await setUserData('user.disclaimer.accepted', 'true')
   } catch (error) {
-    Logger.error(`设置免责声明状态Thất bại: ${error}`)
+    Logger.error(`设置Miễn trừ trách nhiệm状态Thất bại: ${error}`)
     throw error
   }
 }
 
 /**
- * 清除用户的免责声明接受状态
+ * Xóa trạng thái chấp nhận miễn trừ trách nhiệm
  */
 export async function clearDisclaimerAccepted(): Promise<void> {
   try {
     await delUserData('user.disclaimer.accepted')
   } catch (error) {
-    Logger.error(`清除免责声明状态Thất bại: ${error}`)
+    Logger.error(`清除Miễn trừ trách nhiệm状态Thất bại: ${error}`)
     throw error
   }
 }
 
-// 获取公告列表
+// Lấy danh sách thông báo
 export async function getArticleList(): Promise<Article[]> {
   try {
     const response = await apiClient.request<ApiResponse<Article[]>>('get_article_list')
     return handleApiResponse(response)
   } catch (error) {
-    Logger.error(`获取公告列表Thất bại: ${error}`)
+    Logger.error(`Lấy danh sách thông báoThất bại: ${error}`)
     return []
   }
 }
 
-// 检查文章是否已读
+// Kiểm tra bài viết đã đọc chưa
 export async function isArticleRead(articleId: number): Promise<boolean> {
   try {
     const valueStr = await getUserData('system.articles')
@@ -663,7 +663,7 @@ export async function isArticleRead(articleId: number): Promise<boolean> {
   }
 }
 
-// 标记文章为已读
+// Đánh dấu bài viết đã đọc
 export async function markArticleRead(articleId: number): Promise<void> {
   try {
     const response = await apiClient.request<ApiResponse<void>>('mark_article_read', { articleId })
@@ -674,13 +674,13 @@ export async function markArticleRead(articleId: number): Promise<void> {
 }
 
 /**
- * 打开开发者工具
+ * Mở công cụ nhà phát triển
  */
 export const openDevTools = () => {
   return invoke('open_devtools')
 }
 
-// 获取正在运行的Cursor路径
+// Lấy đường dẫn Cursor đang chạy
 export async function getRunningCursorPath(): Promise<string> {
   try {
     return await invoke<string>('get_running_cursor_path')

@@ -94,11 +94,11 @@ pub fn run() {
             };
             app.manage(db);
 
-            // 异步初始化线路配置
+            // 异步Khởi tạo cấu hình đường truyền
             let app_handle = app.handle().clone();
             tauri::async_runtime::spawn(async move {
                 if let Err(e) = api::inbound::init_inbound_config(&app_handle).await {
-                    error!("初始化线路配置失败: {}", e);
+                    error!("Khởi tạo cấu hình đường truyền失败: {}", e);
                 } else {
                     info!("线路配置初始化成功");
                 }

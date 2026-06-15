@@ -23,47 +23,47 @@
   const locale = computed(() => locales[currentLang.value].locale)
   const dateLocale = computed(() => locales[currentLang.value].dateLocale)
 
-  // 应用启动时初始化
+  // Khởi tạo khi ứng dụng bắt đầu
   onMounted(async () => {
-    // 初始化语言设置
+    // Khởi tạo cài đặt ngôn ngữ
     await initLanguage()
 
-    // 初始化API客户端配置
+    // Khởi tạo cấu hình API Client
     apiClient.configure({
       maxRetries: 2,
       refreshInboundOnMaxRetries: true,
       showRetryNotification: true,
     })
 
-    // 使用统一的初始化方法
+    // Sử dụng phương pháp khởi tạo thống nhất
     await historyStore.init()
 
-    // 初始化线路配置
+    // Khởi tạo cấu hình đường truyền
     await inboundStore.fetchInboundList()
 
-    // 自动检查更新
+    // Tự động kiểm tra cập nhật
     await updaterStore.checkForUpdates()
 
-    // 添加关闭事件监听
+    // Thêm bộ lắng nghe sự kiện đóng
     const appWindow = Window.getCurrent()
     appWindow.onCloseRequested(async (event) => {
       event.preventDefault()
       appCloseStore.handleCloseRequest()
     })
 
-    // 初始化开发者工具
+    // Khởi tạo công cụ nhà phát triển
     initializeDevToolsProtection()
 
-    // 初始化事件监听器
+    // Khởi tạo bộ lắng nghe sự kiện
     await initEventListeners()
   })
 
-  // 应用卸载时清理
+  // Dọn dẹp khi gỡ bỏ ứng dụng
   onUnmounted(() => {
-    // 清理事件监听器
+    // Dọn dẹp bộ lắng nghe sự kiện
     destroyEventListeners()
 
-    // 清理API客户端资源
+    // Dọn dẹp tài nguyên API Client
     apiClient.cleanup()
   })
 </script>

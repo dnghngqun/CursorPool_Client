@@ -17,7 +17,7 @@ export const useHistoryStore = defineStore('history', () => {
   const isLoading = ref(false)
   const error = ref('')
 
-  // 历史账户界面相关状态
+  // Giao diện tài khoản lịch sử相关状态
   const accounts = ref<HistoryAccount[]>([])
   const currentAccountEmail = ref('')
   const loadingAccounts = ref(false)
@@ -36,7 +36,7 @@ export const useHistoryStore = defineStore('history', () => {
     return sortedRecords.value.filter((record) => record.type === type)
   }
 
-  // 历史账户界面相关计算属性
+  // Giao diện tài khoản lịch sử相关Thuộc tính tính toán
   // 过滤掉当前账户的列表，不在表格中Hiển thị当前账户
   const filteredHistoryAccounts = computed(() => {
     return accounts.value.filter((acc) => acc.email !== currentAccountEmail.value)
@@ -71,7 +71,7 @@ export const useHistoryStore = defineStore('history', () => {
       // 3. 加载历史记录
       await loadHistoryRecords(false) // 传入 false 避免重复同步
 
-      // 4. 设置历史记录更新监听器
+      // 4. 设置历史记录更新Lắng nghe器
       setupHistoryListener()
 
       initialized.value = true
@@ -93,7 +93,7 @@ export const useHistoryStore = defineStore('history', () => {
         await syncLocalHistoryToBackend()
       }
 
-      // 然后从后端获取所有历史记录
+      // 然后从后端Lấy toàn bộ lịch sử
       records.value = await getHistoryList()
     } catch (err) {
       error.value = err instanceof Error ? err.message : '加载历史记录Thất bại'
@@ -103,7 +103,7 @@ export const useHistoryStore = defineStore('history', () => {
     }
   }
 
-  // 监听历史记录更新事件
+  // Lắng nghe历史记录更新事件
   function setupHistoryListener() {
     const handler = async () => {
       await loadHistoryRecords()
@@ -116,9 +116,9 @@ export const useHistoryStore = defineStore('history', () => {
     }
   }
 
-  // 历史账户界面相关方法
+  // Giao diện tài khoản lịch sử相关方法
   /**
-   * 获取历史账户列表
+   * Lấy danh sách tài khoản lịch sử
    */
   async function fetchHistoryAccounts(shouldSync: boolean = true) {
     loadingAccounts.value = true
@@ -136,7 +136,7 @@ export const useHistoryStore = defineStore('history', () => {
         currentAccountEmail.value = currentAccount.currentAccount
       }
 
-      // 自动刷新使用情况
+      // 自动Làm mới tình hình sử dụng
       try {
         await refreshAccountsUsage()
       } catch (error) {
@@ -207,7 +207,7 @@ export const useHistoryStore = defineStore('history', () => {
   }
 
   /**
-   * 删除历史账户
+   * Xóa tài khoản lịch sử
    */
   async function removeHistoryAccountItem(email: string) {
     deletingAccount.value[email] = true
@@ -292,7 +292,7 @@ export const useHistoryStore = defineStore('history', () => {
     setupHistoryListener,
     init,
 
-    // 历史账户界面相关
+    // Giao diện tài khoản lịch sử相关
     accounts,
     currentAccountEmail,
     loadingAccounts,

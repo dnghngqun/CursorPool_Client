@@ -50,7 +50,7 @@ export const useCursorStore = defineStore('cursor', () => {
   const isForceKilling = ref(false)
   const needSaveCurrentAccount = ref(false)
 
-  // 添加文件选择模态框状态
+  // 添加Chọn tệpModal状态
   const showSelectFileModal = ref(false)
   const fileSelectError = ref('')
   const fileSelectLoading = ref(false)
@@ -127,8 +127,8 @@ export const useCursorStore = defineStore('cursor', () => {
 
   // Actions
   /**
-   * 获取机器码信息
-   * @returns MachineInfo 机器码信息
+   * 获取Thông tin mã máy
+   * @returns MachineInfo Thông tin mã máy
    */
   async function fetchMachineIds(): Promise<MachineInfo> {
     try {
@@ -155,13 +155,13 @@ export const useCursorStore = defineStore('cursor', () => {
    */
   async function fetchCursorUsage() {
     try {
-      // 如果没有token，尝试获取机器码信息
+      // 如果没有token，尝试获取Thông tin mã máy
       if (!cursorToken.value) {
         try {
-          // 获取机器码信息，但Thất bại不阻止后续流程
+          // 获取Thông tin mã máy，但Thất bại不阻止后续流程
           await fetchMachineIds()
         } catch (error) {
-          await Logger.warn('获取机器码信息Thất bại，但仍尝试获取使用量')
+          await Logger.warn('获取Thông tin mã máyThất bại，但仍尝试获取使用量')
         }
       }
 
@@ -182,7 +182,7 @@ export const useCursorStore = defineStore('cursor', () => {
         // 无论如何都尝试获取使用量数据
         const usageData = await getUsage(cursorToken.value)
 
-        // TODO: 临时处理，Cursor高级模型使用量上限为50 适配cursor最新政策
+        // TODO: 临时处理，CursorModel cao cấp使用量上限为50 适配cursor最新政策
         if (usageData && usageData['gpt-4'] && usageData['gpt-4'].maxRequestUsage === 150) {
           usageData['gpt-4'].maxRequestUsage = 50
         }
@@ -348,7 +348,7 @@ export const useCursorStore = defineStore('cursor', () => {
               machineId: originalMachineId,
             })
             await Logger.info('恢复原始机器码Thành công')
-            await fetchMachineIds() // 刷新机器码信息
+            await fetchMachineIds() // 刷新Thông tin mã máy
           } catch (restoreError) {
             await Logger.error(`恢复原始机器码Thất bại: ${restoreError}`)
           }
@@ -371,7 +371,7 @@ export const useCursorStore = defineStore('cursor', () => {
   }
 
   /**
-   * 检查Hook状态
+   * Kiểm tra trạng thái Hook
    */
   async function checkHook() {
     try {
@@ -395,7 +395,7 @@ export const useCursorStore = defineStore('cursor', () => {
         }
 
         // 其他错误情况下重置状态
-        Logger.error(`检查Hook状态Thất bại: ${error}`)
+        Logger.error(`Kiểm tra trạng thái HookThất bại: ${error}`)
         hookStatus.value = null
         throw error
       }
@@ -417,16 +417,16 @@ export const useCursorStore = defineStore('cursor', () => {
       const isRunning = await checkCursorRunning()
       await Logger.info(`Cursor运行状态: ${isRunning ? '运行中' : '未运行'}`)
 
-      // 如果Cursor在运行且不是强制模式，返回特殊状态让外部组件Hiển thị确认弹窗
+      // 如果Cursor在运行且不是Bắt buộc模式，返回特殊状态让外部组件Hiển thịXác nhận弹窗
       if (isRunning && !forceKill) {
-        await Logger.info('检测到Cursor正在运行，需要用户确认')
+        await Logger.info('Phát hiệnCursor正在运行，需要用户Xác nhận')
         return { status: 'running', action: 'applyHook' }
       }
 
       // Windows平台特殊处理 - 尝试注入运行中的Cursor
       if (appStore.currentPlatform === 'windows' && isRunning && forceKill) {
         try {
-          await Logger.info('强制模式：检测到Cursor正在运行，尝试注入运行中的Cursor')
+          await Logger.info('Bắt buộc模式：Phát hiệnCursor正在运行，尝试注入运行中的Cursor')
           await injectRunningCursor()
           hookStatus.value = true
           await checkHook()
@@ -438,9 +438,9 @@ export const useCursorStore = defineStore('cursor', () => {
         }
       }
 
-      // 尝试使用系统变量查找Cursor路径并注入
+      // 尝试使用系统变量Tìm đường dẫn Cursor并注入
       try {
-        await Logger.info('尝试使用系统变量查找Cursor路径并注入')
+        await Logger.info('尝试使用系统变量Tìm đường dẫn Cursor并注入')
         await applyHook(forceKill)
         hookStatus.value = true
         await checkHook()
@@ -452,28 +452,28 @@ export const useCursorStore = defineStore('cursor', () => {
 
         // 如果是找不到main.js的错误，继续下一步
         if (errorMsg.includes('MAIN_JS_NOT_FOUND') || errorMsg.includes('创建应用路径Thất bại')) {
-          // Hiển thị文件选择模态框
-          await Logger.info('无法自动查找Cursor路径，Hiển thị文件选择模态框')
+          // Hiển thịChọn tệpModal
+          await Logger.info('无法自动Tìm đường dẫn Cursor，Hiển thịChọn tệpModal')
           if (router) router.push('/settings')
           setPendingAction('applyHook', { forceKill })
           return { status: 'need_select_file' }
         } else if (errorMsg.includes('Cursor进程正在运行') && !forceKill) {
-          // 如果是Cursor正在运行的错误且不是强制模式
-          await Logger.info('后端检测到Cursor正在运行且不是强制模式，Hiển thị确认对话框')
+          // 如果是Cursor正在运行的错误且不是Bắt buộc模式
+          await Logger.info('后端Phát hiệnCursor正在运行且不是Bắt buộc模式，Hiển thịXác nhận对话框')
           return { status: 'running', action: 'applyHook' }
         } else if (
           (errorMsg.includes('Cursor进程正在运行') || errorMsg.includes('请先关闭 Cursor')) &&
           forceKill
         ) {
-          // 如果是强制模式，尝试关闭Cursor并注入
-          await Logger.info('强制模式：检测到Cursor正在运行，尝试关闭并重新注入')
+          // 如果是Bắt buộc模式，尝试关闭Cursor并注入
+          await Logger.info('Bắt buộc模式：Phát hiệnCursor正在运行，尝试关闭并重新注入')
           try {
             await closeCursorApp()
             await new Promise((resolve) => setTimeout(resolve, 1000))
             await applyHook(true)
             hookStatus.value = true
             await checkHook()
-            await Logger.info('强制关闭Cursor并注入HookThành công')
+            await Logger.info('Bắt buộc关闭Cursor并注入HookThành công')
             return { status: 'success' }
           } catch (closeError) {
             const closeErrorMsg =
@@ -633,7 +633,7 @@ export const useCursorStore = defineStore('cursor', () => {
         }
       }
 
-      // 切换账户 - 后端会自动保存历史记录
+      // 切换账户 - 后端会自动Lưu lịch sử
       await resetMachineId({
         machineId: account.machineCode,
       })
@@ -662,7 +662,7 @@ export const useCursorStore = defineStore('cursor', () => {
   }
 
   /**
-   * 强制关闭并切换账户
+   * Bắt buộc关闭并切换账户
    */
   async function forceCloseAndSwitch(account: HistoryAccount) {
     const historyStore = useHistoryStore()
@@ -684,7 +684,7 @@ export const useCursorStore = defineStore('cursor', () => {
         }
       }
 
-      // 账户切换 - 后端会自动保存历史记录
+      // 账户切换 - 后端会自动Lưu lịch sử
       await resetMachineId({
         machineId: account.machineCode,
       })
@@ -699,14 +699,14 @@ export const useCursorStore = defineStore('cursor', () => {
       })
 
       await fetchMachineIds()
-      await safelyFetchCursorUsage('强制切换账户')
+      await safelyFetchCursorUsage('Bắt buộc切换账户')
 
       // 启动 Cursor
       await launchCursorApp()
 
       return { status: 'success' }
     } catch (error) {
-      Logger.error(`强制Đổi tài khoản thất bại: ${error}`)
+      Logger.error(`Bắt buộcĐổi tài khoản thất bại: ${error}`)
       throw error
     } finally {
       needSaveCurrentAccount.value = false
@@ -716,7 +716,7 @@ export const useCursorStore = defineStore('cursor', () => {
   }
 
   /**
-   * 处理文件选择
+   * 处理Chọn tệp
    */
   async function handleSelectCursorPath() {
     // 不在这里调用useMessage，而是通过外部传入或通过事件处理
@@ -726,7 +726,7 @@ export const useCursorStore = defineStore('cursor', () => {
     fileSelectError.value = ''
 
     try {
-      // 调用文件选择对话框
+      // 调用Chọn tệp对话框
       const selected = await open({
         multiple: false,
         filters: [
@@ -745,7 +745,7 @@ export const useCursorStore = defineStore('cursor', () => {
         ],
       })
 
-      // 检查用户是否取消了选择
+      // 检查用户是否Hủy了选择
       if (!selected) {
         fileSelectLoading.value = false
         return
@@ -777,7 +777,7 @@ export const useCursorStore = defineStore('cursor', () => {
               // 可以添加其他操作类型的处理...
             }
 
-            // 强制重新获取Hook状态以刷新UI
+            // Bắt buộc重新获取Hook状态以刷新UI
             await checkHook()
           } catch (actionError) {
             Logger.error(`执行Thao tác thất bại: ${actionError}`)
@@ -787,13 +787,13 @@ export const useCursorStore = defineStore('cursor', () => {
           }
         }
 
-        // 操作完成后，设置加载状态为false
+        // 操作完成后，设置Trạng thái tải为false
         fileSelectLoading.value = false
       } else {
         throw new Error('无法验证所选择的文件路径')
       }
     } catch (error) {
-      Logger.error(`文件选择处理错误: ${error}`)
+      Logger.error(`Chọn tệp处理错误: ${error}`)
       fileSelectError.value = error instanceof Error ? error.message : String(error)
       fileSelectLoading.value = false
     }
@@ -811,7 +811,7 @@ export const useCursorStore = defineStore('cursor', () => {
   }
 
   /**
-   * 检查Cursor是否正在运行，如果正在运行且不允许强制关闭则抛出错误
+   * 检查Cursor是否正在运行，如果正在运行且不允许Bắt buộc关闭则抛出错误
    */
   async function ensureCursorNotRunning(forceKill: boolean) {
     if (!forceKill && (await checkCursorRunning())) {
@@ -821,14 +821,14 @@ export const useCursorStore = defineStore('cursor', () => {
 
   /**
    * 注入正在运行的Cursor
-   * 获取正在运行的Cursor路径，检查它是否已被注入，如果没有则执行注入操作
+   * Lấy đường dẫn Cursor đang chạy，检查它是否已被注入，如果没有则执行注入操作
    */
   async function injectRunningCursor() {
     try {
       operationLoading.value = true
       await Logger.info('开始注入正在运行的Cursor')
 
-      // 获取正在运行的Cursor路径
+      // Lấy đường dẫn Cursor đang chạy
       const cursorExePath = await getRunningCursorPath()
       await Logger.info(`获取到的Cursor可执行文件路径: ${cursorExePath}`)
 
@@ -863,7 +863,7 @@ export const useCursorStore = defineStore('cursor', () => {
 
         return true
       } else {
-        throw new Error('未能获取正在运行的Cursor路径')
+        throw new Error('未能Lấy đường dẫn Cursor đang chạy')
       }
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : String(error)
@@ -873,7 +873,7 @@ export const useCursorStore = defineStore('cursor', () => {
       try {
         await checkHook()
       } catch (checkError) {
-        Logger.error(`检查Hook状态也Thất bại: ${checkError}`)
+        Logger.error(`Kiểm tra trạng thái Hook也Thất bại: ${checkError}`)
       }
 
       throw error
@@ -921,7 +921,7 @@ export const useCursorStore = defineStore('cursor', () => {
     needSaveCurrentAccount,
     macOSPermissionError,
 
-    // 添加文件选择模态框状态
+    // 添加Chọn tệpModal状态
     showSelectFileModal,
     fileSelectError,
     fileSelectLoading,
@@ -950,7 +950,7 @@ export const useCursorStore = defineStore('cursor', () => {
     forceCloseAndSwitch,
     openMacOSPermissionSettings,
 
-    // 添加文件选择相关方法
+    // 添加Chọn tệp相关方法
     handleSelectCursorPath,
     setPendingAction,
 

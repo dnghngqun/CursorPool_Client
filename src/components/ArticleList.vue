@@ -5,34 +5,34 @@
   import { useTheme } from '../composables/theme'
   import type { Article } from '../api/types'
 
-  // 获取主题变量和当前主题
+  // Lấy biến theme和当前主题
   const { isDarkMode } = useTheme()
 
-  // 初始化store
+  // Khởi tạo store
   const articleStore = useArticleStore()
   const showModal = ref(false)
   const currentArticle = ref<Article | null>(null)
   const readyToShow = ref(false) // 添加标志，表示已准备好Hiển thị公告
 
-  // HTML实体解码函数
+  // Hàm giải mã thực thể HTML
   function decodeHtmlEntities(text: string): string {
     const textArea = document.createElement('textarea')
     textArea.innerHTML = text
     return textArea.value
   }
 
-  // 在内容中注入样式以确保链接颜色正确
+  // Chèn style vào nội dung以确保链接颜色正确
   const processedContent = computed(() => {
     if (!currentArticle.value) return ''
     let content = decodeHtmlEntities(currentArticle.value.content)
 
-    // 仅在暗色模式下修改链接样式
+    // Chỉ trong chế độ tối修改链接样式
     if (isDarkMode.value) {
       // 使用DOM解析和处理HTML内容，以便直接修改链接样式
       const tempDiv = document.createElement('div')
       tempDiv.innerHTML = content
 
-      // 查找所有链接并添加内联样式
+      // Tìm tất cả liên kết并添加内联样式
       const links = tempDiv.querySelectorAll('a')
       links.forEach((link) => {
         link.style.color = '#63e2b7'
@@ -46,7 +46,7 @@
     return content
   })
 
-  // 在组件挂载时获取公告
+  // Khi component được gắn获取公告
   onMounted(async () => {
     await articleStore.init()
 
@@ -74,24 +74,24 @@
   function checkAndShowUnreadArticle() {
     if (!articleStore.articles.length || !readyToShow.value) return
 
-    // 获取所有未读公告
+    // Lấy tất cả thông báo chưa đọc
     const unreadArticles = articleStore.articles.filter(
       (article) => !articleStore.isRead(article.id),
     )
 
     if (unreadArticles.length === 0) return
 
-    // 按ID降序排序，优先Hiển thịID最大的公告
+    // Sắp xếp giảm dần theo ID，优先Hiển thịID最大的公告
     const sortedArticles = [...unreadArticles].sort((a, b) => b.id - a.id)
     const latestArticle = sortedArticles[0]
 
     // Hiển thịID最大的公告
     viewArticle(latestArticle)
 
-    // 将其他未读公告标记为已读（但不包括当前正在Hiển thị的）
+    // 将其他未读公告Đánh dấu đã đọc（但不包括当前正在Hiển thị的）
     if (sortedArticles.length > 1) {
       setTimeout(async () => {
-        // 除了第一个（最新的公告）外，将其他所有公告标记为已读
+        // 除了第一个（最新的公告）外，将其他所有公告Đánh dấu đã đọc
         for (let i = 1; i < sortedArticles.length; i++) {
           await articleStore.markAsRead(sortedArticles[i].id)
         }
@@ -99,7 +99,7 @@
     }
   }
 
-  // 用户点击已读按钮
+  // Người dùng nhấn nút đã đọc
   async function markAsRead() {
     if (currentArticle.value) {
       const articleId = currentArticle.value.id
@@ -110,12 +110,12 @@
 
       // 延迟一段时间后检查是否还有其他未读公告
       setTimeout(() => {
-        // 重新获取所有未读公告
+        // 重新Lấy tất cả thông báo chưa đọc
         const remainingUnread = articleStore.articles.filter(
           (article) => !articleStore.isRead(article.id),
         )
 
-        // 如果还有未读公告，按ID降序排序，Hiển thịID最大的
+        // 如果还有未读公告，Sắp xếp giảm dần theo ID，Hiển thịID最大的
         if (remainingUnread.length > 0) {
           const sortedRemaining = [...remainingUnread].sort((a, b) => b.id - a.id)
           viewArticle(sortedRemaining[0])
@@ -133,7 +133,7 @@
     }
   }
 
-  // 监听文章变化，当有新公告时检查是否需要Hiển thị
+  // Lắng nghe thay đổi bài viết，当有新公告时检查是否需要Hiển thị
   watch(
     () => articleStore.articles,
     (newArticles) => {
@@ -146,7 +146,7 @@
     { deep: true },
   )
 
-  // 监听已读状态变化
+  // Lắng nghe已读状态变化
   watch(
     () => articleStore.readArticleIds,
     () => {},
@@ -183,7 +183,7 @@
 </template>
 
 <style>
-  /* 浅色主题样式 */
+  /* Style giao diện sáng */
   .article-light :deep(h1),
   .article-light :deep(h2),
   .article-light :deep(h3) {
@@ -211,7 +211,7 @@
     @apply max-w-full h-auto rounded;
   }
 
-  /* 暗色主题样式 */
+  /* Style giao diện tối */
   .article-dark :deep(.n-card) {
     @apply bg-[#1e1e1e];
   }

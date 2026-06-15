@@ -68,7 +68,7 @@ export const useUserStore = defineStore('user', () => {
 
   // Actions
   /**
-   * 检查用户Đăng nhập状态 (Stubbed for 9router)
+   * Kiểm tra trạng thái đăng nhập người dùng (Stubbed for 9router)
    */
   async function checkLoginStatus() {
     isCheckingLogin.value = false
@@ -159,7 +159,7 @@ export const useUserStore = defineStore('user', () => {
       // 激活Thành công后刷新用户信息
       await checkLoginStatus()
 
-      // 重置激活码状态
+      // 重置Trạng thái mã kích hoạt
       activationCode.value = ''
 
       return true

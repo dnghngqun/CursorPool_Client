@@ -45,7 +45,7 @@ export const useAppStore = defineStore('app', () => {
   const currentLocale = computed(() => language.value)
   const currentPlatform = computed(() => platform())
 
-  // 引导状态的计算属性
+  // 引导状态的Thuộc tính tính toán
   const shouldShowTour = computed(() => {
     return tourAccepted.value !== 'true'
   })
@@ -93,7 +93,7 @@ export const useAppStore = defineStore('app', () => {
   }
 
   /**
-   * 设置加载状态
+   * 设置Trạng thái tải
    */
   function setLoading(loading: boolean) {
     isLoading.value = loading
@@ -211,13 +211,13 @@ export const useAppStore = defineStore('app', () => {
   }
 
   /**
-   * 获取免责声明（检查数据库中是否已接受）
+   * 获取Miễn trừ trách nhiệm（检查数据库中是否已接受）
    */
   async function fetchDisclaimer() {
     try {
       disclaimerLoading.value = true
 
-      // 在应用启动时尝试删除本地存储的免责声明状态
+      // 在应用启动时尝试删除本地存储的Miễn trừ trách nhiệm状态
       localStorage.removeItem('disclaimer_accepted')
 
       // 启动倒计时
@@ -229,7 +229,7 @@ export const useAppStore = defineStore('app', () => {
         }
       }, 1000)
 
-      // 从数据库检查是否已接受免责声明
+      // 从数据库检查是否已接受Miễn trừ trách nhiệm
       const accepted = await checkDisclaimerAccepted()
       if (!accepted) {
         showDisclaimerModal.value = true
@@ -237,7 +237,7 @@ export const useAppStore = defineStore('app', () => {
 
       return disclaimerContent.value
     } catch (error) {
-      Logger.error(`获取免责声明Thất bại: ${error}`)
+      Logger.error(`获取Miễn trừ trách nhiệmThất bại: ${error}`)
       throw error
     } finally {
       disclaimerLoading.value = false
@@ -245,7 +245,7 @@ export const useAppStore = defineStore('app', () => {
   }
 
   /**
-   * 确认免责声明
+   * Xác nhậnMiễn trừ trách nhiệm
    */
   async function confirmDisclaimer() {
     try {
@@ -253,7 +253,7 @@ export const useAppStore = defineStore('app', () => {
       await setDisclaimerAccepted()
       showDisclaimerModal.value = false
 
-      // 确认免责声明后检查引导状态
+      // Xác nhậnMiễn trừ trách nhiệm后检查引导状态
       await new Promise((resolve) => setTimeout(resolve, 300))
 
       // 获取最新的引导状态
@@ -261,7 +261,7 @@ export const useAppStore = defineStore('app', () => {
 
       return true
     } catch (error) {
-      Logger.error(`保存免责声明状态Thất bại: ${error}`)
+      Logger.error(`保存Miễn trừ trách nhiệm状态Thất bại: ${error}`)
       return false
     }
   }

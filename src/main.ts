@@ -17,7 +17,7 @@ const pinia = createPinia()
 app.use(router as any)
 app.use(pinia)
 
-// 设置全局错误处理
+// 设置全局Xử lý lỗi
 Logger.setupErrorHandler()
 
 app.mount('#app')

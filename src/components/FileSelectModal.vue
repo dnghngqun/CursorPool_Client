@@ -12,7 +12,7 @@
   } from '@vicons/ionicons5'
   import { open } from '@tauri-apps/plugin-shell'
 
-  // 获取主题变量
+  // Lấy biến theme
   const { isDarkMode } = useTheme()
   const themeVars = useThemeVars()
   const appStore = useAppStore()
@@ -29,15 +29,15 @@
 
   // 获取 Cursor Store
   const cursorStore = useCursorStore()
-  // 获取消息组件
+  // 获Hủy息组件
   const message = useMessage()
 
-  // 监听文件选择状态变化，提供消息反馈
+  // Lắng ngheChọn tệp状态变化，提供消息反馈
   watch(
     () => cursorStore.showSelectFileModal,
     (newValue) => {
       if (newValue) {
-        // 模态框Hiển thị时重置错误
+        // ModalHiển thị时重置错误
         cursorStore.fileSelectError = ''
         // 重置macOS权限错误状态
         showMacOSPermissionError.value = false
@@ -46,13 +46,13 @@
     },
   )
 
-  // 处理文件选择
+  // 处理Chọn tệp
   const handleSelectPath = async () => {
     await cursorStore.handleSelectCursorPath()
 
     // 处理Thành công状态
     if (!cursorStore.showSelectFileModal && !cursorStore.fileSelectError) {
-      message.success('文件选择Thành công，系统已找到并保存Cursor路径')
+      message.success('Chọn tệpThành công，系统已找到并保存Cursor路径')
 
       // 检查是否有待处理操作
       if (cursorStore.pendingAction) {
@@ -105,7 +105,7 @@
         const action = cursorStore.pendingAction.type
 
         if (action === 'applyHook') {
-          const result = await cursorStore.applyHookToClient(true) // 强制关闭
+          const result = await cursorStore.applyHookToClient(true) // Bắt buộc关闭
 
           if (result.status === 'success') {
             message.success('Hook应用Thành công！')
@@ -114,7 +114,7 @@
             result.status === 'error' &&
             result.errorType === cursorStore.macOSPermissionError
           ) {
-            message.error('权限验证Thất bại，请确保已正确授予权限')
+            message.error('权限验证Thất bại，请确保已正确Cấp quyền')
           } else if (result.status === 'running') {
             message.warning('Cursor仍在运行，请手动关闭Cursor后重试')
           }
@@ -134,7 +134,7 @@
       await cursorStore.injectRunningCursor()
       message.success('Thành công注入正在运行的Cursor!')
 
-      // 关闭模态框
+      // 关闭Modal
       cursorStore.showSelectFileModal = false
     } catch (error) {
       // Hiển thị错误消息
@@ -144,7 +144,7 @@
     }
   }
 
-  // 关闭模态框
+  // 关闭Modal
   const closeModal = () => {
     cursorStore.showSelectFileModal = false
   }
@@ -172,7 +172,7 @@
 </script>
 
 <template>
-  <!-- 文件选择模态框 -->
+  <!-- Chọn tệpModal -->
   <n-modal
     v-model:show="cursorStore.showSelectFileModal"
     preset="card"

@@ -14,7 +14,7 @@ impl CursorVersion {
         }
 
         // 尝试连接数据库
-        let conn = Connection::open(&paths.db).map_err(|e| format!("无法打开数据库: {}", e))?;
+        let conn = Connection::open(&paths.db).map_err(|e| format!("无法Mở cơ sở dữ liệu: {}", e))?;
 
         // 首先尝试从 lastVersion 获取版本号
         match Self::get_last_version(&conn) {

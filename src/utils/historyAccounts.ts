@@ -38,7 +38,7 @@ function convertToFrontendAccount(account: HistoryAccountRecord): HistoryAccount
 }
 
 /**
- * 获取历史账户列表
+ * Lấy danh sách tài khoản lịch sử
  */
 export async function getHistoryAccounts(): Promise<HistoryAccount[]> {
   try {
@@ -62,7 +62,7 @@ function getHistoryAccountsFromLocal(): HistoryAccount[] {
 }
 
 /**
- * 删除历史账户
+ * Xóa tài khoản lịch sử
  */
 export async function removeHistoryAccount(email: string) {
   try {

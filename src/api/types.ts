@@ -15,7 +15,7 @@ export interface UserInfo {
   isExpired: boolean
   username: string
   code_level?: string
-  code_status?: number // 激活码状态: 0未使用 1已使用 2已过期 3已退款 4已结束
+  code_status?: number // Trạng thái mã kích hoạt: 0Chưa sử dụng 1Đã sử dụng 2Đã hết hạn 3Đã hoàn tiền 4Đã kết thúc
 }
 
 // 账户信息
@@ -73,7 +73,7 @@ export interface LoginResponse {
   userInfo?: UserInfo
 }
 
-// 检查用户响应
+// Phản hồi kiểm tra người dùng
 export interface CheckUserResponse {
   status: number
   msg: string
@@ -81,12 +81,12 @@ export interface CheckUserResponse {
   userInfo?: UserInfo
 }
 
-// 检查用户请求
+// Yêu cầu kiểm tra người dùng
 export interface CheckUserRequest {
   email: string
 }
 
-// 发送验证码请求
+// Yêu cầu gửi mã xác nhận
 export interface SendCodeRequest {
   email: string
   type: string // register或reset
@@ -100,21 +100,21 @@ export interface RegisterRequest {
   spread: string
 }
 
-// 重置密码请求
+// Yêu cầu đặt lại mật khẩu
 export interface ResetPasswordRequest {
   email: string
   code: string
   password: string
 }
 
-// 修改密码请求
+// Yêu cầu đổi mật khẩu
 export interface UpdatePasswordRequest {
   old_password: string
   new_password: string
   confirm_password: string
 }
 
-// 公告信息响应
+// Phản hồi thông tin thông báo
 export interface PublicInfo {
   type: string
   closeable: boolean
@@ -133,7 +133,7 @@ export interface PublicInfoAction {
   url: string
 }
 
-// GPT 模型使用情况
+// GPT Tình hình sử dụng model
 export interface GptModelUsage {
   numRequests: number
   numRequestsTotal: number
@@ -142,7 +142,7 @@ export interface GptModelUsage {
   maxTokenUsage?: number
 }
 
-// 使用情况响应
+// Phản hồi tình hình sử dụng
 export interface UsageInfo extends CursorUsageInfo {}
 
 // Cursor 用户信息
@@ -163,7 +163,7 @@ export interface CursorUsageInfo {
   startOfMonth: string
 }
 
-// Cursor 模型使用情况
+// Cursor Tình hình sử dụng model
 export interface CursorModelUsage {
   numRequests: number
   numRequestsTotal: number
@@ -172,7 +172,7 @@ export interface CursorModelUsage {
   maxTokenUsage: number | null
 }
 
-// 机器码信息
+// Thông tin mã máy
 export interface MachineInfo {
   machineId: string
   currentAccount: string
@@ -198,7 +198,7 @@ export interface CursorUserInfo {
   picture: string | null
 }
 
-// 历史记录条目
+// Mục lịch sử
 export interface HistoryRecord {
   id: number
   type_name: string
@@ -207,7 +207,7 @@ export interface HistoryRecord {
   operator: string
 }
 
-// 历史账户记录
+// Bản ghi tài khoản lịch sử
 export interface HistoryAccountRecord {
   email: string
   token: string
@@ -219,12 +219,12 @@ export interface HistoryAccountRecord {
   gpt35_max_usage?: number | null
 }
 
-// 公告数据结构
+// Cấu trúc dữ liệu thông báo
 export interface Article {
   id: number
   title: string
   content: string
 }
 
-// 添加公告相关接口到现有ApiResponse类型
+// Thêm thông báo相关接口到现有ApiResponse类型
 export interface ApiArticleResponse extends ApiResponse<Article[]> {}

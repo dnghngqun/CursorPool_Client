@@ -19,7 +19,7 @@ export const useUpdaterStore = defineStore('updater', () => {
   const error = ref<string | null>(null)
   const isWebView2Update = ref(false)
 
-  // 计算属性
+  // Thuộc tính tính toán
   const isUpdating = computed(() => isChecking.value || isDownloading.value || isInstalling.value)
   const progressPercentage = computed(() => {
     if (totalBytes.value === 0) return 0
@@ -42,7 +42,7 @@ export const useUpdaterStore = defineStore('updater', () => {
         updateVersion.value = update.version
         updateNotes.value = update.body || ''
 
-        // 立即开始下载和安装，无需用户确认
+        // 立即开始下载和安装，无需用户Xác nhận
         await installUpdate(update)
       }
     } catch (err) {
@@ -108,7 +108,7 @@ export const useUpdaterStore = defineStore('updater', () => {
       downloadedBytes.value = 0
       totalBytes.value = 0
 
-      // 下载并安装，监听进度事件
+      // 下载并安装，Lắng nghe进度事件
       await update.downloadAndInstall((event: any) => {
         switch (event.event) {
           case 'Started':

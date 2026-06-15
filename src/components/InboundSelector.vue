@@ -32,7 +32,7 @@
   const inboundStore = useInboundStore()
   const selectedInbound = ref(inboundStore.currentInboundIndex)
 
-  // 计算属性
+  // Thuộc tính tính toán
   const selectOptions = computed<SelectOption[]>(() => {
     return inboundStore.inboundList.map((item, index) => {
       const DOMESTIC_ROUTE = 'domestic'
@@ -102,7 +102,7 @@
     }
   }
 
-  // 监听store中的当前选择变化
+  // Lắng nghestore中的当前选择变化
   watch(
     () => inboundStore.currentInboundIndex,
     (newIndex) => {

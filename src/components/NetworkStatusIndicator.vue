@@ -12,10 +12,10 @@
   const activeRetries = ref<RequestStatus[]>([])
   const isRefreshingInbound = ref(false)
 
-  // 计算属性 - 是否有活动的重试
+  // Thuộc tính tính toán - 是否有活动的重试
   const hasActiveRetries = computed(() => activeRetries.value.length > 0)
 
-  // 计算属性 - 获取最新的重试请求
+  // Thuộc tính tính toán - 获取最新的重试请求
   const latestRetry = computed(() => {
     if (activeRetries.value.length === 0) return null
     return activeRetries.value[activeRetries.value.length - 1]
@@ -42,9 +42,9 @@
     message.success(t('network.inboundRefreshed'))
   }
 
-  // 初始化事件监听
+  // 初始化事件Lắng nghe
   onMounted(() => {
-    // 监听请求重试事件
+    // Lắng nghe请求重试事件
     const retryUnsub = ApiClient.subscribe(
       NetworkEvents.REQUEST_RETRY,
       (status: RequestStatus & { delay: number }) => {
@@ -57,17 +57,17 @@
         // 设置一个定时器，在重试完成后从列表中移除
         setTimeout(() => {
           activeRetries.value = activeRetries.value.filter((r) => r.requestId !== status.requestId)
-        }, 3000) // 使用固定的3秒时间
+        }, 3000) // 使用固定的3giây时间
       },
     )
 
-    // 监听线路刷新开始事件
+    // Lắng nghe线路刷新开始事件
     const refreshingUnsub = ApiClient.subscribe(NetworkEvents.INBOUND_REFRESHING, () => {
       isRefreshingInbound.value = true
       showInboundRefreshingMessage()
     })
 
-    // 监听线路刷新完成事件
+    // Lắng nghe线路刷新完成事件
     const refreshedUnsub = ApiClient.subscribe(NetworkEvents.INBOUND_REFRESHED, () => {
       isRefreshingInbound.value = false
       showInboundRefreshedMessage()

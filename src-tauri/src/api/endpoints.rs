@@ -214,7 +214,7 @@ pub async fn change_password(
         .send()
         .await
         .map_err(|e| {
-            error!(target: "api", "修改密码请求失败 - 错误: {}", e);
+            error!(target: "api", "Yêu cầu đổi mật khẩu失败 - 错误: {}", e);
             e.to_string()
         })?;
     
@@ -321,7 +321,7 @@ pub async fn get_usage(
         })?;
 
     let response_text = response.text().await.map_err(|e| {
-        error!(target: "api", "获取Cursor使用情况响应文本失败 - 错误: {}", e);
+        error!(target: "api", "获取CursorPhản hồi tình hình sử dụng文本失败 - 错误: {}", e);
         // 网络相关错误
         "cursor_network_error".to_string()
     })?;
@@ -356,7 +356,7 @@ pub async fn get_public_info(
         })?;
 
     response.json().await.map_err(|e| {
-        error!(target: "api", "解析公告信息响应失败 - 错误: {}", e);
+        error!(target: "api", "解析Phản hồi thông tin thông báo失败 - 错误: {}", e);
         e.to_string()
     })
 }
@@ -375,7 +375,7 @@ pub async fn reset_password(
         .send()
         .await
         .map_err(|e| {
-            error!(target: "api", "重置密码请求失败 - 错误: {}", e);
+            error!(target: "api", "Yêu cầu đặt lại mật khẩu失败 - 错误: {}", e);
             e.to_string()
         })?;
 
@@ -441,7 +441,7 @@ pub async fn logout(db: State<'_, Database>) -> Result<ApiResponse<()>, String> 
     })
 }
 
-/// 设置用户数据
+/// Cài đặt dữ liệu người dùng
 #[tauri::command]
 pub async fn set_user_data(
     db: State<'_, Database>,
@@ -451,18 +451,18 @@ pub async fn set_user_data(
     match db.set_item(&key, &value) {
         Ok(_) => Ok(ApiResponse {
             status: 200,
-            msg: "成功设置用户数据".to_string(),
+            msg: "成功Cài đặt dữ liệu người dùng".to_string(),
             data: None,
             code: Some("SUCCESS".to_string()),
         }),
         Err(e) => {
-            error!(target: "api", "设置用户数据失败 - 键: {}, 错误: {}", key, e);
+            error!(target: "api", "Cài đặt dữ liệu người dùng失败 - 键: {}, 错误: {}", key, e);
             Err(e.to_string())
         }
     }
 }
 
-/// 获取用户数据
+/// Lấy dữ liệu người dùng
 #[tauri::command]
 pub async fn get_user_data(
     db: State<'_, Database>,
@@ -471,18 +471,18 @@ pub async fn get_user_data(
     match db.get_item(&key) {
         Ok(value) => Ok(ApiResponse {
             status: 200,
-            msg: "成功获取用户数据".to_string(),
+            msg: "成功Lấy dữ liệu người dùng".to_string(),
             data: Some(json!({ "value": value })),
             code: Some("SUCCESS".to_string()),
         }),
         Err(e) => {
-            error!(target: "api", "获取用户数据失败 - 键: {}, 错误: {}", key, e);
+            error!(target: "api", "Lấy dữ liệu người dùng失败 - 键: {}, 错误: {}", key, e);
             Err(e.to_string())
         }
     }
 }
 
-/// 删除用户数据
+/// Xóa dữ liệu người dùng
 #[tauri::command]
 pub async fn del_user_data(
     db: State<'_, Database>,
@@ -491,18 +491,18 @@ pub async fn del_user_data(
     match db.delete_item(&key) {
         Ok(_) => Ok(ApiResponse {
             status: 200,
-            msg: "成功删除用户数据".to_string(),
+            msg: "成功Xóa dữ liệu người dùng".to_string(),
             data: None,
             code: Some("SUCCESS".to_string()),
         }),
         Err(e) => {
-            error!(target: "api", "删除用户数据失败 - 键: {}, 错误: {}", key, e);
+            error!(target: "api", "Xóa dữ liệu người dùng失败 - 键: {}, 错误: {}", key, e);
             Err(e.to_string())
         }
     }
 }
 
-/// 获取公告列表
+/// Lấy danh sách thông báo
 #[tauri::command]
 pub async fn get_article_list(
     client: State<'_, ApiClient>,
@@ -519,7 +519,7 @@ pub async fn get_article_list(
         }),
         Err(e) => {
             // 接口错误时，返回空列表而不是错误
-            error!(target: "api", "获取公告列表失败，返回空列表 - 错误: {}", e);
+            error!(target: "api", "Lấy danh sách thông báo失败，返回空列表 - 错误: {}", e);
             Ok(ApiResponse {
                 status: 200,
                 msg: "获取公告成功".to_string(),
@@ -530,14 +530,14 @@ pub async fn get_article_list(
     }
 }
 
-/// 内部函数：获取公告列表数据
+/// 内部函数：Lấy danh sách thông báo数据
 async fn fetch_article_list(client: &ApiClient) -> Result<Vec<Article>, String> {
     let response = client
         .get(format!("{}/article/list/1", client.get_base_url()))
         .send()
         .await
         .map_err(|e| {
-            error!(target: "api", "获取公告列表请求失败 - 错误: {}", e);
+            error!(target: "api", "Lấy danh sách thông báo请求失败 - 错误: {}", e);
             e.to_string()
         })?;
 
@@ -570,7 +570,7 @@ async fn fetch_article_list(client: &ApiClient) -> Result<Vec<Article>, String> 
     Ok(articles)
 }
 
-/// 标记文章为已读
+/// Đánh dấu bài viết đã đọc
 #[tauri::command]
 pub async fn mark_article_read(
     db: State<'_, Database>,
@@ -604,7 +604,7 @@ pub async fn mark_article_read(
 
     Ok(ApiResponse {
         status: 200,
-        msg: "文章已标记为已读".to_string(),
+        msg: "文章已Đánh dấu đã đọc".to_string(),
         data: None,
         code: Some("SUCCESS".to_string()),
     })

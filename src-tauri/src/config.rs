@@ -16,7 +16,7 @@ pub struct ApiConfig {
     pub cursor_user_id: String,
     // 不需要认证的公共端点
     pub public_endpoints: Vec<String>,
-    // API请求超时时间(秒)
+    // API请求超时时间(giây)
     pub request_timeout: u64,
     // 是否验证SSL证书
     pub verify_ssl: bool,
@@ -67,18 +67,18 @@ pub struct DbKeyConfig {
 // 超时配置
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TimeoutConfig {
-    // 测速超时时间(毫秒)
+    // 测速超时时间(毫giây)
     pub ping_timeout_ms: u64,
-    // 普通请求超时(秒)
+    // 普通请求超时(giây)
     pub request_timeout_secs: u64,
 }
 
 // 任务调度配置
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SchedulerConfig {
-    // 仪表盘刷新间隔(秒)
+    // 仪表盘刷新间隔(giây)
     pub dashboard_refresh_interval: u64,
-    // 账户限制检查间隔(秒)
+    // 账户限制检查间隔(giây)
     pub account_limit_check_interval: u64,
     // 账户使用量警告阈值(百分比，0-1之间)
     pub account_usage_threshold: f64,

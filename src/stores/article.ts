@@ -11,13 +11,13 @@ export const useArticleStore = defineStore('article', () => {
   const initialized = ref(false)
   const readArticleIds = ref<number[]>([])
 
-  // 计算属性
+  // Thuộc tính tính toán
   const hasArticles = computed(() => articles.value.length > 0)
   const hasUnreadArticles = computed(() =>
     articles.value.some((article) => !readArticleIds.value.includes(article.id)),
   )
 
-  // 获取公告列表
+  // Lấy danh sách thông báo
   async function fetchArticles() {
     if (loading.value) return
 
@@ -54,12 +54,12 @@ export const useArticleStore = defineStore('article', () => {
     }
   }
 
-  // 检查文章是否已读
+  // Kiểm tra bài viết đã đọc chưa
   function isRead(id: number): boolean {
     return readArticleIds.value.includes(id)
   }
 
-  // 标记文章为已读
+  // Đánh dấu bài viết đã đọc
   async function markAsRead(id: number) {
     await markArticleRead(id)
     // 更新本地已读状态

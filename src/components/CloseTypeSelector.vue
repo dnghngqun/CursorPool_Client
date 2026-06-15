@@ -21,7 +21,7 @@
     },
   })
 
-  // 关闭方式选项
+  // Tùy chọn cách đóng
   const closeTypeOptions = computed(() => [
     {
       label: t('closeType.ask'),
@@ -40,7 +40,7 @@
   // 当前选中的关闭方式
   const selectedCloseType = ref('ask')
 
-  // 初始化设置
+  // Khởi tạo cài đặt
   onMounted(async () => {
     try {
       // 从数据库获取当前设置
@@ -53,7 +53,7 @@
     }
   })
 
-  // 处理选择变化
+  // Xử lý thay đổi lựa chọn
   const handleChange = async (value: string) => {
     // 更新UIHiển thị
     selectedCloseType.value = value

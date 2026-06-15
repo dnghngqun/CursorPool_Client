@@ -15,11 +15,11 @@
   const dateRange = ref<[number, number] | null>(null)
   const isLoading = ref(false)
 
-  // 清除历史记录
+  // Xóa lịch sử记录
   const clearHistory = async () => {
     try {
       isLoading.value = true
-      // 使用专门的清除历史记录API
+      // 使用专门的Xóa lịch sử记录API
       await clearHistoryRecords()
       // 重新加载历史记录
       await historyStore.loadHistoryRecords()
@@ -43,7 +43,7 @@
     }
   })
 
-  // 监听历史记录更新事件
+  // Lắng nghe历史记录更新事件
   const handleHistoryUpdate = async () => {
     await historyStore.loadHistoryRecords()
   }
@@ -56,7 +56,7 @@
     window.removeEventListener('history_updated', handleHistoryUpdate)
   })
 
-  // 根据日期范围过滤历史记录
+  // 根据Khoảng ngày过滤历史记录
   const filteredRecords = computed(() => {
     if (!dateRange.value) {
       return historyStore.sortedRecords

@@ -83,17 +83,17 @@ pub async fn reset_machine_id(
 
     // 检查Cursor进程
     if !force_kill && process_manager.is_cursor_running() {
-        error!(target: "reset", "重置失败: Cursor进程Đang chạy且没有强制关闭选项");
+        error!(target: "reset", "重置失败: Cursor进程Đang chạy且没有Bắt buộc关闭选项");
         return Err("Cursor进程Đang chạy, 请先关闭Cursor".to_string());
     }
 
-    // 如果force_kill为true, 则强制终止Cursor进程
+    // 如果force_kill为true, 则Bắt buộc终止Cursor进程
     if force_kill {
         match process_manager.kill_cursor_processes() {
             Ok(_) => {}
             Err(e) => {
                 // 上报错误
-                error!(target: "reset", "强制终止Cursor进程失败: {}", e);
+                error!(target: "reset", "Bắt buộc终止Cursor进程失败: {}", e);
                 ErrorReporter::report_error(
                     client.clone(),
                     "reset_machine_id",
@@ -275,7 +275,7 @@ pub async fn reset_machine_id(
         return Err(err);
     }
 
-    // 更新数据库
+    // Cập nhật cơ sở dữ liệu
     if paths.db.exists() {
         let updates = vec![
             ("device_id", new_ids.get("telemetry.devDeviceId").unwrap()),
@@ -289,7 +289,7 @@ pub async fn reset_machine_id(
         ];
 
         if let Err(e) = update_database(&paths.db, &updates) {
-            error!(target: "reset", "更新数据库失败: {}", e);
+            error!(target: "reset", "Cập nhật cơ sở dữ liệu失败: {}", e);
             ErrorReporter::report_error(
                 client.clone(),
                 "reset_machine_id",
@@ -300,7 +300,7 @@ pub async fn reset_machine_id(
             .await;
             return Err(e);
         }
-        error!(target: "reset", "成功更新数据库中的设备ID信息");
+        error!(target: "reset", "成功Cập nhật cơ sở dữ liệu中的设备ID信息");
     } else {
         error!(target: "reset", "数据库文件不存在，跳过数据库更新");
     }
@@ -322,17 +322,17 @@ pub async fn switch_account(
 
     // 检查Cursor进程
     if !force_kill && process_manager.is_cursor_running() {
-        error!(target: "account", "Đổi tài khoản失败: Cursor进程Đang chạy且没有强制关闭选项");
+        error!(target: "account", "Đổi tài khoản失败: Cursor进程Đang chạy且没有Bắt buộc关闭选项");
         return Err("Cursor进程Đang chạy, 请先关闭Cursor".to_string());
     }
 
-    // 如果force_kill为true, 则强制终止Cursor进程
+    // 如果force_kill为true, 则Bắt buộc终止Cursor进程
     if force_kill {
         if let Err(e) = process_manager.kill_cursor_processes() {
-            error!(target: "account", "强制终止Cursor进程失败: {}", e);
+            error!(target: "account", "Bắt buộc终止Cursor进程失败: {}", e);
             return Err(e);
         }
-        error!(target: "account", "已强制终止Cursor进程");
+        error!(target: "account", "已Bắt buộc终止Cursor进程");
     }
 
     let paths = match AppPaths::new_with_db(Some(&db)) {
@@ -389,7 +389,7 @@ pub async fn switch_account(
                 }
             }
         } else {
-            error!(target: "account", "打开数据库失败");
+            error!(target: "account", "Mở cơ sở dữ liệu失败");
         }
     } else {
         error!(target: "account", "数据库文件不存在");
@@ -402,17 +402,17 @@ pub async fn switch_account(
                 match serde_json::from_str::<Vec<crate::api::types::HistoryAccountRecord>>(&data) {
                     Ok(accounts) => accounts.iter().any(|a| a.email == current_email),
                     Err(e) => {
-                        error!(target: "account", "解析历史账户记录失败: {}", e);
+                        error!(target: "account", "解析Bản ghi tài khoản lịch sử失败: {}", e);
                         false
                     }
                 }
             }
             Ok(None) => {
-                error!(target: "account", "历史账户记录为空");
+                error!(target: "account", "Bản ghi tài khoản lịch sử为空");
                 false
             }
             Err(e) => {
-                error!(target: "account", "获取历史账户记录失败: {}", e);
+                error!(target: "account", "获取Bản ghi tài khoản lịch sử失败: {}", e);
                 false
             }
         }
@@ -447,7 +447,7 @@ pub async fn switch_account(
         token.clone()
     };
 
-    // 更新数据库为-新账户
+    // Cập nhật cơ sở dữ liệu为-新账户
     let account_updates = vec![
         ("cursor.email", email.clone()),
         ("cursor.accessToken", processed_token.clone()),
@@ -457,10 +457,10 @@ pub async fn switch_account(
     ];
 
     if let Err(e) = update_database(&paths.db, &account_updates) {
-        error!(target: "account", "更新数据库失败: {}", e);
+        error!(target: "account", "Cập nhật cơ sở dữ liệu失败: {}", e);
         return Err(e);
     }
-    error!(target: "account", "成功更新数据库中的账户信息");
+    error!(target: "account", "成功Cập nhật cơ sở dữ liệu中的账户信息");
 
     // 获取机器码（为了新账户使用）
     let result = get_machine_ids(db.clone()).await?;
@@ -473,17 +473,17 @@ pub async fn switch_account(
             match serde_json::from_str::<Vec<crate::api::types::HistoryAccountRecord>>(&data) {
                 Ok(accounts) => accounts.iter().any(|a| a.email == email),
                 Err(e) => {
-                    error!(target: "account", "解析历史账户记录失败: {}", e);
+                    error!(target: "account", "解析Bản ghi tài khoản lịch sử失败: {}", e);
                     false
                 }
             }
         }
         Ok(None) => {
-            error!(target: "account", "历史账户记录为空");
+            error!(target: "account", "Bản ghi tài khoản lịch sử为空");
             false
         }
         Err(e) => {
-            error!(target: "account", "获取历史账户记录失败: {}", e);
+            error!(target: "account", "获取Bản ghi tài khoản lịch sử失败: {}", e);
             false
         }
     };
@@ -526,15 +526,15 @@ pub async fn switch_account(
                 // 保存更新后的记录
                 if let Ok(json_data) = serde_json::to_string(&accounts) {
                     if let Err(e) = db.set_item("user.history.accounts", &json_data) {
-                        error!(target: "account", "更新历史账户记录失败: {}", e);
+                        error!(target: "account", "更新Bản ghi tài khoản lịch sử失败: {}", e);
                     } else {
                         error!(target: "account", "成功更新账户 {} 的历史记录", email);
                     }
                 } else {
-                    error!(target: "account", "序列化历史账户记录失败");
+                    error!(target: "account", "序列化Bản ghi tài khoản lịch sử失败");
                 }
             } else {
-                error!(target: "account", "解析历史账户记录失败");
+                error!(target: "account", "解析Bản ghi tài khoản lịch sử失败");
             }
         }
     }
@@ -627,17 +627,17 @@ pub fn request_admin_privileges(exe_path: String) -> Result<bool, String> {
     crate::utils::privileges::request_admin_privileges(&exe_path)
 }
 
-/// 更新数据库键值对
+/// Cập nhật cơ sở dữ liệu键值对
 fn update_database(
     db_path: &std::path::Path,
     updates: &[(impl AsRef<str>, impl AsRef<str>)],
 ) -> Result<(), String> {
-    error!(target: "database", "开始更新数据库: {}", db_path.display());
+    error!(target: "database", "开始Cập nhật cơ sở dữ liệu: {}", db_path.display());
 
     let conn = match Connection::open(db_path) {
         Ok(c) => c,
         Err(e) => {
-            let err_msg = format!("打开数据库失败: {}", e);
+            let err_msg = format!("Mở cơ sở dữ liệu失败: {}", e);
             error!(target: "database", "{}", err_msg);
             return Err(err_msg);
         }
@@ -652,7 +652,7 @@ fn update_database(
             _ => key.as_ref(),
         };
 
-        error!(target: "database", "更新数据库键值对: {} => {}", key, value.as_ref());
+        error!(target: "database", "Cập nhật cơ sở dữ liệu键值对: {} => {}", key, value.as_ref());
 
         // 先尝试更新已存在的记录
         let result = conn.execute(
@@ -667,7 +667,7 @@ fn update_database(
                 "INSERT INTO ItemTable (key, value) VALUES (?1, ?2)",
                 [key, value.as_ref()],
             ) {
-                let err_msg = format!("插入数据失败: {}", e);
+                let err_msg = format!("Chèn dữ liệu失败: {}", e);
                 error!(target: "database", "{}", err_msg);
                 return Err(err_msg);
             }
@@ -732,19 +732,19 @@ pub async fn hook_main_js(
 
     // 检查 Cursor 进程
     if !force_kill && process_manager.is_cursor_running() {
-        error!(target: "hook", "注入失败: Cursor进程Đang chạy且没有强制关闭选项");
+        error!(target: "hook", "注入失败: Cursor进程Đang chạy且没有Bắt buộc关闭选项");
         return Err("Cursor进程Đang chạy, 请先关闭Cursor".to_string());
     }
 
-    // 如果 force_kill 为 true, 则强制终止 Cursor 进程
+    // 如果 force_kill 为 true, 则Bắt buộc终止 Cursor 进程
     if force_kill {
         match process_manager.kill_cursor_processes() {
             Ok(_) => {
-                error!(target: "hook", "已强制终止Cursor进程");
+                error!(target: "hook", "已Bắt buộc终止Cursor进程");
             }
             Err(e) => {
                 // 上报错误
-                error!(target: "hook", "强制终止Cursor进程失败: {}", e);
+                error!(target: "hook", "Bắt buộc终止Cursor进程失败: {}", e);
                 ErrorReporter::report_error(
                     client.clone(),
                     "hook_main_js",
@@ -762,7 +762,7 @@ pub async fn hook_main_js(
     error!(target: "hook", "开始注入main.js文件");
     let result = Hook::update_main_js_content(Some(client), Some(db)).await;
     if result.is_ok() {
-        error!(target: "hook", "成功注入main.js文件");
+        error!(target: "hook", "Tiêm thành côngmain.js文件");
     }
     result
 }
@@ -778,19 +778,19 @@ pub async fn restore_hook(
 
     // 检查 Cursor 进程
     if !force_kill && process_manager.is_cursor_running() {
-        error!(target: "hook", "恢复失败: Cursor进程Đang chạy且没有强制关闭选项");
+        error!(target: "hook", "恢复失败: Cursor进程Đang chạy且没有Bắt buộc关闭选项");
         return Err("Cursor进程Đang chạy, 请先关闭Cursor".to_string());
     }
 
-    // 如果 force_kill 为 true, 则强制终止 Cursor 进程
+    // 如果 force_kill 为 true, 则Bắt buộc终止 Cursor 进程
     if force_kill {
         match process_manager.kill_cursor_processes() {
             Ok(_) => {
-                error!(target: "hook", "已强制终止Cursor进程");
+                error!(target: "hook", "已Bắt buộc终止Cursor进程");
             }
             Err(e) => {
                 // 上报错误
-                error!(target: "hook", "强制终止Cursor进程失败: {}", e);
+                error!(target: "hook", "Bắt buộc终止Cursor进程失败: {}", e);
                 ErrorReporter::report_error(
                     client.clone(),
                     "restore_hook",
@@ -808,7 +808,7 @@ pub async fn restore_hook(
     error!(target: "hook", "开始恢复main.js文件");
     let result = Hook::restore_from_backup(Some(client), Some(db)).await;
     if result.is_ok() {
-        error!(target: "hook", "成功恢复main.js文件");
+        error!(target: "hook", "Khôi phục thành côngmain.js文件");
     }
     result
 }
@@ -820,7 +820,7 @@ pub async fn find_cursor_path(
     db: State<'_, Database>,
     selected_path: String,
 ) -> Result<bool, String> {
-    error!(target: "path", "正在查找Cursor路径: {}", selected_path);
+    error!(target: "path", "正在Tìm đường dẫn Cursor: {}", selected_path);
 
     // 尝试从选择的路径找到main.js
     let main_js_path = match AppPaths::find_main_js_from_selected_path(&selected_path) {
@@ -1037,7 +1037,7 @@ pub async fn cleanup_database_entries(
     let conn = match Connection::open(db_path) {
         Ok(c) => c,
         Err(e) => {
-            let err_msg = format!("打开数据库失败: {}", e);
+            let err_msg = format!("Mở cơ sở dữ liệu失败: {}", e);
             error!(target: "database_cleanup", "{}", err_msg);
             return Err(err_msg);
         }

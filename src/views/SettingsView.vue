@@ -51,24 +51,24 @@
     confirmPassword: '',
   })
 
-  // 修改控制状态
+  // Sửa trạng thái điều khiển
   const controlStatus = ref({
     isHooked: false,
     isChecking: false,
   })
 
-  // 为每个操作添加单独的加载状态
+  // 为每个操作添加单独的Trạng thái tải
   const applyHookLoading = ref(false)
   const restoreHookLoading = ref(false)
 
   const showControlRunningModal = ref(false)
   const pendingControlAction = ref<'applyHook' | 'restoreHook' | null>(null)
 
-  // 为激活和修改密码添加独立的加载状态
+  // 为激活和修改密码添加独立的Trạng thái tải
   const activateLoading = ref(false)
   const passwordChangeLoading = ref(false)
 
-  // 添加按钮模式选项
+  // 添加Tùy chọn chế độ nút
   const buttonModeOptions = computed(() => [
     {
       label: t('settings.simpleMode'),
@@ -80,7 +80,7 @@
     },
   ])
 
-  // 计算属性用于转换值
+  // Thuộc tính tính toán用于转换值
   const buttonMode = computed({
     get: () => (appStore.showAllButtons ? 'advanced' : 'simple'),
     set: (value: string) => {
@@ -101,7 +101,7 @@
       addHistoryRecord(t('settings.activation'), t('message.activationSuccess'))
       formValue.value.activationCode = ''
 
-      // 设置刷新标记，确保dashboard页面刷新数据
+      // Cài đặt cờ làm mới，确保dashboard页面刷新数据
       localStorage.setItem('need_refresh_dashboard', 'true')
 
       // 激活Thành công后跳转到 dashboard 页面
@@ -159,7 +159,7 @@
     action: 'applyHook' | 'restoreHook',
     force_kill: boolean = false,
   ) => {
-    // 根据操作设置对应的加载状态
+    // 根据操作设置对应的Trạng thái tải
     const loadingRef = {
       applyHook: applyHookLoading,
       restoreHook: restoreHookLoading,
@@ -292,29 +292,29 @@
     }
   }
 
-  // 处理强制关闭
+  // 处理Bắt buộc关闭
   const handleControlForceKill = async () => {
     if (pendingControlAction.value) {
       try {
-        // 关闭确认对话框
+        // Xác nhận đóng对话框
         showControlRunningModal.value = false
-        // 设置为加载状态
+        // 设置为Trạng thái tải
         const loadingRef = {
           applyHook: applyHookLoading,
           restoreHook: restoreHookLoading,
         }[pendingControlAction.value]
         loadingRef.value = true
 
-        // 使用强制关闭参数调用操作
+        // 使用Bắt buộc关闭参数调用操作
         await handleControlAction(pendingControlAction.value, true)
       } catch (error) {
-        Logger.error(`强制关闭Thao tác thất bại: ${error}`)
+        Logger.error(`Bắt buộc关闭Thao tác thất bại: ${error}`)
         message.error(t('systemControl.messages.forceFailed'))
       }
     }
   }
 
-  // 监听cursorStore的hookStatus变化
+  // Lắng nghecursorStore的hookStatus变化
   watch(
     () => cursorStore.hookStatus,
     (newStatus) => {
@@ -325,7 +325,7 @@
     { immediate: true },
   )
 
-  // 监听文件选择模态框的Hiển thị状态
+  // Lắng ngheChọn tệpModal的Hiển thị状态
   watch(
     () => cursorStore.showSelectFileModal,
     (newValue, oldValue) => {
@@ -335,7 +335,7 @@
     },
   )
 
-  // 在组件挂载时检查控制状态
+  // Khi component được gắn检查控制状态
   onMounted(async () => {
     // 初始化状态
     controlStatus.value = {
@@ -343,7 +343,7 @@
       isChecking: false,
     }
 
-    // 检查Hook状态
+    // Kiểm tra trạng thái Hook
     await checkControlStatus()
   })
 
@@ -365,7 +365,7 @@
     vertical
     :size="24"
   >
-    <!-- 系统控制 -->
+    <!-- Điều khiển hệ thống -->
     <n-card>
       <template #header>
         <div class="text-xl font-medium">{{ t('systemControl.title') }}</div>
@@ -414,7 +414,7 @@
           </div>
         </div>
 
-        <!-- 注入Cursor路径 -->
+        <!-- Tiêm đường dẫn Cursor -->
         <div v-if="controlStatus.isHooked && cursorPath && appStore.currentPlatform === 'windows'">
           <div class="flex items-center justify-between gap-2 mt-1">
             <div
@@ -445,7 +445,7 @@
       </n-space>
     </n-card>
 
-    <!-- 全局偏好设置 -->
+    <!-- Tùy chỉnh chung -->
     <n-card>
       <template #header>
         <div class="text-xl font-medium">{{ t('settings.globalPreferences') }}</div>
@@ -526,7 +526,7 @@
       </n-space>
     </n-card>
 
-    <!-- 密码修改 -->
+    <!-- Đổi mật khẩu -->
     <n-card>
       <template #header>
         <div class="text-xl font-medium">{{ t('settings.changePassword') }}</div>
@@ -598,7 +598,7 @@
       </n-space>
     </n-card>
 
-    <!-- 关于 -->
+    <!-- Giới thiệu -->
     <n-card>
       <template #header>
         <div class="text-xl font-medium">{{ t('settings.about') }}</div>
@@ -632,7 +632,7 @@
       </n-space>
     </n-card>
 
-    <!-- 模态框 -->
+    <!-- Modal -->
     <cursor-running-modal
       v-model:show="showControlRunningModal"
       :title="t('common.cursorRunning')"
@@ -641,7 +641,7 @@
       @confirm="handleControlForceKill"
     />
 
-    <!-- 文件选择模态框 -->
+    <!-- Chọn tệpModal -->
     <file-select-modal />
   </n-space>
 </template>

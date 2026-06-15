@@ -121,7 +121,7 @@ impl SchedulerState {
             }
         };
         
-        info!("仪表盘刷新间隔设置为 {} 秒", refresh_interval);
+        info!("仪表盘刷新间隔设置为 {} giây", refresh_interval);
         
         let handle = tokio::spawn(async move {
             let mut interval = interval(Duration::from_secs(refresh_interval));

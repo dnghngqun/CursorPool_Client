@@ -29,7 +29,7 @@
   const appCloseStore = useAppCloseStore()
   const appStore = useAppStore()
 
-  // Đăng nhập状态管理 - 使用计算属性从store获取状态
+  // Đăng nhập状态管理 - 使用Thuộc tính tính toán从store获取状态
   const isCheckingLogin = computed(() => userStore.isCheckingLogin)
   const isLoggedIn = computed(() => userStore.isLoggedIn)
   const showLoginOverlay = computed(() => !isLoggedIn.value && !isCheckingLogin.value)
@@ -40,7 +40,7 @@
   const currentPath = computed(() => router.currentRoute.value.path.substring(1) || 'dashboard')
 
   /**
-   * 监听用户登出事件
+   * Lắng nghe用户登出事件
    */
   const handleUserLogout = () => {
     // 确保路由跳转到dashboard
@@ -118,17 +118,17 @@
     // 使用store检查Đăng nhập状态
     await userStore.checkLoginStatus()
 
-    // 添加用户登出事件监听
+    // 添加用户登出事件Lắng nghe
     window.addEventListener('user-logout', handleUserLogout)
   })
 
   // 组件卸载时
   onUnmounted(() => {
-    // 移除事件监听
+    // 移除事件Lắng nghe
     window.removeEventListener('user-logout', handleUserLogout)
   })
 
-  // 监听store中的Đăng nhập状态变化
+  // Lắng nghestore中的Đăng nhập状态变化
   watch(
     () => userStore.isLoggedIn,
     (newValue) => {
@@ -261,7 +261,7 @@
   <!-- 在未Đăng nhập时Hiển thịĐăng nhập层 -->
   <LoginOverlay v-if="showLoginOverlay" />
 
-  <!-- 关闭确认对话框 -->
+  <!-- Xác nhận đóng对话框 -->
   <CloseConfirmModal :visible="appCloseStore.showConfirmModal" />
 </template>
 

@@ -49,7 +49,7 @@ export class ApiClient {
   private currentRetryOrRefreshAction: string | null = null // 标记当前是否有重试或刷新操作
 
   private constructor() {
-    // 监听inbound-refreshed事件
+    // Lắng ngheinbound-refreshed事件
     this.setupInboundRefreshedListener()
   }
 
@@ -232,9 +232,9 @@ export class ApiClient {
         const timeoutId = setTimeout(() => {
           Logger.error('线路刷新超时')
           reject(new Error('Inbound refresh timeout'))
-        }, 30000) // 30秒超时
+        }, 30000) // 30giây超时
 
-        // 创建一次性监听器，等待后端的刷新完成事件
+        // 创建一次性Lắng nghe器，等待后端的刷新完成事件
         const unlistenPromise = listen('inbound-refreshed', () => {
           clearTimeout(timeoutId)
           Logger.info('收到线路刷新完成事件')
@@ -267,7 +267,7 @@ export class ApiClient {
     }
     subscribers[event].push(callback)
 
-    // 返回取消订阅函数
+    // 返回Hủy订阅函数
     return () => {
       subscribers[event] = subscribers[event].filter((cb) => cb !== callback)
     }
@@ -281,7 +281,7 @@ export class ApiClient {
       const lastSentTime = sentEvents.get(eventKey)
 
       if (lastSentTime && now - lastSentTime < 1000) {
-        // 1秒内不重复发送相同事件
+        // 1giây内不重复发送相同事件
         return
       }
 
@@ -300,9 +300,9 @@ export class ApiClient {
     }
   }
 
-  // 设置inbound-refreshed事件监听器
+  // 设置inbound-refreshed事件Lắng nghe器
   private async setupInboundRefreshedListener(): Promise<void> {
-    // 确保不重复监听
+    // 确保不重复Lắng nghe
     if (this.inboundRefreshedListener) return
 
     this.inboundRefreshedListener = await listen('inbound-refreshed', () => {

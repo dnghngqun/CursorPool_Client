@@ -105,7 +105,7 @@
     },
   })
 
-  // 监听Pinia中的Đăng nhập错误
+  // Lắng nghePinia中的Đăng nhập错误
   watch(
     () => userStore.loginError,
     (newError) => {
@@ -119,7 +119,7 @@
     },
   )
 
-  // 计算属性
+  // Thuộc tính tính toán
   const canSendCode = computed(() => {
     return (
       formState.register.email &&
@@ -625,7 +625,7 @@
     </n-card>
   </div>
 
-  <!-- 忘记密码模态框 -->
+  <!-- 忘记密码Modal -->
   <n-modal v-model:show="showForgotPassword">
     <n-card
       style="width: 400px"
@@ -678,7 +678,7 @@
           />
         </n-form-item>
 
-        <n-form-item label="确认密码">
+        <n-form-item label="Xác nhận密码">
           <n-input
             v-model:value="forgotPasswordForm.confirmPassword"
             type="password"
@@ -689,7 +689,7 @@
 
         <n-space justify="end">
           <n-button @click="showForgotPassword = false">
-            {{ messages[currentLang].login.loginButton === 'Đăng nhập' ? '取消' : 'Cancel' }}
+            {{ messages[currentLang].login.loginButton === 'Đăng nhập' ? 'Hủy' : 'Cancel' }}
           </n-button>
           <n-button
             type="primary"

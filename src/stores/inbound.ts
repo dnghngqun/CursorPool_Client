@@ -18,7 +18,7 @@ export const useInboundStore = defineStore('inbound', () => {
   const inboundList = ref<InboundItem[]>([])
   const currentInboundIndex = ref(0)
 
-  // 计算属性
+  // Thuộc tính tính toán
   const currentInbound = computed(() => {
     if (inboundList.value.length === 0) return null
     return inboundList.value[currentInboundIndex.value] || inboundList.value[0]

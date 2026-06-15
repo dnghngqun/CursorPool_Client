@@ -26,7 +26,7 @@ pub fn update_auth(paths: &AppPaths, auth: &AuthInfo) -> Result<(), String> {
     )
     .map_err(|e| format!("写入auth.json失败: {}", e))?;
 
-    // 更新数据库中的认证信息
+    // Cập nhật cơ sở dữ liệu中的认证信息
     let mut auth_updates = HashMap::new();
     auth_updates.insert("cursorAuth/refreshToken".to_string(), auth.token.clone());
     auth_updates.insert("cursorAuth/accessToken".to_string(), auth.token.clone());

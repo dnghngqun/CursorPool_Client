@@ -23,9 +23,9 @@ impl Database {
         // 数据库文件路径
         let db_path = app_dir.join("cursor_pool.db");
 
-        // 创建或打开数据库连接
+        // 创建或Mở cơ sở dữ liệu连接
         let connection = Connection::open(&db_path).map_err(|e| {
-            error!(target: "database", "打开数据库连接失败 - 路径: {:?}, 错误: {}", db_path, e);
+            error!(target: "database", "Mở cơ sở dữ liệu连接失败 - 路径: {:?}, 错误: {}", db_path, e);
             e
         })?;
 
@@ -82,12 +82,12 @@ impl Database {
         let mut stmt = conn
             .prepare("SELECT value FROM item WHERE key = ?")
             .map_err(|e| {
-                error!(target: "database", "准备查询语句失败 - 键: {}, 错误: {}", key, e);
+                error!(target: "database", "Chuẩn bị truy vấn语句失败 - 键: {}, 错误: {}", key, e);
                 e
             })?;
 
         let mut rows = stmt.query(params![key]).map_err(|e| {
-            error!(target: "database", "执行查询失败 - 键: {}, 错误: {}", key, e);
+            error!(target: "database", "Thực hiện truy vấn失败 - 键: {}, 错误: {}", key, e);
             e
         })?;
 
@@ -107,7 +107,7 @@ impl Database {
         let conn = self.connection.lock().unwrap();
         conn.execute("DELETE FROM item WHERE key = ?", params![key])
             .map_err(|e| {
-                error!(target: "database", "删除数据项失败 - 键: {}, 错误: {}", key, e);
+                error!(target: "database", "Xóa dữ liệu项失败 - 键: {}, 错误: {}", key, e);
                 e
             })?;
         Ok(())
@@ -166,12 +166,12 @@ impl Database {
         let mut stmt = conn
             .prepare("SELECT account, userId, cursorToken FROM account WHERE account = ?")
             .map_err(|e| {
-                error!(target: "database", "准备查询账户语句失败 - 账户: {}, 错误: {}", account, e);
+                error!(target: "database", "Chuẩn bị truy vấn账户语句失败 - 账户: {}, 错误: {}", account, e);
                 e
             })?;
 
         let mut rows = stmt.query(params![account]).map_err(|e| {
-            error!(target: "database", "执行查询账户失败 - 账户: {}, 错误: {}", account, e);
+            error!(target: "database", "Thực hiện truy vấn账户失败 - 账户: {}, 错误: {}", account, e);
             e
         })?;
 

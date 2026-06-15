@@ -61,10 +61,10 @@
     const expireTime = new Date(expireTimeStr.replace(/-/g, '/'))
     const now = new Date()
 
-    // 如果已过期，返回已过期提示
+    // 如果Đã hết hạn，返回Đã hết hạn提示
     if (expireTime <= now) return i18n.value.common.timeExpired
 
-    // 计算剩余毫秒数
+    // 计算剩余毫giây数
     const remainingMs = expireTime.getTime() - now.getTime()
 
     // 转换为天、小时、分钟
@@ -174,20 +174,20 @@
     return getUsagePercentage(userStore.userInfo.usedCount, userStore.userInfo.totalCount)
   })
 
-  // Cursor高级模型使用量百分比
+  // CursorModel cao cấp使用量百分比
   const cursorGpt4Percentage = computed(() => {
     if (isGpt4Unlimited.value) return 100
     return cursorStore.gpt4Usage.percentage
   })
 
-  // Cursor普通模型使用量百分比
+  // CursorModel cơ bản使用量百分比
   const cursorGpt35Percentage = computed(() => {
     // 如果没有设置maxRequestUsage或者maxRequestUsage为0，视为无限制，进度条Hiển thị为100%
     if (!deviceInfo.value.cursorInfo.usage?.['gpt-3.5-turbo']?.maxRequestUsage) return 100
     return cursorStore.gpt35Usage.percentage
   })
 
-  // 检查高级模型是否为无限制
+  // 检查Model cao cấp是否为无限制
   const isGpt4Unlimited = computed(() => {
     const usage = deviceInfo.value.cursorInfo.usage?.['gpt-4']
     return !usage?.maxRequestUsage || usage.maxRequestUsage === 0
@@ -221,7 +221,7 @@
     return true
   }
 
-  // 修改机器码更换处理函数
+  // 修改Đổi mã máy处理函数
   const handleMachineCodeChange = async (force_kill: boolean = false) => {
     try {
       await cursorStore.resetMachine({
@@ -278,7 +278,7 @@
     }
   }
 
-  // 修改一键切换处理函数
+  // 修改Đổi nhanh处理函数
   const handleQuickChange = async () => {
     try {
       if (!checkHookAndRedirect()) {
@@ -337,7 +337,7 @@
     }
   }
 
-  // 修改一键切换执行函数
+  // 修改Đổi nhanh执行函数
   const executeQuickChange = async (force_kill: boolean = false): Promise<boolean> => {
     try {
       const result = await cursorStore.quickChange(undefined, undefined, force_kill)
@@ -365,7 +365,7 @@
     }
   }
 
-  // 修改强制关闭处理函数
+  // 修改Bắt buộc关闭处理函数
   const handleForceKill = async () => {
     showCursorRunningModal.value = false
     if (!pendingForceKillAction.value) return
@@ -405,7 +405,7 @@
             operationMessage = i18n.value.dashboard.accountChangeSuccess
           }
         } catch (error) {
-          Logger.error(`强制Đổi tài khoản thất bại: ${error}`)
+          Logger.error(`Bắt buộcĐổi tài khoản thất bại: ${error}`)
           message.destroyAll()
           message.error(error instanceof Error ? error.message : String(error))
           return
@@ -419,7 +419,7 @@
             operationMessage = i18n.value.dashboard.changeSuccess
           }
         } catch (error) {
-          Logger.error(`强制Đổi nhanh thất bại: ${error}`)
+          Logger.error(`Bắt buộcĐổi nhanh thất bại: ${error}`)
           message.destroyAll()
           message.error(error instanceof Error ? error.message : String(error))
           return
@@ -497,7 +497,7 @@
   const checkMacOSPermissions = async () => {
     if (appStore.currentPlatform === 'macos') {
       try {
-        // 检查完全磁盘访问权限
+        // 检查Quyền truy cập đĩa đầy đủ
         const checkPermission = async () => {
           const hasDiskAccess = await checkFullDiskAccessPermission()
           if (hasDiskAccess) {
@@ -524,7 +524,7 @@
   // 添加处理权限请求的函数
   const handleRequestFullDiskAccess = async () => {
     try {
-      // 请求完全磁盘访问权限
+      // 请求Quyền truy cập đĩa đầy đủ
       await requestFullDiskAccessPermission()
 
       // 权限请求后开始循环检查权限状态
@@ -535,19 +535,19 @@
           showAdminPrivilegeModal.value = false
           return
         }
-        // 如果未获得权限，1秒后再次检查
+        // 如果未获得权限，1giây后再次检查
         setTimeout(checkLoop, 1000)
       }
 
       // 开始检查循环
       checkLoop()
     } catch (error) {
-      Logger.error(`请求完全磁盘访问权限Thất bại: ${error}`)
+      Logger.error(`请求Quyền truy cập đĩa đầy đủThất bại: ${error}`)
       message.error('请求权限Thất bại')
     }
   }
 
-  // 在组件挂载时获取所有信息
+  // Khi component được gắn获取所有信息
   onMounted(async () => {
     try {
       loading.value = true
@@ -562,7 +562,7 @@
       // 初始化按钮Hiển thị状态
       await appStore.initButtonSettings()
 
-      // 检查是否需要强制刷新数据
+      // 检查是否需要Bắt buộc刷新数据
       const needRefresh = localStorage.getItem('need_refresh_dashboard')
       if (needRefresh === 'true' || !userStore.userInfo || !cursorStore.cursorInfo.userInfo) {
         // 清除刷新标记
@@ -578,7 +578,7 @@
         try {
           await cursorStore.fetchMachineIds()
         } catch (error) {
-          Logger.warn(`获取机器码信息Thất bại，但继续执行: ${error}`)
+          Logger.warn(`获取Thông tin mã máyThất bại，但继续执行: ${error}`)
         }
 
         try {
@@ -590,22 +590,22 @@
         try {
           await cursorStore.checkHook()
         } catch (error) {
-          Logger.warn(`检查Hook状态Thất bại，但继续执行: ${error}`)
+          Logger.warn(`Kiểm tra trạng thái HookThất bại，但继续执行: ${error}`)
         }
 
         // 更新视图状态
         updateLocalViewState()
 
-        // 检查免责声明
+        // 检查Miễn trừ trách nhiệm
         await appStore.fetchDisclaimer()
 
         try {
-          // 只在免责声明已接受的情况下Hiển thị引导
+          // 只在Miễn trừ trách nhiệm已接受的情况下Hiển thị引导
           if (!appStore.showDisclaimerModal) {
             // 使用appStore的方法获取引导状态
             await appStore.fetchTourStatus()
 
-            // 使用store中的计算属性
+            // 使用store中的Thuộc tính tính toán
             const isLoggedIn = userStore.userInfo !== null
 
             // 只有当用户Đã đăng nhập且引导状态不为true时才Hiển thị引导
@@ -629,7 +629,7 @@
       loading.value = false
     }
 
-    // 添加事件监听器
+    // 添加事件Lắng nghe器
     window.addEventListener('refresh_dashboard_data', async () => {
       try {
         loading.value = true
@@ -648,14 +648,14 @@
   // 添加引导相关状态
   const shouldShowTour = ref(false)
 
-  // 添加加载状态
+  // 添加Trạng thái tải
   const machineCodeLoading = ref(false)
   const accountSwitchLoading = ref(false)
   const quickChangeLoading = ref(false)
 
-  // 修改免责声明确认处理函数
+  // 修改Miễn trừ trách nhiệmXác nhận处理函数
   const handleConfirmDisclaimer = async () => {
-    // 确认免责声明，会自动检查引导状态
+    // Xác nhậnMiễn trừ trách nhiệm，会自动检查引导状态
     const success = await appStore.confirmDisclaimer()
 
     if (success) {
@@ -675,7 +675,7 @@
   const startTour = () => {
     // 检查是否有公告正在Hiển thị
     if (articleStore.hasUnreadArticles) {
-      // 添加一个事件监听，当公告全部已读时再Hiển thị引导
+      // 添加一个事件Lắng nghe，当公告全部已读时再Hiển thị引导
       const checkInterval = setInterval(() => {
         if (!articleStore.hasUnreadArticles) {
           shouldShowTour.value = true
@@ -693,7 +693,7 @@
     shouldShowTour.value = false
   }
 
-  // 同步 store 的状态到本地视图状态
+  // Đồng bộ store 的状态到本地视图状态
   watch(
     [
       () => cursorStore.machineCode,
@@ -707,7 +707,7 @@
     },
   )
 
-  // 监听模态框状态变化，如果有模态框Hiển thị，则隐藏引导
+  // Lắng ngheModal状态变化，如果有ModalHiển thị，则隐藏引导
   watch(
     [
       () => showAdminPrivilegeModal,
@@ -740,7 +740,7 @@
 
       await handleMachineCodeChange(false)
     } catch (error) {
-      Logger.error(`机器码更换Thất bại: ${error}`)
+      Logger.error(`Đổi mã máyThất bại: ${error}`)
       message.error(
         'Thao tác thất bại: ' + (error instanceof Error ? error.message : String(error)),
       )
@@ -749,7 +749,7 @@
     }
   }
 
-  // 监听Đăng nhập状态变化
+  // Lắng ngheĐăng nhập状态变化
   watch(
     () => userStore.isLoggedIn,
     (newVal, oldVal) => {
@@ -769,9 +769,9 @@
     },
   )
 
-  // 获取会员状态文本
+  // 获取Trạng thái thành viên文本
   const getMemberStatusText = (codeStatus: number, expireTime: string) => {
-    // 如果状态是1(已使用)，Hiển thị剩余时间
+    // 如果状态是1(Đã sử dụng)，Hiển thị剩余时间
     if (codeStatus === 1) {
       return formatTimeRemaining(expireTime)
     }
@@ -788,14 +788,14 @@
     return statusMap[codeStatus] || i18n.value.common.statusUnknown
   }
 
-  // 获取会员状态标签类型
+  // 获取Trạng thái thành viên标签类型
   const getMemberStatusTagType = (codeStatus: number) => {
     const typeMap: Record<number, 'default' | 'info' | 'success' | 'warning' | 'error'> = {
-      0: 'info', // 未使用
-      1: 'success', // 已使用(正常)
-      2: 'error', // 已过期
-      3: 'warning', // 已退款
-      4: 'error', // 已结束
+      0: 'info', // Chưa sử dụng
+      1: 'success', // Đã sử dụng(正常)
+      2: 'error', // Đã hết hạn
+      3: 'warning', // Đã hoàn tiền
+      4: 'error', // Đã kết thúc
     }
 
     return typeMap[codeStatus] || 'default'
@@ -831,7 +831,7 @@
       :x-gap="24"
       style="display: grid; grid-template-columns: repeat(2, 1fr)"
     >
-      <!-- 用户信息卡片 -->
+      <!-- Thẻ thông tin người dùng -->
       <n-grid-item style="display: grid">
         <n-card
           :title="i18n.dashboard.userInfo"
@@ -975,7 +975,7 @@
         </n-card>
       </n-grid-item>
 
-      <!-- 使用统计卡片 -->
+      <!-- Thẻ thống kê sử dụng -->
       <n-grid-item style="display: grid">
         <n-card
           :title="i18n.dashboard.usageStats"
@@ -986,7 +986,7 @@
             :size="24"
             style="height: 100%; justify-content: space-around"
           >
-            <!-- 账户使用统计 -->
+            <!-- Thống kê sử dụng tài khoản -->
             <n-space
               vertical
               :size="8"
@@ -1114,7 +1114,7 @@
       </n-grid-item>
     </n-grid>
 
-    <!-- 快捷操作卡片 -->
+    <!-- Thẻ thao tác nhanh -->
     <n-card
       :title="i18n.dashboard.quickActions"
       class="quick-actions-card"
@@ -1154,7 +1154,7 @@
       </n-space>
     </n-card>
 
-    <!-- 添加 Cursor 运行提醒模态框 -->
+    <!-- 添加 Cursor 运行提醒Modal -->
     <cursor-running-modal
       v-model:show="showCursorRunningModal"
       :title="i18n.common.cursorRunning"
@@ -1163,7 +1163,7 @@
       @confirm="handleForceKill"
     />
 
-    <!-- 添加管理员权限提示模态框 -->
+    <!-- Thêm nhắc nhở quyền AdminModal -->
     <n-modal
       v-model:show="showAdminPrivilegeModal"
       preset="dialog"
@@ -1238,7 +1238,7 @@
       </template>
     </n-modal>
 
-    <!-- 添加免责声明模态框 -->
+    <!-- 添加Miễn trừ trách nhiệmModal -->
     <n-modal
       v-model:show="appStore.showDisclaimerModal"
       preset="card"
@@ -1267,7 +1267,7 @@
       </template>
     </n-modal>
 
-    <!-- 添加引导组件 -->
+    <!-- Thêm thành phần hướng dẫn -->
     <DashboardTourComponent
       :show="shouldShowTour"
       :on-complete="handleTourComplete"

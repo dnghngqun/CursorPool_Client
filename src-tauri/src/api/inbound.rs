@@ -141,7 +141,7 @@ async fn find_fastest_inbound(config: &InboundConfig) -> usize {
     fastest.index
 }
 
-/// 初始化线路配置
+/// Khởi tạo cấu hình đường truyền
 pub async fn init_inbound_config(app_handle: &AppHandle) -> Result<(), String> {
     let db = app_handle.state::<Database>();
 

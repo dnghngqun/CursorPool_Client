@@ -34,7 +34,7 @@ impl ProcessManager {
                 return Ok(());
             }
 
-            // 直接强制结束进程
+            // 直接Bắt buộc结束进程
             for pid in &processes {
                 let _ = self.kill_process(pid);
                 thread::sleep(Duration::from_millis(200));
@@ -79,7 +79,7 @@ impl ProcessManager {
                 }
 
                 if let Err(e) = self.kill_process(&pid) {
-                    eprintln!("终止进程 {} 失败: {}", pid, e);
+                    eprintln!("Dừng tiến trình {} 失败: {}", pid, e);
                 }
                 thread::sleep(Duration::from_millis(200));
             }
@@ -136,7 +136,7 @@ impl ProcessManager {
             command.creation_flags(CREATE_NO_WINDOW);
         }
 
-        // 重定向标准输入输出，进一步确保不Hiển thị窗口
+        // Chuyển hướng标准输入输出，进一步确保不Hiển thị窗口
         command
             .stdin(Stdio::null())
             .stdout(Stdio::piped())
@@ -234,7 +234,7 @@ impl ProcessManager {
         }
     }
 
-    /// 终止进程
+    /// Dừng tiến trình
     fn kill_process(&self, pid: &str) -> Result<(), String> {
         let (cmd, args) = match std::env::consts::OS {
             "windows" => ("taskkill", vec!["/F", "/PID", pid]),
@@ -246,7 +246,7 @@ impl ProcessManager {
         command
             .args(&args)
             .output()
-            .map_err(|e| format!("终止进程失败: {}", e))?;
+            .map_err(|e| format!("Dừng tiến trình失败: {}", e))?;
 
         Ok(())
     }
@@ -274,10 +274,10 @@ mod tests {
             println!("找到的Cursor进程: {:?}", processes);
         }
 
-        // 测试终止进程
+        // 测试Dừng tiến trình
         match manager.kill_cursor_processes() {
             Ok(_) => println!("成功终止所有Cursor进程"),
-            Err(e) => println!("终止进程失败: {}", e),
+            Err(e) => println!("Dừng tiến trình失败: {}", e),
         }
     }
 

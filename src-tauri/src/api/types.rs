@@ -11,7 +11,7 @@ pub struct ApiResponse<T> {
     pub code: Option<String>,
 }
 
-// 注册响应
+// Phản hồi đăng ký
 #[derive(Debug, Serialize, Deserialize)]
 pub struct RegisterResponse {
     pub token: String,
@@ -19,7 +19,7 @@ pub struct RegisterResponse {
     pub expires_time: i64,
 }
 
-// 登录响应
+// Phản hồi đăng nhập
 #[derive(Debug, Serialize, Deserialize)]
 pub struct LoginResponse {
     #[serde(default)]
@@ -34,7 +34,7 @@ pub struct UserInfo {
     // 用户总额度
     #[serde(rename = "totalCount")]
     pub total_count: i32,
-    // 已使用额度
+    // Đã sử dụng额度
     #[serde(rename = "usedCount")]
     pub used_count: i32,
     // 过期时间
@@ -42,7 +42,7 @@ pub struct UserInfo {
     pub expire_time: String,
     // 用户等级
     pub level: i32,
-    // 是否已过期
+    // 是否Đã hết hạn
     #[serde(rename = "isExpired")]
     pub is_expired: bool,
     // 用户名
@@ -52,7 +52,7 @@ pub struct UserInfo {
     #[serde(default)]
     #[serde(skip_serializing_if = "String::is_empty")]
     pub code_level: String,
-    // 激活码状态
+    // Trạng thái mã kích hoạt
     #[serde(rename = "code_status")]
     #[serde(default)]
     pub code_status: i32,
@@ -92,7 +92,7 @@ pub struct AccountDetail {
     pub token: String,
 }
 
-// 登录请求
+// Yêu cầu đăng nhập
 #[derive(Debug, Serialize)]
 pub struct LoginRequest {
     pub account: String,
@@ -100,20 +100,20 @@ pub struct LoginRequest {
     pub spread: String,
 }
 
-// 检查用户请求
+// Yêu cầu kiểm tra người dùng
 #[derive(Debug, Serialize)]
 pub struct CheckUserRequest {
     pub email: String,
 }
 
-// 发送验证码请求
+// Yêu cầu gửi mã xác nhận
 #[derive(Debug, Serialize)]
 pub struct SendCodeRequest {
     pub email: String,
     pub r#type: String, // register或reset
 }
 
-// 注册请求
+// Yêu cầu đăng ký
 #[derive(Debug, Serialize)]
 pub struct RegisterRequest {
     pub email: String,
@@ -122,7 +122,7 @@ pub struct RegisterRequest {
     pub spread: String,
 }
 
-// 重置密码请求
+// Yêu cầu đặt lại mật khẩu
 #[derive(Debug, Serialize)]
 pub struct ResetPasswordRequest {
     pub email: String,
@@ -144,7 +144,7 @@ pub struct ActivateResponse {
     pub level: i32,
 }
 
-// 修改密码请求
+// Yêu cầu đổi mật khẩu
 #[derive(Debug, Serialize, Deserialize)]
 pub struct PasswordChangeRequest {
     #[serde(rename = "oldPassword")]
@@ -179,7 +179,7 @@ pub struct PublicInfoAction {
     pub url: String,
 }
 
-// GPT模型使用情况
+// GPTTình hình sử dụng model
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GptModelUsage {
     // 请求次数
@@ -211,7 +211,7 @@ pub struct UserInfoResponse {
     pub models: Vec<GptModelUsage>,
 }
 
-// Cursor模型使用情况
+// CursorTình hình sử dụng model
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CursorModelUsage {
     #[serde(rename = "numRequests")]
@@ -292,7 +292,7 @@ pub struct ActivationCode {
     pub expired_at: String,
 }
 
-// 历史账户记录
+// Bản ghi tài khoản lịch sử
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct HistoryAccountRecord {
     pub email: String,
@@ -307,7 +307,7 @@ pub struct HistoryAccountRecord {
     pub gpt35_max_usage: Option<i32>,
 }
 
-// 公告数据结构
+// Cấu trúc dữ liệu thông báo
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Article {
     pub id: i32,

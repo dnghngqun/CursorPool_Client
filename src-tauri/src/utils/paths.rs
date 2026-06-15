@@ -238,7 +238,7 @@ impl AppPaths {
             // Windows系统下，直接从环境变量PATH中查找
             match Self::find_cursor_from_env_path() {
                 Ok(path) => Ok(path),
-                Err(e) => Err(format!("从环境变量中查找Cursor路径失败: {}", e))
+                Err(e) => Err(format!("从环境变量中Tìm đường dẫn Cursor失败: {}", e))
             }
         } else if cfg!(target_os = "macos") {
             let resources_path_str = config::CONFIG
@@ -272,7 +272,7 @@ impl AppPaths {
         }
     }
 
-    // 新增：从环境变量PATH查找Cursor路径
+    // 新增：从环境变量PATHTìm đường dẫn Cursor
     fn find_cursor_from_env_path() -> Result<PathBuf, String> {
         let path = std::env::var("PATH").map_err(|e| format!("获取PATH环境变量失败: {}", e))?;
 
@@ -344,7 +344,7 @@ impl AppPaths {
             let name_str = name.to_string_lossy().to_lowercase();
             name_str == "cursor.exe" || name_str == "cursor"
         }) {
-            println!("检测到用户选择了cursor.exe文件");
+            println!("Phát hiện用户选择了cursor.exe文件");
 
             // 尝试从cursor.exe所在目录推断main.js位置
             if let Some(parent_dir) = selected_path_buf.parent() {

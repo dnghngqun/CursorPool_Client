@@ -123,8 +123,8 @@
     {
       element: '.advanced-model-usage',
       popover: {
-        title: '高级模型使用量',
-        description: '本地Cursor高级模型使用情况, 例如cluade-3.7-sonnet, 也就是对话额度',
+        title: 'Model cao cấp使用量',
+        description: '本地Cursor高级Tình hình sử dụng model, 例如cluade-3.7-sonnet, 也就是对话额度',
         side: 'left' as Side,
         align: 'start',
       },
@@ -132,8 +132,9 @@
     {
       element: '.basic-model-usage',
       popover: {
-        title: '普通模型使用量',
-        description: '本地Cursor普通模型使用情况, 例如gpt-3.5, 无限制使用, 不扣除Cursor Pool额度',
+        title: 'Model cơ bản使用量',
+        description:
+          '本地Cursor普通Tình hình sử dụng model, 例如gpt-3.5, 无限制使用, 不扣除Cursor Pool额度',
         side: 'left' as Side,
         align: 'start',
       },
@@ -142,7 +143,7 @@
       element: '.quick-actions-card',
       popover: {
         title: '快捷操作',
-        description: '这里提供了一键切换、更换账户和更换机器码的功能。',
+        description: '这里提供了Đổi nhanh、更换账户和更换机器码的功能。',
         side: 'top' as Side,
         align: 'center',
       },
@@ -252,7 +253,7 @@
     driverObj.value.drive()
   }
 
-  // 监听 show 属性变化
+  // Lắng nghe show 属性变化
   watch(
     () => props.show,
     (newVal: boolean) => {

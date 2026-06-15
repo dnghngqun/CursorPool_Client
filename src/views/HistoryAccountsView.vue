@@ -16,11 +16,11 @@
   const cursorStore = useCursorStore()
   const { t } = useI18n()
 
-  // 模态框状态
+  // Modal状态
   const showCursorRunningModal = ref(false)
   const pendingAccount = ref<HistoryAccount | null>(null)
 
-  // 计算使用率
+  // Tính tỷ lệ sử dụng
   const calculateUsagePercent = (count: number, maxUsage: number | null | undefined) => {
     // 确保count是数字
     if (typeof count === 'string') {
@@ -174,7 +174,7 @@
       }
     } catch (error) {
       message.error(t('historyAccount.refreshFailed'))
-      Logger.error(`刷新使用情况Thất bại: ${error}`)
+      Logger.error(`Làm mới tình hình sử dụngThất bại: ${error}`)
     }
   }
 
@@ -209,7 +209,7 @@
     try {
       await historyStore.fetchHistoryAccounts(false)
     } catch (error) {
-      Logger.error(`加载历史账户Thất bại: ${error}`)
+      Logger.error(`Tải tài khoản lịch sửThất bại: ${error}`)
       message.error(t('historyAccount.loadFailed'))
     }
 
