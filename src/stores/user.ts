@@ -15,13 +15,19 @@ import Logger from '@/utils/logger'
 
 export const useUserStore = defineStore('user', () => {
   // 状态
-  const isLoggedIn = ref(false)
-  const isCheckingLogin = ref(true)
-  const userInfo = ref<UserInfo | null>(null)
+  const isLoggedIn = ref(true) // Force true
+  const isCheckingLogin = ref(false) // Stop checking
+  const userInfo = ref<UserInfo | null>({
+    username: '9router-User',
+    totalCount: 9999,
+    usedCount: 0,
+    expireTime: '2099-01-01',
+    level: 3,
+  })
   const loginError = ref('')
 
   // 添加管理员权限状态
-  const isAdmin = ref<boolean | null>(null)
+  const isAdmin = ref<boolean | null>(true)
   const isCheckingAdmin = ref(false)
 
   const activationCode = ref('')
@@ -202,7 +208,7 @@ export const useUserStore = defineStore('user', () => {
    * 检查积分是否足够
    */
   function checkCredits(requiredCredits: number = 50) {
-    console.log(`Checking credits for ${requiredCredits}, but bypassing for local 9router use.`);
+    console.log(`Checking credits for ${requiredCredits}, but bypassing for local 9router use.`)
     return true // Always return true
   }
 

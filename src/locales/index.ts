@@ -73,8 +73,8 @@ export const locales: Record<Language, LocaleConfig> = {
   },
 }
 
-// 默认使用中文
-export const currentLang = ref<Language>('zh-CN')
+// 默认使用英文
+export const currentLang = ref<Language>('en-US')
 
 // 初始化语言设置
 export async function initLanguage() {
@@ -86,8 +86,8 @@ export async function initLanguage() {
     if (lang && Object.keys(locales).includes(lang)) {
       currentLang.value = lang
     } else {
-      // 如果不存在或不受支持，则使用中文并保存到后端
-      await setUserData('user.info.lang', 'zh-CN')
+      // 如果不存在或不受支持，则使用英文并保存到后端
+      await setUserData('user.info.lang', 'en-US')
     }
   } catch (error) {
     Logger.error(`初始化语言设置失败: ${error}`)

@@ -32,6 +32,7 @@
     "highlight.js": "^11.11.1",
     "markdown-it": "^14.1.0",
     "naive-ui": "^2.41.0",
+    "nanoid": "^5.0.9",
     "pinia": "^3.0.1",
     "tauri-plugin-macos-permissions-api": "^2.2.0",
     "uuid": "^11.0.5",
