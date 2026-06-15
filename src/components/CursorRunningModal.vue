@@ -6,7 +6,7 @@
    * 定义组件属性
    */
   const props = defineProps({
-    // 是否显示模态框
+    // 是否Hiển thị模态框
     show: {
       type: Boolean,
       required: true,

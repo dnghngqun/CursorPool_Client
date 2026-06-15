@@ -36,7 +36,7 @@ export const useAppStore = defineStore('app', () => {
   const tourAccepted = ref<string | null>(null)
   const tourLoading = ref(false)
 
-  // 按钮显示状态
+  // 按钮Hiển thị状态
   const showAllButtons = ref(false)
 
   // Getters
@@ -85,7 +85,7 @@ export const useAppStore = defineStore('app', () => {
       publicInfo.value = info
       return info
     } catch (error) {
-      Logger.error(`获取公共信息失败: ${error}`)
+      Logger.error(`Lấy thông tin chung thất bại: ${error}`)
       throw error
     } finally {
       isLoading.value = false
@@ -131,7 +131,7 @@ export const useAppStore = defineStore('app', () => {
             tourAccepted.value = 'false'
           }
         } catch (err) {
-          Logger.error(`处理引导状态响应对象失败: ${err}`)
+          Logger.error(`处理引导状态响应对象Thất bại: ${err}`)
           tourAccepted.value = 'false'
         }
       } else if (typeof response === 'string') {
@@ -144,7 +144,7 @@ export const useAppStore = defineStore('app', () => {
 
       return tourAccepted.value
     } catch (error) {
-      Logger.error(`获取引导状态失败: ${error}`)
+      Logger.error(`获取引导状态Thất bại: ${error}`)
       return null
     } finally {
       tourLoading.value = false
@@ -161,7 +161,7 @@ export const useAppStore = defineStore('app', () => {
       tourAccepted.value = status
       return true
     } catch (error) {
-      Logger.error(`设置引导状态失败: ${error}`)
+      Logger.error(`设置引导状态Thất bại: ${error}`)
       return false
     } finally {
       tourLoading.value = false
@@ -201,12 +201,12 @@ export const useAppStore = defineStore('app', () => {
       const version = packageVersion
       setAppVersion(version)
     } catch (error) {
-      Logger.error(`加载应用版本失败: ${error}`)
+      Logger.error(`加载应用版本Thất bại: ${error}`)
     }
 
     // 初始化引导状态
     fetchTourStatus().catch((error) => {
-      Logger.error(`初始化引导状态失败: ${error}`)
+      Logger.error(`初始化引导状态Thất bại: ${error}`)
     })
   }
 
@@ -237,7 +237,7 @@ export const useAppStore = defineStore('app', () => {
 
       return disclaimerContent.value
     } catch (error) {
-      Logger.error(`获取免责声明失败: ${error}`)
+      Logger.error(`获取免责声明Thất bại: ${error}`)
       throw error
     } finally {
       disclaimerLoading.value = false
@@ -261,29 +261,29 @@ export const useAppStore = defineStore('app', () => {
 
       return true
     } catch (error) {
-      Logger.error(`保存免责声明状态失败: ${error}`)
+      Logger.error(`保存免责声明状态Thất bại: ${error}`)
       return false
     }
   }
 
-  // 初始化时获取按钮显示状态
+  // 初始化时获取按钮Hiển thị状态
   async function initButtonSettings() {
     try {
       const value = await getUserData('system.button.hide')
       showAllButtons.value = value === 'true'
     } catch (error) {
-      Logger.error(`获取按钮显示状态失败: ${error}`)
+      Logger.error(`获取按钮Hiển thị状态Thất bại: ${error}`)
       showAllButtons.value = false
     }
   }
 
-  // 设置按钮显示状态
+  // 设置按钮Hiển thị状态
   async function setButtonVisibility(show: boolean) {
     try {
       await setUserData('system.button.hide', show.toString())
       showAllButtons.value = show
     } catch (error) {
-      Logger.error(`设置按钮显示状态失败: ${error}`)
+      Logger.error(`设置按钮Hiển thị状态Thất bại: ${error}`)
     }
   }
 

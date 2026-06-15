@@ -10,7 +10,7 @@
     try {
       await appCloseStore.confirmClose()
     } catch (error) {
-      message.error('操作失败，请重试')
+      message.error('Thao tác thất bại，请重试')
     }
   }
 </script>
@@ -32,7 +32,7 @@
       <n-radio-group v-model:value="appCloseStore.closeType">
         <n-space vertical>
           <n-radio value="minimize">最小化到系统托盘</n-radio>
-          <n-radio value="exit">退出程序</n-radio>
+          <n-radio value="exit">Thoát程序</n-radio>
         </n-space>
       </n-radio-group>
     </n-form-item>

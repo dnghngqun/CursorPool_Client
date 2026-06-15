@@ -83,8 +83,8 @@ pub async fn reset_machine_id(
 
     // 检查Cursor进程
     if !force_kill && process_manager.is_cursor_running() {
-        error!(target: "reset", "重置失败: Cursor进程正在运行且没有强制关闭选项");
-        return Err("Cursor进程正在运行, 请先关闭Cursor".to_string());
+        error!(target: "reset", "重置失败: Cursor进程Đang chạy且没有强制关闭选项");
+        return Err("Cursor进程Đang chạy, 请先关闭Cursor".to_string());
     }
 
     // 如果force_kill为true, 则强制终止Cursor进程
@@ -317,13 +317,13 @@ pub async fn switch_account(
     force_kill: bool,
     db: tauri::State<'_, crate::database::Database>,
 ) -> Result<bool, String> {
-    error!(target: "account", "开始切换账号到: {}", email);
+    error!(target: "account", "开始Đổi tài khoản到: {}", email);
     let process_manager = ProcessManager::new();
 
     // 检查Cursor进程
     if !force_kill && process_manager.is_cursor_running() {
-        error!(target: "account", "切换账号失败: Cursor进程正在运行且没有强制关闭选项");
-        return Err("Cursor进程正在运行, 请先关闭Cursor".to_string());
+        error!(target: "account", "Đổi tài khoản失败: Cursor进程Đang chạy且没有强制关闭选项");
+        return Err("Cursor进程Đang chạy, 请先关闭Cursor".to_string());
     }
 
     // 如果force_kill为true, 则强制终止Cursor进程
@@ -732,8 +732,8 @@ pub async fn hook_main_js(
 
     // 检查 Cursor 进程
     if !force_kill && process_manager.is_cursor_running() {
-        error!(target: "hook", "注入失败: Cursor进程正在运行且没有强制关闭选项");
-        return Err("Cursor进程正在运行, 请先关闭Cursor".to_string());
+        error!(target: "hook", "注入失败: Cursor进程Đang chạy且没有强制关闭选项");
+        return Err("Cursor进程Đang chạy, 请先关闭Cursor".to_string());
     }
 
     // 如果 force_kill 为 true, 则强制终止 Cursor 进程
@@ -778,8 +778,8 @@ pub async fn restore_hook(
 
     // 检查 Cursor 进程
     if !force_kill && process_manager.is_cursor_running() {
-        error!(target: "hook", "恢复失败: Cursor进程正在运行且没有强制关闭选项");
-        return Err("Cursor进程正在运行, 请先关闭Cursor".to_string());
+        error!(target: "hook", "恢复失败: Cursor进程Đang chạy且没有强制关闭选项");
+        return Err("Cursor进程Đang chạy, 请先关闭Cursor".to_string());
     }
 
     // 如果 force_kill 为 true, 则强制终止 Cursor 进程
@@ -908,7 +908,7 @@ pub fn open_devtools(app_handle: tauri::AppHandle) {
     }
 }
 
-/// 获取正在运行的Cursor进程路径
+/// 获取Đang chạy的Cursor进程路径
 #[tauri::command]
 pub fn get_running_cursor_path() -> Result<String, String> {
     let process_manager = ProcessManager::new();

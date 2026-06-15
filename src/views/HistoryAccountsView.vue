@@ -129,7 +129,7 @@
       }
     } catch (error) {
       message.error(t('historyAccount.switchFailed'))
-      Logger.error(`切换账户失败: ${error}`)
+      Logger.error(`Đổi tài khoản thất bại: ${error}`)
     }
   }
 
@@ -139,7 +139,7 @@
       message.success(t('historyAccount.deleteSuccess'))
     } catch (error) {
       message.error(t('historyAccount.deleteFailed'))
-      Logger.error(`删除账户失败: ${error}`)
+      Logger.error(`删除账户Thất bại: ${error}`)
     }
   }
 
@@ -154,7 +154,7 @@
       message.success(t('historyAccount.clearHighUsageSuccess', { count: result.success }))
     } catch (error) {
       message.error(t('historyAccount.clearHighUsageFailed'))
-      Logger.error(`清理高使用量账户失败: ${error}`)
+      Logger.error(`清理高使用量账户Thất bại: ${error}`)
     }
   }
 
@@ -174,7 +174,7 @@
       }
     } catch (error) {
       message.error(t('historyAccount.refreshFailed'))
-      Logger.error(`刷新使用情况失败: ${error}`)
+      Logger.error(`刷新使用情况Thất bại: ${error}`)
     }
   }
 
@@ -199,7 +199,7 @@
       }
     } catch (error) {
       message.error(t('historyAccount.switchFailed'))
-      Logger.error(`切换账户失败: ${error}`)
+      Logger.error(`Đổi tài khoản thất bại: ${error}`)
     } finally {
       pendingAccount.value = null
     }
@@ -209,7 +209,7 @@
     try {
       await historyStore.fetchHistoryAccounts(false)
     } catch (error) {
-      Logger.error(`加载历史账户失败: ${error}`)
+      Logger.error(`加载历史账户Thất bại: ${error}`)
       message.error(t('historyAccount.loadFailed'))
     }
 

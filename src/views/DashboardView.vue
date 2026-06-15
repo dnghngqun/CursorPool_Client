@@ -72,7 +72,7 @@
     const hours = Math.floor((remainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
     const minutes = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60))
 
-    // 只显示最大的时间单位，精简信息量
+    // 只Hiển thị最大的时间单位，精简信息量
     if (days > 0) {
       return `${days}${i18n.value.common.timeDays}`
     } else if (hours > 0) {
@@ -169,7 +169,7 @@
   // 普通账户使用量百分比
   const accountUsagePercentage = computed(() => {
     if (!userStore.userInfo?.totalCount) return 0
-    // 总数量大于等于9999 无限制 进度条显示为0
+    // 总数量大于等于9999 无限制 进度条Hiển thị为0
     if (userStore.userInfo.totalCount >= 9999) return 0
     return getUsagePercentage(userStore.userInfo.usedCount, userStore.userInfo.totalCount)
   })
@@ -182,7 +182,7 @@
 
   // Cursor普通模型使用量百分比
   const cursorGpt35Percentage = computed(() => {
-    // 如果没有设置maxRequestUsage或者maxRequestUsage为0，视为无限制，进度条显示为100%
+    // 如果没有设置maxRequestUsage或者maxRequestUsage为0，视为无限制，进度条Hiển thị为100%
     if (!deviceInfo.value.cursorInfo.usage?.['gpt-3.5-turbo']?.maxRequestUsage) return 100
     return cursorStore.gpt35Usage.percentage
   })
@@ -199,7 +199,9 @@
       await userStore.checkLoginStatus()
       updateLocalViewState()
     } catch (error) {
-      message.error(error instanceof Error ? error.message : '链接服务器失败，请检查网络连接')
+      message.error(
+        error instanceof Error ? error.message : 'Kết nối máy chủ thất bại, vui lòng kiểm tra mạng',
+      )
     }
   }
 
@@ -212,7 +214,7 @@
 
   const checkHookAndRedirect = () => {
     if (!deviceInfo.value.hookStatus) {
-      message.info('需要先注入客户端才能使用这个功能')
+      message.info('Cần áp dụng hook trước khi sử dụng tính năng này')
       router.push('/settings')
       return false
     }
@@ -231,7 +233,7 @@
       updateLocalViewState()
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : String(error)
-      if (errorMsg === 'Cursor进程正在运行, 请先关闭Cursor') {
+      if (errorMsg === 'Cursor进程正在运行, Vui lòng đóng Cursor trước') {
         showCursorRunningModal.value = true
         pendingForceKillAction.value = { type: 'machine' }
         return
@@ -267,8 +269,10 @@
 
       await executeAccountSwitch()
     } catch (error) {
-      Logger.error(`账户切换失败: ${error}`)
-      message.error('操作失败: ' + (error instanceof Error ? error.message : String(error)))
+      Logger.error(`账户切换Thất bại: ${error}`)
+      message.error(
+        'Thao tác thất bại: ' + (error instanceof Error ? error.message : String(error)),
+      )
     } finally {
       accountSwitchLoading.value = false
     }
@@ -301,8 +305,10 @@
 
       await executeQuickChange()
     } catch (error) {
-      Logger.error(`一键切换失败: ${error}`)
-      message.error('操作失败: ' + (error instanceof Error ? error.message : String(error)))
+      Logger.error(`Đổi nhanh thất bại: ${error}`)
+      message.error(
+        'Thao tác thất bại: ' + (error instanceof Error ? error.message : String(error)),
+      )
     } finally {
       quickChangeLoading.value = false
     }
@@ -313,7 +319,7 @@
     try {
       const result = await cursorStore.switchCursorAccount(undefined, undefined, force_kill)
 
-      // 只有当操作成功时才显示成功消息和刷新数据
+      // 只有当操作Thành công时才Hiển thịThành công消息和刷新数据
       if (result === true) {
         message.success(i18n.value.dashboard.accountChangeSuccess)
 
@@ -323,7 +329,7 @@
       }
       return false
     } catch (error) {
-      Logger.error(`账户切换失败: ${error}`)
+      Logger.error(`账户切换Thất bại: ${error}`)
       message.error(
         error instanceof Error ? error.message : i18n.value.dashboard.accountChangeFailed,
       )
@@ -336,7 +342,7 @@
     try {
       const result = await cursorStore.quickChange(undefined, undefined, force_kill)
 
-      // 只有当操作成功时才显示成功消息和刷新数据
+      // 只有当操作Thành công时才Hiển thịThành công消息和刷新数据
       if (result === true) {
         message.success(i18n.value.dashboard.changeSuccess)
 
@@ -347,7 +353,7 @@
       return false
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : String(error)
-      if (errorMsg === 'Cursor进程正在运行, 请先关闭Cursor') {
+      if (errorMsg === 'Cursor进程正在运行, Vui lòng đóng Cursor trước') {
         showCursorRunningModal.value = true
         pendingForceKillAction.value = {
           type: 'quick',
@@ -370,7 +376,7 @@
       }
 
       loading.value = true
-      message.loading('正在关闭 Cursor...', { duration: 0 })
+      message.loading('Đang đóng Cursor...', { duration: 0 })
 
       // 关闭Cursor
       await cursorStore.closeCursorApp()
@@ -386,12 +392,12 @@
 
       // 根据类型执行具体操作
       if (pendingForceKillAction.value.type === 'machine') {
-        message.loading('正在更换机器码...', { duration: 0 })
+        message.loading('Đang đổi mã máy...', { duration: 0 })
         await handleMachineCodeChange(true)
         operationSuccess = true
         operationMessage = i18n.value.dashboard.machineChangeSuccess
       } else if (pendingForceKillAction.value.type === 'account') {
-        message.loading('正在切换账户...', { duration: 0 })
+        message.loading('Đang đổi tài khoản...', { duration: 0 })
         try {
           const success = await executeAccountSwitch(true)
           if (success) {
@@ -399,13 +405,13 @@
             operationMessage = i18n.value.dashboard.accountChangeSuccess
           }
         } catch (error) {
-          Logger.error(`强制切换账户失败: ${error}`)
+          Logger.error(`强制Đổi tài khoản thất bại: ${error}`)
           message.destroyAll()
           message.error(error instanceof Error ? error.message : String(error))
           return
         }
       } else if (pendingForceKillAction.value.type === 'quick') {
-        message.loading('正在一键切换...', { duration: 0 })
+        message.loading('Đang thực hiện đổi nhanh...', { duration: 0 })
         try {
           const success = await executeQuickChange(true)
           if (success) {
@@ -413,7 +419,7 @@
             operationMessage = i18n.value.dashboard.changeSuccess
           }
         } catch (error) {
-          Logger.error(`强制一键切换失败: ${error}`)
+          Logger.error(`强制Đổi nhanh thất bại: ${error}`)
           message.destroyAll()
           message.error(error instanceof Error ? error.message : String(error))
           return
@@ -429,22 +435,24 @@
         await new Promise((resolve) => setTimeout(resolve, 500))
 
         // 直接启动Cursor，不再询问
-        message.loading('正在启动 Cursor...', { duration: 0 })
+        message.loading('Đang khởi động Cursor...', { duration: 0 })
         try {
           await cursorStore.launchCursorApp()
           message.destroyAll()
-          message.success('Cursor 已启动')
+          message.success('Cursor đã được khởi động')
         } catch (launchError) {
           message.destroyAll()
           message.error(
-            '启动 Cursor 失败: ' +
+            'Khởi động Cursor thất bại: ' +
               (launchError instanceof Error ? launchError.message : String(launchError)),
           )
         }
       }
     } catch (error) {
       message.destroyAll()
-      message.error('操作失败: ' + (error instanceof Error ? error.message : String(error)))
+      message.error(
+        'Thao tác thất bại: ' + (error instanceof Error ? error.message : String(error)),
+      )
     } finally {
       loading.value = false
       pendingForceKillAction.value = null
@@ -474,12 +482,12 @@
         showAdminPrivilegeModal.value = true
       }
     } catch (error) {
-      Logger.error(`检查管理员权限失败: ${error}`)
-      message.error('检查管理员权限失败')
+      Logger.error(`Kiểm tra quyền Admin thất bại: ${error}`)
+      message.error('Kiểm tra quyền Admin thất bại')
     }
   }
 
-  // 退出程序
+  // Thoát程序
   const handleExit = async () => {
     const appWindow = new Window('main')
     await appWindow.close()
@@ -504,11 +512,11 @@
         const initialCheck = await checkPermission()
 
         if (!initialCheck) {
-          // 显示权限弹窗
+          // Hiển thị权限弹窗
           showAdminPrivilegeModal.value = true
         }
       } catch (error) {
-        Logger.error(`检查macOS权限失败: ${error}`)
+        Logger.error(`检查macOS权限Thất bại: ${error}`)
       }
     }
   }
@@ -534,8 +542,8 @@
       // 开始检查循环
       checkLoop()
     } catch (error) {
-      Logger.error(`请求完全磁盘访问权限失败: ${error}`)
-      message.error('请求权限失败')
+      Logger.error(`请求完全磁盘访问权限Thất bại: ${error}`)
+      message.error('请求权限Thất bại')
     }
   }
 
@@ -551,7 +559,7 @@
         await checkPrivileges()
       }
 
-      // 初始化按钮显示状态
+      // 初始化按钮Hiển thị状态
       await appStore.initButtonSettings()
 
       // 检查是否需要强制刷新数据
@@ -570,19 +578,19 @@
         try {
           await cursorStore.fetchMachineIds()
         } catch (error) {
-          Logger.warn(`获取机器码信息失败，但继续执行: ${error}`)
+          Logger.warn(`获取机器码信息Thất bại，但继续执行: ${error}`)
         }
 
         try {
           await cursorStore.fetchCursorUsage()
         } catch (error) {
-          Logger.warn(`获取Cursor使用量失败，但继续执行: ${error}`)
+          Logger.warn(`获取Cursor使用量Thất bại，但继续执行: ${error}`)
         }
 
         try {
           await cursorStore.checkHook()
         } catch (error) {
-          Logger.warn(`检查Hook状态失败，但继续执行: ${error}`)
+          Logger.warn(`检查Hook状态Thất bại，但继续执行: ${error}`)
         }
 
         // 更新视图状态
@@ -592,7 +600,7 @@
         await appStore.fetchDisclaimer()
 
         try {
-          // 只在免责声明已接受的情况下显示引导
+          // 只在免责声明已接受的情况下Hiển thị引导
           if (!appStore.showDisclaimerModal) {
             // 使用appStore的方法获取引导状态
             await appStore.fetchTourStatus()
@@ -600,7 +608,7 @@
             // 使用store中的计算属性
             const isLoggedIn = userStore.userInfo !== null
 
-            // 只有当用户已登录且引导状态不为true时才显示引导
+            // 只有当用户Đã đăng nhập且引导状态不为true时才Hiển thị引导
             if (isLoggedIn && appStore.shouldShowTour) {
               setTimeout(() => {
                 startTour()
@@ -608,7 +616,7 @@
             }
           }
         } catch (error) {
-          Logger.error(`获取引导状态失败: ${error}`)
+          Logger.error(`获取引导状态Thất bại: ${error}`)
         }
       } else {
         // 更新视图状态
@@ -616,7 +624,7 @@
       }
     } catch (error) {
       Logger.error(`Dashboard初始化错误: ${error}`)
-      message.error('初始化失败，请刷新页面重试')
+      message.error('初始化Thất bại，请刷新页面重试')
     } finally {
       loading.value = false
     }
@@ -629,8 +637,8 @@
         await cursorStore.refreshAllCursorData()
         updateLocalViewState()
       } catch (error) {
-        Logger.error(`刷新数据失败: ${error}`)
-        message.error('刷新数据失败')
+        Logger.error(`刷新数据Thất bại: ${error}`)
+        message.error('刷新数据Thất bại')
       } finally {
         loading.value = false
       }
@@ -651,10 +659,10 @@
     const success = await appStore.confirmDisclaimer()
 
     if (success) {
-      // 检查是否需要显示引导
+      // 检查是否需要Hiển thị引导
       const isLoggedIn = userStore.userInfo !== null
 
-      // 只有当用户已登录且引导状态不为true时才显示引导
+      // 只有当用户Đã đăng nhập且引导状态不为true时才Hiển thị引导
       if (isLoggedIn && appStore.shouldShowTour) {
         setTimeout(() => {
           startTour()
@@ -665,9 +673,9 @@
 
   // 开始引导
   const startTour = () => {
-    // 检查是否有公告正在显示
+    // 检查是否有公告正在Hiển thị
     if (articleStore.hasUnreadArticles) {
-      // 添加一个事件监听，当公告全部已读时再显示引导
+      // 添加一个事件监听，当公告全部已读时再Hiển thị引导
       const checkInterval = setInterval(() => {
         if (!articleStore.hasUnreadArticles) {
           shouldShowTour.value = true
@@ -675,7 +683,7 @@
         }
       }, 1000)
     } else {
-      // 没有公告，直接显示引导
+      // 没有公告，直接Hiển thị引导
       shouldShowTour.value = true
     }
   }
@@ -699,7 +707,7 @@
     },
   )
 
-  // 监听模态框状态变化，如果有模态框显示，则隐藏引导
+  // 监听模态框状态变化，如果有模态框Hiển thị，则隐藏引导
   watch(
     [
       () => showAdminPrivilegeModal,
@@ -732,18 +740,20 @@
 
       await handleMachineCodeChange(false)
     } catch (error) {
-      Logger.error(`机器码更换失败: ${error}`)
-      message.error('操作失败: ' + (error instanceof Error ? error.message : String(error)))
+      Logger.error(`机器码更换Thất bại: ${error}`)
+      message.error(
+        'Thao tác thất bại: ' + (error instanceof Error ? error.message : String(error)),
+      )
     } finally {
       machineCodeLoading.value = false
     }
   }
 
-  // 监听登录状态变化
+  // 监听Đăng nhập状态变化
   watch(
     () => userStore.isLoggedIn,
     (newVal, oldVal) => {
-      // 只在从未登录变为已登录时触发
+      // 只在从未Đăng nhập变为Đã đăng nhập时触发
       if (newVal === true && oldVal === false) {
         // 延迟检查，确保所有数据都已加载
         setTimeout(async () => {
@@ -761,7 +771,7 @@
 
   // 获取会员状态文本
   const getMemberStatusText = (codeStatus: number, expireTime: string) => {
-    // 如果状态是1(已使用)，显示剩余时间
+    // 如果状态是1(已使用)，Hiển thị剩余时间
     if (codeStatus === 1) {
       return formatTimeRemaining(expireTime)
     }

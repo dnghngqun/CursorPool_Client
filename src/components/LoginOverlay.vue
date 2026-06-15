@@ -83,7 +83,7 @@
    * 表单状态管理
    */
   const formState = reactive({
-    // 登录表单
+    // Đăng nhập表单
     login: {
       username: '',
       password: '',
@@ -91,7 +91,7 @@
       error: '',
     },
 
-    // 注册表单
+    // Đăng ký表单
     register: {
       password: '',
       confirmPassword: '',
@@ -105,7 +105,7 @@
     },
   })
 
-  // 监听Pinia中的登录错误
+  // 监听Pinia中的Đăng nhập错误
   watch(
     () => userStore.loginError,
     (newError) => {
@@ -212,20 +212,20 @@
     }))
   }
 
-  // 邮箱自动完成选项 - 登录
+  // 邮箱自动完成选项 - Đăng nhập
   const loginEmailOptions = computed(() => {
     return getEmailOptions(formState.login.username)
   })
 
-  // 邮箱自动完成选项 - 注册
+  // 邮箱自动完成选项 - Đăng ký
   const registerEmailOptions = computed(() => {
     return getEmailOptions(formState.register.email)
   })
 
-  // 登录邮箱状态
+  // Đăng nhập邮箱状态
   const loginEmailStatus = computed(() => checkEmailDomain(formState.login.username))
 
-  // 注册邮箱状态
+  // Đăng ký邮箱状态
   const registerEmailStatus = computed(() => checkEmailDomain(formState.register.email))
 
   // 忘记密码邮箱状态
@@ -255,24 +255,24 @@
   }
 
   /**
-   * 处理登录
+   * 处理Đăng nhập
    */
   async function handleLogin() {
     const { username, password } = formState.login
 
     // 表单验证
     if (!username || !password) {
-      message.error('请填写完整的登录信息')
+      message.error('Vui lòng điền đầy đủ thông tin đăng nhập')
       return
     }
 
     if (!validators.validateEmail(username)) {
-      message.error('邮箱格式不正确')
+      message.error('Định dạng email không hợp lệ')
       return
     }
 
     if (!validators.validatePassword(password)) {
-      message.error('密码格式不正确，请使用6-20位字母、数字或特殊字符')
+      message.error('Định dạng mật khẩu không hợp lệ，请使用6-20位字母、数字或特殊字符')
       return
     }
 
@@ -282,11 +282,11 @@
 
       // 使用Pinia store的login方法
       await userStore.login(username, password, 'web')
-      message.success('登录成功')
-      addHistoryRecord('登录', `用户 ${username} 登录成功`)
+      message.success('Đăng nhập thành công')
+      addHistoryRecord('Đăng nhập', `用户 ${username} Đăng nhập thành công`)
       emit('login-success')
     } catch (error) {
-      message.error(error instanceof Error ? error.message : '登录失败')
+      message.error(error instanceof Error ? error.message : 'Đăng nhập thất bại')
     } finally {
       formState.login.loading = false
     }
@@ -299,18 +299,18 @@
     // 邮箱验证
     if (!email) {
       if (type === 'register') {
-        message.error('请输入邮箱地址')
+        message.error('Vui lòng nhập địa chỉ email')
       } else {
-        message.error('请输入邮箱地址')
+        message.error('Vui lòng nhập địa chỉ email')
       }
       return
     }
 
     if (!validators.validateEmail(email)) {
       if (type === 'register') {
-        message.error('邮箱格式不正确')
+        message.error('Định dạng email không hợp lệ')
       } else {
-        message.error('邮箱格式不正确')
+        message.error('Định dạng email không hợp lệ')
       }
       return
     }
@@ -325,14 +325,14 @@
         console.log(result.msg)
         // 使用isLoggedIn判断，或者根据message内容判断
         if (result.isLoggedIn) {
-          // 假设如果能获取到用户信息，说明用户已存在或已登录
-          message.error('该邮箱已被注册或用户已登录')
+          // 假设如果能获取到用户信息，说明用户已存在或Đã đăng nhập
+          message.error('Email này đã được đăng ký hoặc người dùng đã đăng nhập')
           return
-        } else if (result.msg === '不存在' || result.status === 404) {
-          // 用户不存在，可以继续发送验证码
+        } else if (result.msg === 'Không tồn tại' || result.status === 404) {
+          // 用户Không tồn tại，可以继续发送验证码
         } else {
           // 其他情况，可能需要根据实际API行为调整
-          message.error(result.msg || '检查用户状态失败')
+          message.error(result.msg || 'Kiểm tra trạng thái người dùng thất bại')
           return
         }
       } else {
@@ -341,7 +341,7 @@
 
       // 发送验证码 - 这个API调用保留，因为Pinia store中没有对应的方法
       await sendCode(email, type)
-      message.success('验证码已发送')
+      message.success('Mã xác nhận đã được gửi')
 
       if (type === 'register') {
         formState.register.codeSent = true
@@ -356,7 +356,7 @@
         }, 1000)
       }
     } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : '发送验证码失败'
+      const errorMsg = error instanceof Error ? error.message : 'Gửi mã xác nhận thất bại'
       message.error(errorMsg)
     } finally {
       if (type === 'register') {
@@ -368,34 +368,34 @@
   }
 
   /**
-   * 处理注册
+   * 处理Đăng ký
    */
   async function handleRegister() {
     const { password, confirmPassword, email, code } = formState.register
 
     // 表单验证
     if (!password || !confirmPassword || !email || !code) {
-      message.error('请填写完整的注册信息')
+      message.error('Vui lòng điền đầy đủ thông tin đăng ký')
       return
     }
 
     if (!validators.validatePassword(password)) {
-      message.error('密码格式不正确，请使用6-20位字母、数字或特殊字符')
+      message.error('Định dạng mật khẩu không hợp lệ，请使用6-20位字母、数字或特殊字符')
       return
     }
 
     if (password !== confirmPassword) {
-      message.error('两次输入的密码不一致')
+      message.error('Mật khẩu nhập lại không khớp')
       return
     }
 
     if (!validators.validateEmail(email)) {
-      message.error('邮箱格式不正确')
+      message.error('Định dạng email không hợp lệ')
       return
     }
 
     if (!validators.validateCode(code)) {
-      message.error('验证码格式不正确')
+      message.error('Mã xác nhận không hợp lệ')
       return
     }
 
@@ -405,19 +405,19 @@
 
       // 使用Pinia store的register方法
       const success = await userStore.register(email, code, password, 'web')
-      message.success('注册成功')
-      addHistoryRecord('注册', `用户 ${email} 注册成功`)
+      message.success('Đăng ký thành công')
+      addHistoryRecord('Đăng ký', `用户 ${email} Đăng ký thành công`)
 
-      // 注册成功，如果已登录直接触发登录成功事件
+      // Đăng ký thành công，如果Đã đăng nhập直接触发Đăng nhập thành công事件
       if (success && userStore.isLoggedIn) {
         emit('login-success')
       } else {
-        // 注册成功但未自动登录，切换到登录页
+        // Đăng ký thành công但未自动Đăng nhập，切换到Đăng nhập页
         activeTab.value = 'login'
         formState.login.username = email
       }
     } catch (error) {
-      message.error(error instanceof Error ? error.message : '注册失败')
+      message.error(error instanceof Error ? error.message : 'Đăng ký thất bại')
     } finally {
       formState.register.loading = false
     }
@@ -446,7 +446,7 @@
     }
 
     if (forgotPasswordForm.value.newPassword !== forgotPasswordForm.value.confirmPassword) {
-      message.error('两次输入的密码不一致')
+      message.error('Mật khẩu nhập lại không khớp')
       return
     }
 
@@ -458,10 +458,10 @@
         forgotPasswordForm.value.smsCode,
         forgotPasswordForm.value.newPassword,
       )
-      message.success('密码重置成功')
+      message.success('密码重置Thành công')
       showForgotPassword.value = false
     } catch (error) {
-      message.error(error instanceof Error ? error.message : '密码重置失败')
+      message.error(error instanceof Error ? error.message : '密码重置Thất bại')
     } finally {
       forgotPasswordLoading.value = false
     }
@@ -490,7 +490,7 @@
         animated
         class="full-width-tabs"
       >
-        <!-- 登录标签页 -->
+        <!-- Đăng nhập标签页 -->
         <n-tab-pane
           name="login"
           :tab="messages[currentLang].login.title"
@@ -546,7 +546,7 @@
           </n-form>
         </n-tab-pane>
 
-        <!-- 注册标签页 -->
+        <!-- Đăng ký标签页 -->
         <n-tab-pane
           name="register"
           :tab="messages[currentLang].login.registerButton"
@@ -629,7 +629,9 @@
   <n-modal v-model:show="showForgotPassword">
     <n-card
       style="width: 400px"
-      :title="messages[currentLang].login.loginButton === '登录' ? '重置密码' : 'Reset Password'"
+      :title="
+        messages[currentLang].login.loginButton === 'Đăng nhập' ? '重置密码' : 'Reset Password'
+      "
     >
       <n-form class="compact-form">
         <n-form-item :label="messages[currentLang].login.emailPlaceholder">
@@ -687,14 +689,18 @@
 
         <n-space justify="end">
           <n-button @click="showForgotPassword = false">
-            {{ messages[currentLang].login.loginButton === '登录' ? '取消' : 'Cancel' }}
+            {{ messages[currentLang].login.loginButton === 'Đăng nhập' ? '取消' : 'Cancel' }}
           </n-button>
           <n-button
             type="primary"
             :loading="forgotPasswordLoading"
             @click="handleForgotPassword"
           >
-            {{ messages[currentLang].login.loginButton === '登录' ? '重置密码' : 'Reset Password' }}
+            {{
+              messages[currentLang].login.loginButton === 'Đăng nhập'
+                ? '重置密码'
+                : 'Reset Password'
+            }}
           </n-button>
         </n-space>
       </n-form>
@@ -846,7 +852,7 @@
     box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
   }
 
-  /* 登录操作按钮区域 */
+  /* Đăng nhập操作按钮区域 */
   .login-actions {
     display: flex;
     align-items: center;

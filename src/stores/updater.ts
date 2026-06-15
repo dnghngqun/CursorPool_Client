@@ -81,7 +81,7 @@ export const useUpdaterStore = defineStore('updater', () => {
 
         // 检查是否是签名验证错误
         if (err.message.includes('signature') || err.message.includes('签名')) {
-          error.value = `更新签名验证失败: ${err.message}`
+          error.value = `更新签名验证Thất bại: ${err.message}`
         }
 
         // 检查是否是解析错误
@@ -90,7 +90,7 @@ export const useUpdaterStore = defineStore('updater', () => {
         }
       } else {
         // 未知类型的错误
-        error.value = `检查更新失败: ${errorMessage}`
+        error.value = `检查更新Thất bại: ${errorMessage}`
       }
 
       Logger.error(`更新错误: ${error.value}`)
@@ -155,7 +155,7 @@ export const useUpdaterStore = defineStore('updater', () => {
 
         // 检查是否是下载错误
         if (err.message.includes('download') || err.message.includes('下载')) {
-          error.value = `更新包下载失败: ${err.message}`
+          error.value = `更新包下载Thất bại: ${err.message}`
         }
 
         // 检查是否是权限错误
@@ -174,7 +174,7 @@ export const useUpdaterStore = defineStore('updater', () => {
         }
       } else {
         // 未知类型的错误
-        error.value = `更新安装失败: ${errorMessage}`
+        error.value = `更新安装Thất bại: ${errorMessage}`
       }
 
       Logger.error(`更新安装错误: ${error.value}`)

@@ -109,9 +109,9 @@ export const useCursorStore = defineStore('cursor', () => {
 
   /**
    * 安全地获取Cursor使用情况
-   * 失败时只记录日志，不会抛出异常
+   * Thất bại时只记录日志，不会抛出异常
    * @param operationName 当前执行的操作名称，用于日志记录
-   * @returns 获取是否成功
+   * @returns 获取是否Thành công
    */
   async function safelyFetchCursorUsage(operationName: string): Promise<boolean> {
     try {
@@ -119,8 +119,8 @@ export const useCursorStore = defineStore('cursor', () => {
       return true
     } catch (error) {
       // 仅记录日志，不影响主流程
-      await Logger.info(`获取Cursor使用情况失败，但不影响${operationName}流程`)
-      Logger.error(`获取Cursor使用情况失败: ${error}`)
+      await Logger.info(`获取Cursor使用情况Thất bại，但不影响${operationName}流程`)
+      Logger.error(`获取Cursor使用情况Thất bại: ${error}`)
       return false
     }
   }
@@ -143,7 +143,7 @@ export const useCursorStore = defineStore('cursor', () => {
 
       return result
     } catch (error) {
-      Logger.error(`获取机器码失败: ${error}`)
+      Logger.error(`Lấy mã máy thất bại: ${error}`)
       throw error
     } finally {
       isLoading.value = false
@@ -158,10 +158,10 @@ export const useCursorStore = defineStore('cursor', () => {
       // 如果没有token，尝试获取机器码信息
       if (!cursorToken.value) {
         try {
-          // 获取机器码信息，但失败不阻止后续流程
+          // 获取机器码信息，但Thất bại不阻止后续流程
           await fetchMachineIds()
         } catch (error) {
-          await Logger.warn('获取机器码信息失败，但仍尝试获取使用量')
+          await Logger.warn('获取机器码信息Thất bại，但仍尝试获取使用量')
         }
       }
 
@@ -235,7 +235,7 @@ export const useCursorStore = defineStore('cursor', () => {
         forceKill,
         machineId,
       })
-      await Logger.info('机器码重置成功')
+      await Logger.info('机器码重置Thành công')
 
       // 添加历史记录
       await saveHistoryRecord({
@@ -251,7 +251,7 @@ export const useCursorStore = defineStore('cursor', () => {
 
       return true
     } catch (error) {
-      await Logger.error(`重置机器码失败: ${error}`)
+      await Logger.error(`Đặt lại mã máy thất bại: ${error}`)
       throw error
     } finally {
       isLoading.value = false
@@ -274,15 +274,15 @@ export const useCursorStore = defineStore('cursor', () => {
       if (!email || !token) {
         const accountInfo = await getAccount(undefined, '1')
         if (!accountInfo.account_info.account || !accountInfo.account_info.token) {
-          await Logger.error('获取账户信息失败，无法进行切换')
-          throw new Error('获取账户信息失败')
+          await Logger.error('Lấy thông tin tài khoản thất bại，无法进行切换')
+          throw new Error('Lấy thông tin tài khoản thất bại')
         }
         email = accountInfo.account_info.account
         token = accountInfo.account_info.token
       }
 
       await switchAccount(email, token, forceKill)
-      await Logger.info(`账户切换成功: ${email}`)
+      await Logger.info(`账户切换Thành công: ${email}`)
 
       // 添加历史记录
       await saveHistoryRecord({
@@ -298,7 +298,7 @@ export const useCursorStore = defineStore('cursor', () => {
 
       return true
     } catch (error) {
-      await Logger.error(`账户切换失败: ${error}`)
+      await Logger.error(`账户切换Thất bại: ${error}`)
       throw error
     } finally {
       isLoading.value = false
@@ -317,7 +317,7 @@ export const useCursorStore = defineStore('cursor', () => {
       // 检查 Cursor 是否在运行
       await ensureCursorNotRunning(forceKill)
 
-      // 保存原始机器码，以便失败时恢复
+      // 保存原始机器码，以便Thất bại时恢复
       const originalMachineId = machineCode.value
 
       let machineResetSuccess = false
@@ -329,7 +329,7 @@ export const useCursorStore = defineStore('cursor', () => {
         })
         machineResetSuccess = true
       } catch (error) {
-        await Logger.error('一键换号时重置机器码失败')
+        await Logger.error('一键换号时Đặt lại mã máy thất bại')
         throw error
       }
 
@@ -338,19 +338,19 @@ export const useCursorStore = defineStore('cursor', () => {
         await switchCursorAccount(email, token, forceKill)
         await Logger.info('一键换号完成')
       } catch (error) {
-        await Logger.error('一键换号时切换账户失败')
+        await Logger.error('一键换号时Đổi tài khoản thất bại')
 
-        // 机器码重置成功 但账户切换失败 恢复原始机器码
+        // 机器码重置Thành công 但账户切换Thất bại 恢复原始机器码
         if (machineResetSuccess && originalMachineId) {
           try {
             await resetMachineId({
               forceKill,
               machineId: originalMachineId,
             })
-            await Logger.info('恢复原始机器码成功')
+            await Logger.info('恢复原始机器码Thành công')
             await fetchMachineIds() // 刷新机器码信息
           } catch (restoreError) {
-            await Logger.error(`恢复原始机器码失败: ${restoreError}`)
+            await Logger.error(`恢复原始机器码Thất bại: ${restoreError}`)
           }
         }
 
@@ -388,14 +388,14 @@ export const useCursorStore = defineStore('cursor', () => {
         const errorMsg = error instanceof Error ? error.message : String(error)
 
         // 如果是找不到main.js的错误，设置默认值false而不是抛出错误
-        if (errorMsg.includes('MAIN_JS_NOT_FOUND') || errorMsg.includes('创建应用路径失败')) {
+        if (errorMsg.includes('MAIN_JS_NOT_FOUND') || errorMsg.includes('创建应用路径Thất bại')) {
           await Logger.warn('找不到main.js，设置hook状态为false')
           hookStatus.value = false
           return false
         }
 
         // 其他错误情况下重置状态
-        Logger.error(`检查Hook状态失败: ${error}`)
+        Logger.error(`检查Hook状态Thất bại: ${error}`)
         hookStatus.value = null
         throw error
       }
@@ -417,7 +417,7 @@ export const useCursorStore = defineStore('cursor', () => {
       const isRunning = await checkCursorRunning()
       await Logger.info(`Cursor运行状态: ${isRunning ? '运行中' : '未运行'}`)
 
-      // 如果Cursor在运行且不是强制模式，返回特殊状态让外部组件显示确认弹窗
+      // 如果Cursor在运行且不是强制模式，返回特殊状态让外部组件Hiển thị确认弹窗
       if (isRunning && !forceKill) {
         await Logger.info('检测到Cursor正在运行，需要用户确认')
         return { status: 'running', action: 'applyHook' }
@@ -430,11 +430,11 @@ export const useCursorStore = defineStore('cursor', () => {
           await injectRunningCursor()
           hookStatus.value = true
           await checkHook()
-          await Logger.info('注入运行中的Cursor成功')
+          await Logger.info('注入运行中的CursorThành công')
           return { status: 'success' }
         } catch (injectError) {
-          await Logger.error(`注入运行中的Cursor失败: ${injectError}`)
-          // 注入失败，继续下一步
+          await Logger.error(`注入运行中的CursorThất bại: ${injectError}`)
+          // 注入Thất bại，继续下一步
         }
       }
 
@@ -444,22 +444,22 @@ export const useCursorStore = defineStore('cursor', () => {
         await applyHook(forceKill)
         hookStatus.value = true
         await checkHook()
-        await Logger.info('使用系统变量查找的路径注入Hook成功')
+        await Logger.info('使用系统变量查找的路径注入HookThành công')
         return { status: 'success' }
       } catch (error) {
         // 获取完整的错误信息
         const errorMsg = error instanceof Error ? error.message : String(error)
 
         // 如果是找不到main.js的错误，继续下一步
-        if (errorMsg.includes('MAIN_JS_NOT_FOUND') || errorMsg.includes('创建应用路径失败')) {
-          // 显示文件选择模态框
-          await Logger.info('无法自动查找Cursor路径，显示文件选择模态框')
+        if (errorMsg.includes('MAIN_JS_NOT_FOUND') || errorMsg.includes('创建应用路径Thất bại')) {
+          // Hiển thị文件选择模态框
+          await Logger.info('无法自动查找Cursor路径，Hiển thị文件选择模态框')
           if (router) router.push('/settings')
           setPendingAction('applyHook', { forceKill })
           return { status: 'need_select_file' }
         } else if (errorMsg.includes('Cursor进程正在运行') && !forceKill) {
           // 如果是Cursor正在运行的错误且不是强制模式
-          await Logger.info('后端检测到Cursor正在运行且不是强制模式，显示确认对话框')
+          await Logger.info('后端检测到Cursor正在运行且不是强制模式，Hiển thị确认对话框')
           return { status: 'running', action: 'applyHook' }
         } else if (
           (errorMsg.includes('Cursor进程正在运行') || errorMsg.includes('请先关闭 Cursor')) &&
@@ -473,7 +473,7 @@ export const useCursorStore = defineStore('cursor', () => {
             await applyHook(true)
             hookStatus.value = true
             await checkHook()
-            await Logger.info('强制关闭Cursor并注入Hook成功')
+            await Logger.info('强制关闭Cursor并注入HookThành công')
             return { status: 'success' }
           } catch (closeError) {
             const closeErrorMsg =
@@ -485,12 +485,12 @@ export const useCursorStore = defineStore('cursor', () => {
               (closeErrorMsg.includes('达到最大重试次数') ||
                 closeErrorMsg.includes('无法终止所有Cursor进程'))
             ) {
-              await Logger.error(`macOS关闭Cursor失败，可能需要系统权限: ${closeErrorMsg}`)
-              // 返回特殊状态，让外部组件显示macOS权限提示
+              await Logger.error(`macOS关闭CursorThất bại，可能需要系统权限: ${closeErrorMsg}`)
+              // 返回特殊状态，让外部组件Hiển thịmacOS权限提示
               return {
                 status: 'error',
                 errorType: macOSPermissionError,
-                message: '无法终止Cursor进程，需要系统权限',
+                message: 'Không thể dừng tiến trình Cursor, cần quyền hệ thống',
               }
             }
 
@@ -503,7 +503,7 @@ export const useCursorStore = defineStore('cursor', () => {
         }
       }
     } catch (error) {
-      await Logger.error(`Hook注入失败: ${error}`)
+      await Logger.error(`Hook注入Thất bại: ${error}`)
       hookStatus.value = false
       throw error
     } finally {
@@ -530,10 +530,10 @@ export const useCursorStore = defineStore('cursor', () => {
       // 触发检查以确保状态已更新
       await checkHook()
 
-      await Logger.info('Hook恢复成功')
+      await Logger.info('Hook恢复Thành công')
       return true
     } catch (error) {
-      await Logger.error(`Hook恢复失败: ${error}`)
+      await Logger.error(`Hook恢复Thất bại: ${error}`)
       throw error
     } finally {
       isLoading.value = false
@@ -549,7 +549,7 @@ export const useCursorStore = defineStore('cursor', () => {
       operationLoading.value = true
       return await closeCursor()
     } catch (error) {
-      Logger.error(`关闭 Cursor 失败: ${error}`)
+      Logger.error(`关闭 Cursor Thất bại: ${error}`)
       throw error
     } finally {
       operationLoading.value = false
@@ -564,7 +564,7 @@ export const useCursorStore = defineStore('cursor', () => {
       operationLoading.value = true
       return await launchCursor()
     } catch (error) {
-      Logger.error(`启动 Cursor 失败: ${error}`)
+      Logger.error(`Khởi động Cursor thất bại: ${error}`)
       throw error
     } finally {
       operationLoading.value = false
@@ -597,7 +597,7 @@ export const useCursorStore = defineStore('cursor', () => {
 
       return true
     } catch (error) {
-      Logger.error(`刷新数据失败: ${error}`)
+      Logger.error(`刷新数据Thất bại: ${error}`)
       throw error
     } finally {
       isLoading.value = false
@@ -654,7 +654,7 @@ export const useCursorStore = defineStore('cursor', () => {
         status: 'success',
       }
     } catch (error) {
-      Logger.error(`切换到历史账户失败: ${error}`)
+      Logger.error(`切换到历史账户Thất bại: ${error}`)
       throw error
     } finally {
       historyStore.switchingAccount[account.email] = false
@@ -706,7 +706,7 @@ export const useCursorStore = defineStore('cursor', () => {
 
       return { status: 'success' }
     } catch (error) {
-      Logger.error(`强制切换账户失败: ${error}`)
+      Logger.error(`强制Đổi tài khoản thất bại: ${error}`)
       throw error
     } finally {
       needSaveCurrentAccount.value = false
@@ -780,9 +780,9 @@ export const useCursorStore = defineStore('cursor', () => {
             // 强制重新获取Hook状态以刷新UI
             await checkHook()
           } catch (actionError) {
-            Logger.error(`执行操作失败: ${actionError}`)
+            Logger.error(`执行Thao tác thất bại: ${actionError}`)
             fileSelectError.value =
-              '执行操作失败: ' +
+              '执行Thao tác thất bại: ' +
               (actionError instanceof Error ? actionError.message : String(actionError))
           }
         }
@@ -815,7 +815,7 @@ export const useCursorStore = defineStore('cursor', () => {
    */
   async function ensureCursorNotRunning(forceKill: boolean) {
     if (!forceKill && (await checkCursorRunning())) {
-      throw new Error('Cursor进程正在运行, 请先关闭Cursor')
+      throw new Error('Cursor进程正在运行, Vui lòng đóng Cursor trước')
     }
   }
 
@@ -839,7 +839,7 @@ export const useCursorStore = defineStore('cursor', () => {
         // 检查当前注入状态
         const isCurrentlyHooked = await checkHookStatus()
 
-        // 如果已经注入，显示信息并返回
+        // 如果已经注入，Hiển thị信息并返回
         if (isCurrentlyHooked) {
           await Logger.info('Cursor已经被注入，无需重复操作')
           hookStatus.value = true
@@ -852,13 +852,13 @@ export const useCursorStore = defineStore('cursor', () => {
 
         // 更新hook状态
         hookStatus.value = true
-        await Logger.info('成功注入正在运行的Cursor')
+        await Logger.info('Thành công注入正在运行的Cursor')
 
         try {
           await launchCursorApp()
           await Logger.info('Cursor已重新启动')
         } catch (launchError) {
-          Logger.error(`重新启动Cursor失败: ${launchError}`)
+          Logger.error(`重新启动CursorThất bại: ${launchError}`)
         }
 
         return true
@@ -867,13 +867,13 @@ export const useCursorStore = defineStore('cursor', () => {
       }
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : String(error)
-      await Logger.error(`注入正在运行的Cursor失败: ${errorMsg}`)
+      await Logger.error(`注入正在运行的CursorThất bại: ${errorMsg}`)
 
-      // 如果操作失败，尝试更新hook状态以确保UI显示正确
+      // 如果Thao tác thất bại，尝试更新hook状态以确保UIHiển thị正确
       try {
         await checkHook()
       } catch (checkError) {
-        Logger.error(`检查Hook状态也失败: ${checkError}`)
+        Logger.error(`检查Hook状态也Thất bại: ${checkError}`)
       }
 
       throw error
@@ -896,11 +896,11 @@ export const useCursorStore = defineStore('cursor', () => {
       if (result.code === 0) {
         return true
       } else {
-        Logger.error(`打开macOS权限设置失败，错误码: ${result.code}`)
+        Logger.error(`打开macOS权限设置Thất bại，错误码: ${result.code}`)
         return false
       }
     } catch (error) {
-      Logger.error(`打开macOS权限设置失败: ${error}`)
+      Logger.error(`打开macOS权限设置Thất bại: ${error}`)
       return false
     }
   }

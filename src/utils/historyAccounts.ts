@@ -46,9 +46,9 @@ export async function getHistoryAccounts(): Promise<HistoryAccount[]> {
     const accounts = await apiGetHistoryAccounts()
     return accounts.map(convertToFrontendAccount)
   } catch (error) {
-    Logger.error(`从后端获取历史账户失败，回退到本地存储: ${error}`)
+    Logger.error(`从后端Lấy lịch sử tài khoản thất bại，回退到本地存储: ${error}`)
 
-    // 如果后端获取失败，回退到本地存储
+    // 如果后端获取Thất bại，回退到本地存储
     return getHistoryAccountsFromLocal()
   }
 }
@@ -69,9 +69,9 @@ export async function removeHistoryAccount(email: string) {
     // 从后端删除
     await apiRemoveHistoryAccount(email)
   } catch (error) {
-    Logger.error(`从后端删除历史账户失败，回退到本地存储: ${error}`)
+    Logger.error(`从后端Xóa lịch sử tài khoản thất bại，回退到本地存储: ${error}`)
 
-    // 如果后端删除失败，回退到本地存储
+    // 如果后端删除Thất bại，回退到本地存储
     const history = getHistoryAccountsFromLocal()
     const filtered = history.filter((a) => a.email !== email)
     localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered))
@@ -101,7 +101,7 @@ export async function syncLocalAccountsToBackend() {
     // 清除本地存储，避免冗余
     localStorage.removeItem(STORAGE_KEY)
   } catch (error) {
-    Logger.error(`处理本地历史账户失败: ${error}`)
+    Logger.error(`处理本地历史账户Thất bại: ${error}`)
     localStorage.removeItem(STORAGE_KEY)
   }
 }

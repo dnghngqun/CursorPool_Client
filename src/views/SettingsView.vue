@@ -104,7 +104,7 @@
       // 设置刷新标记，确保dashboard页面刷新数据
       localStorage.setItem('need_refresh_dashboard', 'true')
 
-      // 激活成功后跳转到 dashboard 页面
+      // 激活Thành công后跳转到 dashboard 页面
       router.push('/dashboard')
     } catch (error) {
       message.error(error instanceof Error ? error.message : t('message.activationFailed'))
@@ -222,7 +222,7 @@
             historyAction = t('systemControl.history.restoreHook')
             controlStatus.value.isHooked = false
 
-            // 显示成功消息
+            // Hiển thịThành công消息
             message.success(successMessage)
             showControlRunningModal.value = false
             addHistoryRecord(t('systemControl.title'), historyAction)
@@ -231,7 +231,10 @@
             const errorMsg = error instanceof Error ? error.message : String(error)
 
             // 检查是否包含MAIN_JS_NOT_FOUND
-            if (errorMsg.includes('MAIN_JS_NOT_FOUND') || errorMsg.includes('创建应用路径失败')) {
+            if (
+              errorMsg.includes('MAIN_JS_NOT_FOUND') ||
+              errorMsg.includes('创建应用路径Thất bại')
+            ) {
               cursorStore.setPendingAction(action, { forceKill: force_kill })
               return
             }
@@ -270,7 +273,7 @@
       await nextTick()
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : String(error)
-      Logger.error(`检查控制状态失败: ${errorMsg}`)
+      Logger.error(`检查控制状态Thất bại: ${errorMsg}`)
     } finally {
       // 完成检查，移除loading状态
       controlStatus.value.isChecking = false
@@ -284,7 +287,7 @@
       const path = await getUserData('system.cursor.path.mainJs')
       cursorPath.value = path
     } catch (error) {
-      Logger.error(`获取Cursor路径失败: ${error}`)
+      Logger.error(`获取Cursor路径Thất bại: ${error}`)
       cursorPath.value = null
     }
   }
@@ -305,7 +308,7 @@
         // 使用强制关闭参数调用操作
         await handleControlAction(pendingControlAction.value, true)
       } catch (error) {
-        Logger.error(`强制关闭操作失败: ${error}`)
+        Logger.error(`强制关闭Thao tác thất bại: ${error}`)
         message.error(t('systemControl.messages.forceFailed'))
       }
     }
@@ -322,7 +325,7 @@
     { immediate: true },
   )
 
-  // 监听文件选择模态框的显示状态
+  // 监听文件选择模态框的Hiển thị状态
   watch(
     () => cursorStore.showSelectFileModal,
     (newValue, oldValue) => {

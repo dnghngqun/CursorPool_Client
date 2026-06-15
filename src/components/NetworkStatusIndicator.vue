@@ -21,7 +21,7 @@
     return activeRetries.value[activeRetries.value.length - 1]
   })
 
-  // 显示重试消息
+  // Hiển thị重试消息
   function showRetryMessage(status: RequestStatus & { delay: number }) {
     message.info(
       t('network.retrying', {
@@ -32,12 +32,12 @@
     )
   }
 
-  // 显示线路刷新消息
+  // Hiển thị线路刷新消息
   function showInboundRefreshingMessage() {
     message.info(t('network.refreshingInbound'))
   }
 
-  // 显示线路刷新完成消息
+  // Hiển thị线路刷新完成消息
   function showInboundRefreshedMessage() {
     message.success(t('network.inboundRefreshed'))
   }
@@ -51,7 +51,7 @@
         // 添加到活动重试列表
         activeRetries.value = [...activeRetries.value, status]
 
-        // 显示重试通知
+        // Hiển thị重试通知
         showRetryMessage(status)
 
         // 设置一个定时器，在重试完成后从列表中移除

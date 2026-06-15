@@ -29,7 +29,7 @@
   const appCloseStore = useAppCloseStore()
   const appStore = useAppStore()
 
-  // 登录状态管理 - 使用计算属性从store获取状态
+  // Đăng nhập状态管理 - 使用计算属性从store获取状态
   const isCheckingLogin = computed(() => userStore.isCheckingLogin)
   const isLoggedIn = computed(() => userStore.isLoggedIn)
   const showLoginOverlay = computed(() => !isLoggedIn.value && !isCheckingLogin.value)
@@ -106,16 +106,16 @@
   }
 
   /**
-   * 处理登录成功
+   * 处理Đăng nhập thành công
    */
   const handleLoginSuccess = async () => {
-    // 使用store检查登录状态
+    // 使用store检查Đăng nhập状态
     await userStore.checkLoginStatus()
   }
 
   // 组件挂载时
   onMounted(async () => {
-    // 使用store检查登录状态
+    // 使用store检查Đăng nhập状态
     await userStore.checkLoginStatus()
 
     // 添加用户登出事件监听
@@ -128,7 +128,7 @@
     window.removeEventListener('user-logout', handleUserLogout)
   })
 
-  // 监听store中的登录状态变化
+  // 监听store中的Đăng nhập状态变化
   watch(
     () => userStore.isLoggedIn,
     (newValue) => {
@@ -155,7 +155,7 @@
       data-tauri-drag-region
     ></div>
 
-    <!-- 登录遮罩 -->
+    <!-- Đăng nhập遮罩 -->
     <login-overlay
       v-if="showLoginOverlay"
       @login-success="handleLoginSuccess"
@@ -258,7 +258,7 @@
   <!-- 网络状态指示器 -->
   <NetworkStatusIndicator />
 
-  <!-- 在未登录时显示登录层 -->
+  <!-- 在未Đăng nhập时Hiển thịĐăng nhập层 -->
   <LoginOverlay v-if="showLoginOverlay" />
 
   <!-- 关闭确认对话框 -->

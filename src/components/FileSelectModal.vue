@@ -17,7 +17,7 @@
   const themeVars = useThemeVars()
   const appStore = useAppStore()
 
-  // 标记是否显示macOS权限错误界面
+  // 标记是否Hiển thịmacOS权限错误界面
   const showMacOSPermissionError = ref(false)
   // 标记是否已尝试赋予权限
   const permissionGrantedAttempted = ref(false)
@@ -37,7 +37,7 @@
     () => cursorStore.showSelectFileModal,
     (newValue) => {
       if (newValue) {
-        // 模态框显示时重置错误
+        // 模态框Hiển thị时重置错误
         cursorStore.fileSelectError = ''
         // 重置macOS权限错误状态
         showMacOSPermissionError.value = false
@@ -50,9 +50,9 @@
   const handleSelectPath = async () => {
     await cursorStore.handleSelectCursorPath()
 
-    // 处理成功状态
+    // 处理Thành công状态
     if (!cursorStore.showSelectFileModal && !cursorStore.fileSelectError) {
-      message.success('文件选择成功，系统已找到并保存Cursor路径')
+      message.success('文件选择Thành công，系统已找到并保存Cursor路径')
 
       // 检查是否有待处理操作
       if (cursorStore.pendingAction) {
@@ -62,15 +62,15 @@
         setTimeout(() => {
           if (!cursorStore.fileSelectError) {
             if (cursorStore.pendingAction?.type === 'applyHook') {
-              message.success('Hook应用成功！')
+              message.success('Hook应用Thành công！')
             } else if (cursorStore.pendingAction?.type === 'restoreHook') {
-              message.success('Hook恢复成功！')
+              message.success('Hook恢复Thành công！')
             }
           }
         }, 1000)
       }
     } else if (cursorStore.fileSelectError) {
-      // 显示错误消息
+      // Hiển thị错误消息
       message.error(cursorStore.fileSelectError)
     }
   }
@@ -90,7 +90,7 @@
       await cursorStore.openMacOSPermissionSettings()
       message.success('已打开系统偏好设置，请给予应用所需权限')
     } catch (error) {
-      message.error('打开系统偏好设置失败，请手动打开')
+      message.error('打开系统偏好设置Thất bại，请手动打开')
     }
   }
 
@@ -108,13 +108,13 @@
           const result = await cursorStore.applyHookToClient(true) // 强制关闭
 
           if (result.status === 'success') {
-            message.success('Hook应用成功！')
+            message.success('Hook应用Thành công！')
             cursorStore.showSelectFileModal = false
           } else if (
             result.status === 'error' &&
             result.errorType === cursorStore.macOSPermissionError
           ) {
-            message.error('权限验证失败，请确保已正确授予权限')
+            message.error('权限验证Thất bại，请确保已正确授予权限')
           } else if (result.status === 'running') {
             message.warning('Cursor仍在运行，请手动关闭Cursor后重试')
           }
@@ -132,15 +132,15 @@
     message.loading('正在尝试注入运行中的Cursor...')
     try {
       await cursorStore.injectRunningCursor()
-      message.success('成功注入正在运行的Cursor!')
+      message.success('Thành công注入正在运行的Cursor!')
 
       // 关闭模态框
       cursorStore.showSelectFileModal = false
     } catch (error) {
-      // 显示错误消息
+      // Hiển thị错误消息
       const errorMsg = error instanceof Error ? error.message : String(error)
-      message.error(errorMsg || '注入失败，请尝试手动选择文件')
-      cursorStore.fileSelectError = errorMsg || '注入失败，请尝试手动选择文件'
+      message.error(errorMsg || '注入Thất bại，请尝试手动选择文件')
+      cursorStore.fileSelectError = errorMsg || '注入Thất bại，请尝试手动选择文件'
     }
   }
 
@@ -149,7 +149,7 @@
     cursorStore.showSelectFileModal = false
   }
 
-  // 设置macOS权限界面显示
+  // 设置macOS权限界面Hiển thị
   const setMacOSPermissionError = (show: boolean) => {
     showMacOSPermissionError.value = show
     permissionGrantedAttempted.value = false
@@ -239,13 +239,13 @@
               >
                 <Warning />
               </n-icon>
-              <b>权限验证失败</b>
+              <b>权限验证Thất bại</b>
             </div>
             <div
               class="option-desc"
               :style="{ color: themeVars.textColor3 }"
             >
-              权限验证失败，请尝试以下步骤：
+              权限验证Thất bại，请尝试以下步骤：
               <ol style="margin-top: 8px; padding-left: 16px">
                 <li>确保已在系统偏好设置中勾选本应用</li>
                 <li>尝试重启应用后再次授权</li>

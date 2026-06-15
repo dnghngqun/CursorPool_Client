@@ -54,20 +54,20 @@ export interface ActivationCode {
   expired_at: string
 }
 
-// 登录请求
+// Đăng nhập请求
 export interface LoginRequest {
   account: string
   password: string
   spread: string
 }
 
-// 注册响应
+// Đăng ký响应
 export interface RegisterResponse {
   token: string
   expires_time: number
 }
 
-// 登录响应
+// Đăng nhập响应
 export interface LoginResponse {
   token?: string
   userInfo?: UserInfo
@@ -92,7 +92,7 @@ export interface SendCodeRequest {
   type: string // register或reset
 }
 
-// 注册请求
+// Đăng ký请求
 export interface RegisterRequest {
   email: string
   code: string

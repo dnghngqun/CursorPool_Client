@@ -37,7 +37,7 @@ export const useHistoryStore = defineStore('history', () => {
   }
 
   // 历史账户界面相关计算属性
-  // 过滤掉当前账户的列表，不在表格中显示当前账户
+  // 过滤掉当前账户的列表，不在表格中Hiển thị当前账户
   const filteredHistoryAccounts = computed(() => {
     return accounts.value.filter((acc) => acc.email !== currentAccountEmail.value)
   })
@@ -76,7 +76,7 @@ export const useHistoryStore = defineStore('history', () => {
 
       initialized.value = true
     } catch (error) {
-      Logger.error(`初始化历史记录失败: ${error}`)
+      Logger.error(`初始化历史记录Thất bại: ${error}`)
     } finally {
       isLoading.value = false
     }
@@ -96,8 +96,8 @@ export const useHistoryStore = defineStore('history', () => {
       // 然后从后端获取所有历史记录
       records.value = await getHistoryList()
     } catch (err) {
-      error.value = err instanceof Error ? err.message : '加载历史记录失败'
-      Logger.error(`加载历史记录失败: ${err}`)
+      error.value = err instanceof Error ? err.message : '加载历史记录Thất bại'
+      Logger.error(`加载历史记录Thất bại: ${err}`)
     } finally {
       isLoading.value = false
     }
@@ -140,12 +140,12 @@ export const useHistoryStore = defineStore('history', () => {
       try {
         await refreshAccountsUsage()
       } catch (error) {
-        Logger.error(`自动刷新账户使用情况失败: ${error}`)
+        Logger.error(`自动刷新账户使用情况Thất bại: ${error}`)
       }
 
       return accounts.value
     } catch (error) {
-      Logger.error(`获取历史账户失败: ${error}`)
+      Logger.error(`Lấy lịch sử tài khoản thất bại: ${error}`)
       throw error
     } finally {
       loadingAccounts.value = false
@@ -183,7 +183,7 @@ export const useHistoryStore = defineStore('history', () => {
 
           return true
         } catch (error) {
-          Logger.error(`获取账户 ${account.email} 使用情况失败: ${error}`)
+          Logger.error(`获取账户 ${account.email} 使用情况Thất bại: ${error}`)
           return false
         }
       })
@@ -199,7 +199,7 @@ export const useHistoryStore = defineStore('history', () => {
         success: results.filter(Boolean).length,
       }
     } catch (error) {
-      Logger.error(`刷新账户使用情况失败: ${error}`)
+      Logger.error(`刷新账户使用情况Thất bại: ${error}`)
       throw error
     } finally {
       loadingAccounts.value = false
@@ -216,7 +216,7 @@ export const useHistoryStore = defineStore('history', () => {
       accounts.value = accounts.value.filter((a) => a.email !== email)
       return true
     } catch (error) {
-      Logger.error(`删除历史账户失败: ${error}`)
+      Logger.error(`Xóa lịch sử tài khoản thất bại: ${error}`)
       throw error
     } finally {
       deletingAccount.value[email] = false
@@ -252,7 +252,7 @@ export const useHistoryStore = defineStore('history', () => {
         success: accountsToDelete,
       }
     } catch (error) {
-      Logger.error(`清理高使用量账户失败: ${error}`)
+      Logger.error(`清理高使用量账户Thất bại: ${error}`)
       throw error
     } finally {
       clearingHighUsage.value = false
@@ -270,14 +270,14 @@ export const useHistoryStore = defineStore('history', () => {
         currentAccountEmail.value = currentAccount.currentAccount
 
         // 不再需要前端主动保存账户信息到历史记录
-        // 更新 accounts 数据，以确保UI显示最新状态
+        // 更新 accounts 数据，以确保UIHiển thị最新状态
         await fetchHistoryAccounts(false)
 
         return true
       }
       return false
     } catch (error) {
-      Logger.error(`获取当前账户信息失败: ${error}`)
+      Logger.error(`获取当前账户信息Thất bại: ${error}`)
       return false
     }
   }

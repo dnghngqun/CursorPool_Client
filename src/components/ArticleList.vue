@@ -12,7 +12,7 @@
   const articleStore = useArticleStore()
   const showModal = ref(false)
   const currentArticle = ref<Article | null>(null)
-  const readyToShow = ref(false) // 添加标志，表示已准备好显示公告
+  const readyToShow = ref(false) // 添加标志，表示已准备好Hiển thị公告
 
   // HTML实体解码函数
   function decodeHtmlEntities(text: string): string {
@@ -57,9 +57,9 @@
     }, 1000)
   })
 
-  // 显示公告详情
+  // Hiển thị公告详情
   function viewArticle(article: Article) {
-    if (!readyToShow.value) return // 如果未准备好，不显示公告
+    if (!readyToShow.value) return // 如果未准备好，不Hiển thị公告
 
     // 再次检查文章是否确实未读
     if (articleStore.isRead(article.id)) {
@@ -70,7 +70,7 @@
     showModal.value = true
   }
 
-  // 检查并显示未读公告
+  // 检查并Hiển thị未读公告
   function checkAndShowUnreadArticle() {
     if (!articleStore.articles.length || !readyToShow.value) return
 
@@ -81,14 +81,14 @@
 
     if (unreadArticles.length === 0) return
 
-    // 按ID降序排序，优先显示ID最大的公告
+    // 按ID降序排序，优先Hiển thịID最大的公告
     const sortedArticles = [...unreadArticles].sort((a, b) => b.id - a.id)
     const latestArticle = sortedArticles[0]
 
-    // 显示ID最大的公告
+    // Hiển thịID最大的公告
     viewArticle(latestArticle)
 
-    // 将其他未读公告标记为已读（但不包括当前正在显示的）
+    // 将其他未读公告标记为已读（但不包括当前正在Hiển thị的）
     if (sortedArticles.length > 1) {
       setTimeout(async () => {
         // 除了第一个（最新的公告）外，将其他所有公告标记为已读
@@ -115,7 +115,7 @@
           (article) => !articleStore.isRead(article.id),
         )
 
-        // 如果还有未读公告，按ID降序排序，显示ID最大的
+        // 如果还有未读公告，按ID降序排序，Hiển thịID最大的
         if (remainingUnread.length > 0) {
           const sortedRemaining = [...remainingUnread].sort((a, b) => b.id - a.id)
           viewArticle(sortedRemaining[0])
@@ -133,7 +133,7 @@
     }
   }
 
-  // 监听文章变化，当有新公告时检查是否需要显示
+  // 监听文章变化，当有新公告时检查是否需要Hiển thị
   watch(
     () => articleStore.articles,
     (newArticles) => {

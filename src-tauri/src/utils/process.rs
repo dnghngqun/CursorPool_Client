@@ -13,7 +13,7 @@ impl ProcessManager {
         ProcessManager
     }
 
-    /// 检查Cursor进程是否正在运行
+    /// 检查Cursor进程是否Đang chạy
     pub fn is_cursor_running(&self) -> bool {
         if let Ok(processes) = self.get_cursor_processes() {
             !processes.is_empty()
@@ -125,7 +125,7 @@ impl ProcessManager {
         processes
     }
 
-    /// 在Windows平台上，创建不显示窗口的命令
+    /// 在Windows平台上，创建不Hiển thị窗口的命令
     fn create_hidden_command(&self, cmd: &str) -> Command {
         let mut command = Command::new(cmd);
 
@@ -136,7 +136,7 @@ impl ProcessManager {
             command.creation_flags(CREATE_NO_WINDOW);
         }
 
-        // 重定向标准输入输出，进一步确保不显示窗口
+        // 重定向标准输入输出，进一步确保不Hiển thị窗口
         command
             .stdin(Stdio::null())
             .stdout(Stdio::piped())

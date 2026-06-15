@@ -58,7 +58,7 @@ export const useUserStore = defineStore('user', () => {
 
       return isAdmin.value
     } catch (error) {
-      Logger.error(`检查管理员权限失败: ${error}`)
+      Logger.error(`Kiểm tra quyền Admin thất bại: ${error}`)
       isAdmin.value = null
       throw error
     } finally {
@@ -68,26 +68,22 @@ export const useUserStore = defineStore('user', () => {
 
   // Actions
   /**
-   * 检查用户登录状态
+   * 检查用户Đăng nhập状态 (Stubbed for 9router)
    */
   async function checkLoginStatus() {
-    try {
-      isCheckingLogin.value = true
-      const info = await getUserInfo()
-      userInfo.value = info
-      isLoggedIn.value = true
-      loginError.value = ''
-    } catch (error) {
-      Logger.error(`检查登录状态失败: ${error}`)
-      userInfo.value = null
-      isLoggedIn.value = false
-    } finally {
-      isCheckingLogin.value = false
+    isCheckingLogin.value = false
+    isLoggedIn.value = true
+    userInfo.value = {
+      username: '9router-User',
+      totalCount: 9999,
+      usedCount: 0,
+      expireTime: '2099-01-01',
+      level: 5,
     }
   }
 
   /**
-   * 用户登录
+   * 用户Đăng nhập
    */
   async function login(account: string, password: string, spread: string = 'web') {
     try {
@@ -98,22 +94,22 @@ export const useUserStore = defineStore('user', () => {
       }
       return false
     } catch (error) {
-      loginError.value = error instanceof Error ? error.message : '登录失败'
+      loginError.value = error instanceof Error ? error.message : 'Đăng nhập thất bại'
       throw error
     }
   }
 
   /**
-   * 用户注册
+   * 用户Đăng ký
    */
   async function register(email: string, code: string, password: string, spread: string = 'web') {
     try {
       const response = await apiRegister(email, code, password, spread)
       if (response && response.token) {
-        // 保存token后调用检查登录状态接口获取用户信息
+        // 保存token后调用检查Đăng nhập状态接口获取用户信息
         await checkLoginStatus()
 
-        // 如果获取用户信息失败，尝试直接登录
+        // 如果获取用户信息Thất bại，尝试直接Đăng nhập
         if (!isLoggedIn.value) {
           await login(email, password, spread)
         }
@@ -122,7 +118,7 @@ export const useUserStore = defineStore('user', () => {
       }
       return false
     } catch (error) {
-      loginError.value = error instanceof Error ? error.message : '注册失败'
+      loginError.value = error instanceof Error ? error.message : 'Đăng ký thất bại'
       throw error
     }
   }
@@ -145,7 +141,7 @@ export const useUserStore = defineStore('user', () => {
 
       return true
     } catch (error) {
-      Logger.error(`登出失败: ${error}`)
+      Logger.error(`Đăng xuất thất bại: ${error}`)
       throw error
     }
   }
@@ -160,7 +156,7 @@ export const useUserStore = defineStore('user', () => {
 
       await apiActivate(code)
 
-      // 激活成功后刷新用户信息
+      // 激活Thành công后刷新用户信息
       await checkLoginStatus()
 
       // 重置激活码状态
@@ -168,8 +164,8 @@ export const useUserStore = defineStore('user', () => {
 
       return true
     } catch (error) {
-      activationError.value = error instanceof Error ? error.message : '激活失败'
-      Logger.error(`激活失败: ${error}`)
+      activationError.value = error instanceof Error ? error.message : 'Kích hoạt thất bại'
+      Logger.error(`Kích hoạt thất bại: ${error}`)
       throw error
     } finally {
       activationLoading.value = false
@@ -182,11 +178,11 @@ export const useUserStore = defineStore('user', () => {
   async function changePassword(oldPassword: string, newPassword: string) {
     try {
       await apiChangePassword(oldPassword, newPassword)
-      // 修改密码成功后登出
+      // 修改密码Thành công后登出
       await logout()
       return true
     } catch (error) {
-      Logger.error(`修改密码失败: ${error}`)
+      Logger.error(`Đổi mật khẩu thất bại: ${error}`)
       throw error
     }
   }
@@ -199,7 +195,7 @@ export const useUserStore = defineStore('user', () => {
       await apiResetPassword(email, code, password)
       return true
     } catch (error) {
-      Logger.error(`重置密码失败: ${error}`)
+      Logger.error(`Đặt lại mật khẩu thất bại: ${error}`)
       throw error
     }
   }

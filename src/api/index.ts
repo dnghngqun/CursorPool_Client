@@ -19,7 +19,7 @@ import { apiClient } from '@/utils/apiClient'
 // 错误处理
 function handleApiResponse<T>(response: ApiResponse<T>): T {
   if (response.status === 200) {
-    // 成功时返回 data
+    // Thành công时返回 data
     if (response.data) {
       return response.data
     }
@@ -28,7 +28,7 @@ function handleApiResponse<T>(response: ApiResponse<T>): T {
   }
 
   // 状态码不为200时抛出错误，优先使用服务器返回的消息
-  throw new ApiError(response.msg || '链接服务器失败，请稍后再试')
+  throw new ApiError(response.msg || 'Kết nối máy chủ thất bại, vui lòng thử lại sau')
 }
 
 // API 错误类
@@ -45,9 +45,9 @@ export class ApiError extends Error {
 // 用户认证相关 API
 
 /**
- * 检查用户登录状态
+ * 检查用户Đăng nhập状态
  * @param email 用户邮箱
- * @returns 用户登录状态信息
+ * @returns 用户Đăng nhập状态信息
  */
 export async function checkUser(email?: string): Promise<CheckUserResponse> {
   try {
@@ -65,7 +65,9 @@ export async function checkUser(email?: string): Promise<CheckUserResponse> {
     }
     return handleApiResponse(response)
   } catch (error) {
-    throw new ApiError(error instanceof Error ? error.message : '无法验证用户状态')
+    throw new ApiError(
+      error instanceof Error ? error.message : 'Không thể xác minh trạng thái người dùng',
+    )
   }
 }
 
@@ -77,7 +79,7 @@ export async function sendCode(email: string, purpose: string): Promise<void> {
     })
     return handleApiResponse(response)
   } catch (error) {
-    throw new ApiError(error instanceof Error ? error.message : '发送验证码失败')
+    throw new ApiError(error instanceof Error ? error.message : 'Gửi mã xác nhận thất bại')
   }
 }
 
@@ -96,7 +98,7 @@ export async function register(
     })
     return handleApiResponse(response)
   } catch (error) {
-    throw new ApiError(error instanceof Error ? error.message : '注册失败')
+    throw new ApiError(error instanceof Error ? error.message : 'Đăng ký thất bại')
   }
 }
 
@@ -113,8 +115,8 @@ export async function login(
     })
     return handleApiResponse(response)
   } catch (error) {
-    await Logger.error('登录失败', { file: 'api/index.ts' })
-    throw new ApiError(error instanceof Error ? error.message : '登录失败')
+    await Logger.error('Đăng nhập thất bại', { file: 'api/index.ts' })
+    throw new ApiError(error instanceof Error ? error.message : 'Đăng nhập thất bại')
   }
 }
 
@@ -127,7 +129,7 @@ export async function getUserInfo(): Promise<UserInfo> {
     if (error instanceof ApiError) {
       throw error
     }
-    throw new ApiError(error instanceof Error ? error.message : '链接服务器失败')
+    throw new ApiError(error instanceof Error ? error.message : 'Kết nối máy chủ thất bại')
   }
 }
 
@@ -139,7 +141,7 @@ export async function getAccount(account?: string, usageCount?: string): Promise
     })
     return handleApiResponse(response)
   } catch (error) {
-    throw new ApiError(error instanceof Error ? error.message : '获取账户信息失败')
+    throw new ApiError(error instanceof Error ? error.message : 'Lấy thông tin tài khoản thất bại')
   }
 }
 
@@ -171,7 +173,7 @@ export async function getPublicInfo(): Promise<PublicInfo> {
     const response = await apiClient.request<ApiResponse<PublicInfo>>('get_public_info')
     return handleApiResponse(response)
   } catch (error) {
-    throw new ApiError(error instanceof Error ? error.message : '获取公共信息失败')
+    throw new ApiError(error instanceof Error ? error.message : 'Lấy thông tin chung thất bại')
   }
 }
 
@@ -179,8 +181,8 @@ export async function refreshInbound(): Promise<boolean> {
   try {
     return await invoke<boolean>('refresh_inbound')
   } catch (error) {
-    await Logger.error('刷新线路失败', { file: 'api/index.ts' })
-    throw new ApiError(error instanceof Error ? error.message : '刷新线路失败')
+    await Logger.error('Làm mới đường truyền thất bại', { file: 'api/index.ts' })
+    throw new ApiError(error instanceof Error ? error.message : 'Làm mới đường truyền thất bại')
   }
 }
 
@@ -190,7 +192,7 @@ export async function activate(code: string): Promise<void> {
     const response = await apiClient.request<ApiResponse<void>>('activate', { code })
     handleApiResponse(response)
   } catch (error) {
-    throw new ApiError(error instanceof Error ? error.message : '激活失败')
+    throw new ApiError(error instanceof Error ? error.message : 'Kích hoạt thất bại')
   }
 }
 
@@ -202,7 +204,7 @@ export async function changePassword(oldPassword: string, newPassword: string): 
     })
     handleApiResponse(response)
   } catch (error) {
-    throw new ApiError(error instanceof Error ? error.message : '修改密码失败')
+    throw new ApiError(error instanceof Error ? error.message : 'Đổi mật khẩu thất bại')
   }
 }
 
@@ -219,8 +221,8 @@ export async function resetMachineId(
       machineId: params.machineId,
     })
   } catch (error) {
-    await Logger.error('重置机器码失败', { file: 'api/index.ts' })
-    throw new ApiError(error instanceof Error ? error.message : '重置机器码失败')
+    await Logger.error('Đặt lại mã máy thất bại', { file: 'api/index.ts' })
+    throw new ApiError(error instanceof Error ? error.message : 'Đặt lại mã máy thất bại')
   }
 }
 
@@ -236,16 +238,16 @@ export async function switchAccount(
       forceKill,
     })
     if (result !== true) {
-      await Logger.error(`切换账户失败: ${email}`, { file: 'api/index.ts' })
-      throw new Error('切换账户失败')
+      await Logger.error(`Đổi tài khoản thất bại: ${email}`, { file: 'api/index.ts' })
+      throw new Error('Đổi tài khoản thất bại')
     }
   } catch (error) {
-    await Logger.error(`切换账户失败: ${email}, ${error}`, {
+    await Logger.error(`Đổi tài khoản thất bại: ${email}, ${error}`, {
       file: 'api/index.ts',
     })
-    const errorMsg = error instanceof Error ? error.message : '切换账户失败'
+    const errorMsg = error instanceof Error ? error.message : 'Đổi tài khoản thất bại'
     if (errorMsg.includes('Cursor进程正在运行')) {
-      throw new Error('请先关闭 Cursor 或选择强制终止进程')
+      throw new Error('Vui lòng đóng Cursor hoặc chọn dừng tiến trình bắt buộc')
     }
     throw error
   }
@@ -255,8 +257,8 @@ export async function getMachineIds(): Promise<MachineInfo> {
   try {
     return await invoke<MachineInfo>('get_machine_ids')
   } catch (error) {
-    await Logger.error('获取机器码失败', { file: 'api/index.ts' })
-    throw new ApiError(error instanceof Error ? error.message : '获取机器码失败')
+    await Logger.error('Lấy mã máy thất bại', { file: 'api/index.ts' })
+    throw new ApiError(error instanceof Error ? error.message : 'Lấy mã máy thất bại')
   }
 }
 
@@ -264,8 +266,10 @@ export async function checkCursorRunning(): Promise<boolean> {
   try {
     return await invoke<boolean>('check_cursor_running')
   } catch (error) {
-    await Logger.error('检查Cursor状态失败', { file: 'api/index.ts' })
-    throw new ApiError(error instanceof Error ? error.message : '检查Cursor状态失败')
+    await Logger.error('Kiểm tra trạng thái Cursor thất bại', { file: 'api/index.ts' })
+    throw new ApiError(
+      error instanceof Error ? error.message : 'Kiểm tra trạng thái Cursor thất bại',
+    )
   }
 }
 
@@ -274,7 +278,7 @@ export async function checkAdminPrivileges(): Promise<boolean> {
   try {
     return await invoke<boolean>('check_admin_privileges')
   } catch (error) {
-    throw new ApiError(error instanceof Error ? error.message : '检查管理员权限失败')
+    throw new ApiError(error instanceof Error ? error.message : 'Kiểm tra quyền Admin thất bại')
   }
 }
 
@@ -288,10 +292,10 @@ export async function checkHookStatus(): Promise<boolean> {
     const errorMsg = error instanceof Error ? error.message : String(error)
     if (
       errorMsg.includes('MAIN_JS_NOT_FOUND') ||
-      errorMsg.includes('创建应用路径失败') ||
-      errorMsg.includes('main.js 路径不存在')
+      errorMsg.includes('创建应用路径Thất bại') ||
+      errorMsg.includes('main.js 路径Không tồn tại')
     ) {
-      Logger.warn('找不到main.js，默认返回hook状态为false')
+      Logger.warn('Không tìm thấy main.js, mặc định trạng thái hook là false')
       return false
     }
 
@@ -306,10 +310,10 @@ export async function applyHook(forceKill: boolean = false): Promise<void> {
     })
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error)
-    await Logger.error(`应用hook失败: ${errorMsg}`, { file: 'api/index.ts' })
+    await Logger.error(`Áp dụng hook thất bại: ${errorMsg}`, { file: 'api/index.ts' })
 
     if (errorMsg.includes('Cursor进程正在运行')) {
-      throw new Error('请先关闭 Cursor 或选择强制终止进程')
+      throw new Error('Vui lòng đóng Cursor hoặc chọn dừng tiến trình bắt buộc')
     }
 
     throw error
@@ -320,7 +324,7 @@ export async function findCursorPath(selectedPath: string): Promise<boolean> {
   try {
     return await invoke<boolean>('find_cursor_path', { selectedPath })
   } catch (error) {
-    Logger.error(`查找Cursor路径错误: ${error}`)
+    Logger.error(`Lỗi tìm đường dẫn Cursor: ${error}`)
     throw error
   }
 }
@@ -332,10 +336,10 @@ export async function restoreHook(forceKill: boolean = false): Promise<void> {
     })
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error)
-    await Logger.error(`恢复hook失败: ${errorMsg}`, { file: 'api/index.ts' })
+    await Logger.error(`Khôi phục hook thất bại: ${errorMsg}`, { file: 'api/index.ts' })
 
     if (errorMsg.includes('Cursor进程正在运行')) {
-      throw new Error('请先关闭 Cursor 或选择强制终止进程')
+      throw new Error('Vui lòng đóng Cursor hoặc chọn dừng tiến trình bắt buộc')
     }
 
     throw error
@@ -351,7 +355,7 @@ export async function resetPassword(email: string, code: string, password: strin
     })
     return handleApiResponse(response)
   } catch (error) {
-    throw new ApiError(error instanceof Error ? error.message : '重置密码失败')
+    throw new ApiError(error instanceof Error ? error.message : 'Đặt lại mật khẩu thất bại')
   }
 }
 
@@ -370,7 +374,7 @@ export async function logout(): Promise<void> {
     const response = await apiClient.request<ApiResponse<void>>('logout')
     return handleApiResponse(response)
   } catch (error) {
-    throw new ApiError(error instanceof Error ? error.message : '登出失败')
+    throw new ApiError(error instanceof Error ? error.message : 'Đăng xuất thất bại')
   }
 }
 
@@ -388,8 +392,8 @@ export async function saveHistoryRecord(record: HistoryRecord): Promise<void> {
 
     await setUserData('user.history', JSON.stringify(records))
   } catch (error) {
-    Logger.error(`保存历史记录失败: ${error}`)
-    throw new ApiError(error instanceof Error ? error.message : '保存历史记录失败')
+    Logger.error(`Lưu lịch sử thất bại: ${error}`)
+    throw new ApiError(error instanceof Error ? error.message : 'Lưu lịch sử thất bại')
   }
 }
 
@@ -405,8 +409,8 @@ export async function saveHistoryRecords(records: HistoryRecord[]): Promise<void
 
     await setUserData('user.history', JSON.stringify(existingRecords))
   } catch (error) {
-    Logger.error(`批量保存历史记录失败: ${error}`)
-    throw new ApiError(error instanceof Error ? error.message : '保存历史记录失败')
+    Logger.error(`批量Lưu lịch sử thất bại: ${error}`)
+    throw new ApiError(error instanceof Error ? error.message : 'Lưu lịch sử thất bại')
   }
 }
 
@@ -424,12 +428,12 @@ export async function getHistoryRecords(): Promise<HistoryRecord[]> {
     try {
       return JSON.parse(data) as HistoryRecord[]
     } catch (e) {
-      Logger.error(`历史记录解析失败: ${e}`)
+      Logger.error(`历史记录解析Thất bại: ${e}`)
       return []
     }
   } catch (error) {
-    Logger.error(`获取历史记录失败: ${error}`)
-    throw new ApiError(error instanceof Error ? error.message : '获取历史记录失败')
+    Logger.error(`Lấy lịch sử thất bại: ${error}`)
+    throw new ApiError(error instanceof Error ? error.message : 'Lấy lịch sử thất bại')
   }
 }
 
@@ -440,8 +444,8 @@ export async function clearHistoryRecords(): Promise<void> {
   try {
     await delUserData('user.history')
   } catch (error) {
-    Logger.error(`清除历史记录失败: ${error}`)
-    throw new ApiError(error instanceof Error ? error.message : '清除历史记录失败')
+    Logger.error(`Xóa lịch sử thất bại: ${error}`)
+    throw new ApiError(error instanceof Error ? error.message : 'Xóa lịch sử thất bại')
   }
 }
 
@@ -458,11 +462,11 @@ export async function getHistoryAccounts(): Promise<HistoryAccountRecord[]> {
     try {
       return JSON.parse(data) as HistoryAccountRecord[]
     } catch (e) {
-      Logger.error(`历史账户解析失败: ${e}`)
+      Logger.error(`历史账户解析Thất bại: ${e}`)
       return []
     }
   } catch (error) {
-    throw new ApiError(error instanceof Error ? error.message : '获取历史账户失败')
+    throw new ApiError(error instanceof Error ? error.message : 'Lấy lịch sử tài khoản thất bại')
   }
 }
 
@@ -478,7 +482,7 @@ export async function removeHistoryAccount(email: string): Promise<void> {
 
     await setUserData('user.history.accounts', JSON.stringify(accounts))
   } catch (error) {
-    throw new ApiError(error instanceof Error ? error.message : '删除历史账户失败')
+    throw new ApiError(error instanceof Error ? error.message : 'Xóa lịch sử tài khoản thất bại')
   }
 }
 
@@ -489,8 +493,10 @@ export async function clearHistoryAccounts(): Promise<void> {
   try {
     await delUserData('user.history.accounts')
   } catch (error) {
-    Logger.error(`清除历史账户失败: ${error}`)
-    throw new ApiError(error instanceof Error ? error.message : '清除历史账户失败')
+    Logger.error(`Xóa toàn bộ lịch sử tài khoản thất bại: ${error}`)
+    throw new ApiError(
+      error instanceof Error ? error.message : 'Xóa toàn bộ lịch sử tài khoản thất bại',
+    )
   }
 }
 
@@ -502,21 +508,21 @@ export async function saveUserApiToken(token: string): Promise<void> {
   try {
     await setUserData('user.info.token', token)
   } catch (error) {
-    Logger.error(`保存API Token失败: ${error}`)
-    throw new ApiError(error instanceof Error ? error.message : '保存API Token失败')
+    Logger.error(`Lưu API Token thất bại: ${error}`)
+    throw new ApiError(error instanceof Error ? error.message : 'Lưu API Token thất bại')
   }
 }
 
 /**
  * 获取用户API Token
- * @returns API Token，如果不存在则返回null
+ * @returns API Token，如果Không tồn tại则返回null
  */
 export async function getUserApiToken(): Promise<string | null> {
   try {
     return await getUserData('user.info.token')
   } catch (error) {
-    Logger.error(`获取API Token失败: ${error}`)
-    throw new ApiError(error instanceof Error ? error.message : '获取API Token失败')
+    Logger.error(`Lấy API Token thất bại: ${error}`)
+    throw new ApiError(error instanceof Error ? error.message : 'Lấy API Token thất bại')
   }
 }
 
@@ -527,8 +533,8 @@ export async function clearUserApiToken(): Promise<void> {
   try {
     await delUserData('user.info.token')
   } catch (error) {
-    Logger.error(`清除API Token失败: ${error}`)
-    throw new ApiError(error instanceof Error ? error.message : '清除API Token失败')
+    Logger.error(`清除API TokenThất bại: ${error}`)
+    throw new ApiError(error instanceof Error ? error.message : '清除API TokenThất bại')
   }
 }
 
@@ -543,14 +549,16 @@ export async function setUserData(key: string, value: string): Promise<void> {
   try {
     await invoke<ApiResponse<any>>('set_user_data', { key, value })
   } catch (error) {
-    throw new ApiError(error instanceof Error ? error.message : '设置用户数据失败')
+    throw new ApiError(
+      error instanceof Error ? error.message : 'Cài đặt dữ liệu người dùng thất bại',
+    )
   }
 }
 
 /**
  * 获取用户数据
  * @param key 键名
- * @returns 获取的值，如果不存在则返回 null
+ * @returns 获取的值，如果Không tồn tại则返回 null
  */
 export async function getUserData(key: string): Promise<string | null> {
   try {
@@ -562,7 +570,7 @@ export async function getUserData(key: string): Promise<string | null> {
     const result = handleApiResponse(response)
     return result.value
   } catch (error) {
-    throw new ApiError(error instanceof Error ? error.message : '获取用户数据失败')
+    throw new ApiError(error instanceof Error ? error.message : 'Lấy dữ liệu người dùng thất bại')
   }
 }
 
@@ -574,7 +582,7 @@ export async function delUserData(key: string): Promise<void> {
   try {
     await invoke<ApiResponse<any>>('del_user_data', { key })
   } catch (error) {
-    throw new ApiError(error instanceof Error ? error.message : '删除用户数据失败')
+    throw new ApiError(error instanceof Error ? error.message : 'Xóa dữ liệu người dùng thất bại')
   }
 }
 
@@ -589,7 +597,7 @@ export async function checkDisclaimerAccepted(): Promise<boolean> {
     const value = await getUserData('user.disclaimer.accepted')
     return value === 'true'
   } catch (error) {
-    Logger.error(`检查免责声明失败: ${error}`)
+    Logger.error(`Kiểm tra miễn trừ trách nhiệm thất bại: ${error}`)
     return false
   }
 }
@@ -601,7 +609,7 @@ export async function setDisclaimerAccepted(): Promise<void> {
   try {
     await setUserData('user.disclaimer.accepted', 'true')
   } catch (error) {
-    Logger.error(`设置免责声明状态失败: ${error}`)
+    Logger.error(`设置免责声明状态Thất bại: ${error}`)
     throw error
   }
 }
@@ -613,7 +621,7 @@ export async function clearDisclaimerAccepted(): Promise<void> {
   try {
     await delUserData('user.disclaimer.accepted')
   } catch (error) {
-    Logger.error(`清除免责声明状态失败: ${error}`)
+    Logger.error(`清除免责声明状态Thất bại: ${error}`)
     throw error
   }
 }
@@ -624,7 +632,7 @@ export async function getArticleList(): Promise<Article[]> {
     const response = await apiClient.request<ApiResponse<Article[]>>('get_article_list')
     return handleApiResponse(response)
   } catch (error) {
-    Logger.error(`获取公告列表失败: ${error}`)
+    Logger.error(`获取公告列表Thất bại: ${error}`)
     return []
   }
 }
@@ -646,11 +654,11 @@ export async function isArticleRead(articleId: number): Promise<boolean> {
         return false
       }
     } catch (parseError) {
-      Logger.error(`解析已读文章ID失败: ${parseError}, 原始数据: ${valueStr}`)
+      Logger.error(`解析已读文章IDThất bại: ${parseError}, 原始数据: ${valueStr}`)
       return false
     }
   } catch (error) {
-    Logger.error(`获取已读文章状态失败: ${error}`)
+    Logger.error(`获取已读文章状态Thất bại: ${error}`)
     return false
   }
 }
@@ -661,7 +669,7 @@ export async function markArticleRead(articleId: number): Promise<void> {
     const response = await apiClient.request<ApiResponse<void>>('mark_article_read', { articleId })
     handleApiResponse(response)
   } catch (error) {
-    throw new ApiError(error instanceof Error ? error.message : '标记文章已读失败')
+    throw new ApiError(error instanceof Error ? error.message : 'Đánh dấu bài viết đã đọc thất bại')
   }
 }
 
@@ -677,9 +685,9 @@ export async function getRunningCursorPath(): Promise<string> {
   try {
     return await invoke<string>('get_running_cursor_path')
   } catch (error) {
-    Logger.error(`获取正在运行的Cursor路径失败: ${error}`)
+    Logger.error(`Lấy đường dẫn Cursor đang chạy thất bại: ${error}`)
     throw new ApiError(
-      error instanceof Error ? error.message : '当前没有正在运行的Cursor, 请打开Cursor',
+      error instanceof Error ? error.message : 'Không có Cursor nào đang chạy, vui lòng mở Cursor',
     )
   }
 }

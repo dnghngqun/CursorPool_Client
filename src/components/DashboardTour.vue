@@ -77,7 +77,7 @@
       popover: {
         title: 'Cursor 邮箱',
         description:
-          '本地Cursor账户的邮箱, 也就是正在使用的账户, 不是Cursor Pool的邮箱, 如果未显示, 说明本地Cursor未登录或者掉登录',
+          '本地Cursor账户的邮箱, 也就是正在使用的账户, 不是Cursor Pool的邮箱, 如果未Hiển thị, 说明本地Cursor未Đăng nhập或者掉Đăng nhập',
         side: 'right' as Side,
         align: 'start',
       },
@@ -94,8 +94,8 @@
     {
       element: '.user-info-register-time',
       popover: {
-        title: '注册时间',
-        description: '本地Cursor账户的注册时间',
+        title: 'Đăng ký时间',
+        description: '本地Cursor账户的Đăng ký时间',
         side: 'right' as Side,
         align: 'start',
       },
@@ -105,7 +105,7 @@
       popover: {
         title: '机器码',
         description:
-          '本地Cursor账户的机器码, 如果显示异常, 说明本地Cursor没有生成机器码, 是因为cursor没打开,这是正常情况,请不要截图询问为什么',
+          '本地Cursor账户的机器码, 如果Hiển thị异常, 说明本地Cursor没有生成机器码, 是因为cursor没打开,这是正常情况,请不要截图询问为什么',
         side: 'right' as Side,
         align: 'start',
       },
@@ -175,7 +175,7 @@
       onHighlighted: (_: Element | undefined, step: DriveStep) => {
         if (!step) return
 
-        // 只在第一步显示跳过按钮
+        // 只在第一步Hiển thị跳过按钮
         const skipBtn = document.querySelector('.driver-popover-footer .driver-close-btn')
         if (skipBtn) {
           // @ts-ignore
@@ -239,7 +239,7 @@
           // 设置引导状态为已完成
           await appStore.completeTour()
         } catch (error) {
-          Logger.error(`保存引导状态失败: ${error}`)
+          Logger.error(`保存引导状态Thất bại: ${error}`)
         }
 
         if (props.onComplete) {

@@ -14,7 +14,7 @@
       type: Boolean,
       default: false,
     },
-    // 是否显示标签
+    // 是否Hiển thị标签
     showLabel: {
       type: Boolean,
       default: true,
@@ -49,13 +49,13 @@
         selectedCloseType.value = savedCloseType
       }
     } catch (error) {
-      Logger.error(`获取关闭类型设置失败: ${error}`)
+      Logger.error(`获取关闭类型设置Thất bại: ${error}`)
     }
   })
 
   // 处理选择变化
   const handleChange = async (value: string) => {
-    // 更新UI显示
+    // 更新UIHiển thị
     selectedCloseType.value = value
 
     try {
@@ -67,7 +67,7 @@
         await setUserData('system.close.type', value)
       }
     } catch (error) {
-      Logger.error(`保存关闭类型设置失败: ${error}`)
+      Logger.error(`保存关闭类型设置Thất bại: ${error}`)
       message.error(t('settings.settingsFailed'))
     }
   }

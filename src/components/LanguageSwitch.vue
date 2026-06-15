@@ -10,7 +10,7 @@
       type: Boolean,
       default: false,
     },
-    // 是否显示标签
+    // 是否Hiển thị标签
     showLabel: {
       type: Boolean,
       default: true,

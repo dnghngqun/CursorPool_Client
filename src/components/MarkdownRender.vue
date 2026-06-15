@@ -22,7 +22,7 @@
             language: lang,
           }).value
         } catch (e) {
-          Logger.error(`高亮代码失败: ${e}`)
+          Logger.error(`高亮代码Thất bại: ${e}`)
         }
       }
       return ''

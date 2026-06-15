@@ -11,7 +11,7 @@
     if (updaterStore.isChecking) return '正在检查更新...'
     if (updaterStore.isDownloading) return `正在下载更新 (${updaterStore.progressPercentage}%)...`
     if (updaterStore.isInstalling) return '正在安装更新，应用即将重启...'
-    if (updaterStore.error) return `更新失败: ${updaterStore.error}`
+    if (updaterStore.error) return `更新Thất bại: ${updaterStore.error}`
     return '准备更新...'
   })
 
@@ -22,14 +22,14 @@
     return '#2080f0'
   })
 
-  // 计算是否显示加载图标
+  // 计算是否Hiển thị加载图标
   const showSpinner = computed(
     () =>
       updaterStore.isChecking ||
       (updaterStore.isDownloading && updaterStore.progressPercentage < 5),
   )
 
-  // 计算是否显示更新说明
+  // 计算是否Hiển thị更新说明
   const showUpdateNotes = computed(() => updaterStore.updateNotes && updaterStore.isWebView2Update)
 
   // 打开官网
@@ -53,9 +53,9 @@
           {{ statusText }}
         </div>
 
-        <!-- WebView2版本更新显示 -->
+        <!-- WebView2版本更新Hiển thị -->
         <template v-if="updaterStore.isWebView2Update">
-          <!-- 显示更新说明 -->
+          <!-- Hiển thị更新说明 -->
           <div
             v-if="showUpdateNotes"
             class="mb-4 text-sm px-4 py-2 bg-gray-50 dark:bg-gray-800 rounded w-full max-h-60 overflow-auto"
@@ -73,7 +73,7 @@
           </n-button>
         </template>
 
-        <!-- 标准更新显示进度条 -->
+        <!-- 标准更新Hiển thị进度条 -->
         <template v-else>
           <n-space
             vertical

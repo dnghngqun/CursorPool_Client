@@ -37,7 +37,7 @@
     try {
       await historyStore.loadHistoryRecords()
     } catch (error) {
-      message.error('加载历史记录失败')
+      message.error('加载历史记录Thất bại')
     } finally {
       isLoading.value = false
     }

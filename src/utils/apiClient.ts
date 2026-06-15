@@ -27,8 +27,8 @@ const DEFAULT_CONFIG = {
   maxRetries: 1, // 最大重试次数 (从2改为1)
   retryDelay: 0, // 初始重试延迟（设为0，不延迟）
   useExponentialBackoff: false, // 是否使用指数退避策略 (关闭)
-  refreshInboundOnMaxRetries: true, // 重试失败后是否刷新线路
-  showRetryNotification: true, // 是否显示重试通知
+  refreshInboundOnMaxRetries: true, // 重试Thất bại后是否刷新线路
+  showRetryNotification: true, // 是否Hiển thị重试通知
 }
 
 // 事件订阅者列表
@@ -124,8 +124,10 @@ export class ApiClient {
       const errorMessage = error instanceof Error ? error.message : String(error)
       status.lastError = errorMessage
 
-      // 记录请求失败
-      await Logger.error(`请求 ${status.endpoint} (ID: ${status.requestId}) 失败: ${errorMessage}`)
+      // 记录请求Thất bại
+      await Logger.error(
+        `请求 ${status.endpoint} (ID: ${status.requestId}) Thất bại: ${errorMessage}`,
+      )
 
       // 如果已经有其他请求正在重试或刷新线路，则当前请求直接抛出错误，避免连锁反应
       if (
@@ -134,7 +136,7 @@ export class ApiClient {
         this.currentRetryOrRefreshAction !== `${status.endpoint}_refresh`
       ) {
         await Logger.warn(
-          `已有操作 ${this.currentRetryOrRefreshAction} 进行中，请求 ${status.endpoint} (ID: ${status.requestId}) 失败后不再自动重试或刷新。`,
+          `已有操作 ${this.currentRetryOrRefreshAction} 进行中，请求 ${status.endpoint} (ID: ${status.requestId}) Thất bại后不再自动重试或刷新。`,
         )
         throw error // 直接抛出错误，让调用方处理，或等待当前操作完成后再由用户决定是否重试
       }
@@ -187,9 +189,9 @@ export class ApiClient {
             const refreshErrorMsg =
               refreshError instanceof Error ? refreshError.message : String(refreshError)
             await Logger.error(
-              `线路刷新失败 (由 ${status.endpoint} (ID: ${status.requestId}) 触发): ${refreshErrorMsg}`,
+              `线路刷新Thất bại (由 ${status.endpoint} (ID: ${status.requestId}) 触发): ${refreshErrorMsg}`,
             )
-            throw error // 线路刷新也失败，则抛出原始错误
+            throw error // 线路刷新也Thất bại，则抛出原始错误
           } finally {
             this.isRefreshingInbound = false // 标记刷新结束
             this.currentRetryOrRefreshAction = null
@@ -197,7 +199,7 @@ export class ApiClient {
         } else {
           if (this.isRefreshingInbound) {
             await Logger.warn(
-              `请求 ${status.endpoint} (ID: ${status.requestId}) 失败，但线路已在刷新中，不再重复触发刷新。`,
+              `请求 ${status.endpoint} (ID: ${status.requestId}) Thất bại，但线路已在刷新中，不再重复触发刷新。`,
             )
           }
           throw error // 不刷新线路或已在刷新，则直接抛出原始错误
@@ -245,7 +247,7 @@ export class ApiClient {
           clearTimeout(timeoutId)
           unlistenPromise.then((unlisten) => unlisten())
           const errMsg = e instanceof Error ? e.message : String(e)
-          Logger.error(`刷新线路API调用失败: ${errMsg}`)
+          Logger.error(`刷新线路API调用Thất bại: ${errMsg}`)
           reject(e)
         })
       })

@@ -46,7 +46,7 @@ export const useInboundStore = defineStore('inbound', () => {
         }
       }
     } catch (error) {
-      Logger.error(`获取线路配置失败: ${error}`)
+      Logger.error(`获取线路配置Thất bại: ${error}`)
       inboundList.value = []
     } finally {
       isLoading.value = false
@@ -66,7 +66,7 @@ export const useInboundStore = defineStore('inbound', () => {
       currentInboundIndex.value = index
       return true
     } catch (error) {
-      Logger.error(`切换线路失败: ${error}`)
+      Logger.error(`切换线路Thất bại: ${error}`)
       return false
     }
   }

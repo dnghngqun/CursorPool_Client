@@ -18,11 +18,11 @@ fn show_and_focus_window(app: &AppHandle) {
 }
 
 pub fn setup_system_tray(app: &App) -> Result<(), Box<dyn std::error::Error>> {
-    let quit = MenuItem::with_id(app, "quit", "退出", true, None::<&str>)?;
-    let show = MenuItem::with_id(app, "显示", "显示", true, None::<&str>)?;
-    // let switch_account_item = MenuItem::with_id(app, "switch_account", "一键换号", true, None::<&str>)?;
-    // let switch_account_manual = MenuItem::with_id(app, "switch_account_manual", "切换账号", true, None::<&str>)?;
-    // let switch_machine = MenuItem::with_id(app, "switch_machine", "换机器码", true, None::<&str>)?;
+    let quit = MenuItem::with_id(app, "quit", "Thoát", true, None::<&str>)?;
+    let show = MenuItem::with_id(app, "Hiển thị", "Hiển thị", true, None::<&str>)?;
+    // let switch_account_item = MenuItem::with_id(app, "switch_account", "Đổi tài khoản nhanh", true, None::<&str>)?;
+    // let switch_account_manual = MenuItem::with_id(app, "switch_account_manual", "Đổi tài khoản", true, None::<&str>)?;
+    // let switch_machine = MenuItem::with_id(app, "switch_machine", "Đổi mã máy", true, None::<&str>)?;
 
     let menu = Menu::with_items(
         app,
@@ -58,7 +58,7 @@ pub fn setup_system_tray(app: &App) -> Result<(), Box<dyn std::error::Error>> {
                     show_and_focus_window(app.app_handle());
                 }
                 // "switch_account" => {
-                //     // 一键换号
+                //     // Đổi tài khoản nhanh
                 //     match get_current_account() {
                 //         Ok(account_info) => {
                 //             if let Some(email) = account_info.get("email").and_then(|v| v.as_str()) {
@@ -67,7 +67,7 @@ pub fn setup_system_tray(app: &App) -> Result<(), Box<dyn std::error::Error>> {
                 //                     let token = token.to_string();
                 //                     tauri::async_runtime::spawn(async move {
                 //                         if let Err(e) = switch_account(email, token).await {
-                //                             println!("切换账号失败: {}", e);
+                //                             println!("Đổi tài khoản失败: {}", e);
                 //                         }
                 //                     });
                 //                 }
@@ -77,11 +77,11 @@ pub fn setup_system_tray(app: &App) -> Result<(), Box<dyn std::error::Error>> {
                 //     }
                 // }
                 // "switch_account_manual" => {
-                //     // 手动换号 - 显示窗口
+                //     // 手动换号 - Hiển thị窗口
                 //     show_and_focus_window(app.app_handle());
                 // }
                 // "switch_machine" => {
-                //     // 换机器码
+                //     // Đổi mã máy
                 //     let app_handle = app.app_handle().clone();
                 //     tauri::async_runtime::spawn(async move {
                 //         match reset_machine_id(true).await {

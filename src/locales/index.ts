@@ -90,11 +90,10 @@ export const locales: Record<Language, LocaleConfig> = {
 }
 
 // Force sử dụng tiếng Việt
-export const currentLang = ref<Language>('vi-VN')
+export const currentLang = computed(() => 'vi-VN' as Language)
 
 // Khởi tạo ngôn ngữ (ép buộc tiếng Việt)
 export async function initLanguage() {
-  currentLang.value = 'vi-VN'
   try {
     await setUserData('user.info.lang', 'vi-VN')
   } catch (error) {
@@ -136,7 +135,7 @@ export function useI18n() {
   return {
     currentLang,
     setLanguage,
-    i18n: computed(() => messages[currentLang.value]),
+    i18n: computed(() => messages['vi-VN']), // Luôn dùng tiếng Việt
     t,
   }
 }

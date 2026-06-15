@@ -33,7 +33,7 @@ export async function addHistoryRecord(type: string, detail: string) {
     // 触发更新事件
     window.dispatchEvent(new Event('history_updated'))
   } catch (error) {
-    // 如果后端保存失败，回退到本地存储
+    // 如果后端保存Thất bại，回退到本地存储
     const history: HistoryRecords = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]')
     history.unshift(newRecord)
     localStorage.setItem(HISTORY_KEY, JSON.stringify(history))
@@ -61,7 +61,7 @@ export async function getHistoryList(): Promise<HistoryRecords> {
       operator: record.operator,
     }))
   } catch (error) {
-    // 如果后端获取失败，回退到本地存储
+    // 如果后端获取Thất bại，回退到本地存储
     return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]')
   }
 }
@@ -98,9 +98,9 @@ export async function syncLocalHistoryToBackend() {
     // 批量保存到后端
     await saveHistoryRecords(backendRecords)
   } catch (error) {
-    // 即使同步失败，也清除本地存储，避免重复同步
+    // 即使同步Thất bại，也清除本地存储，避免重复同步
   } finally {
-    // 无论成功失败，都清除本地存储
+    // 无论Thành côngThất bại，都清除本地存储
     localStorage.removeItem(HISTORY_KEY)
   }
 }

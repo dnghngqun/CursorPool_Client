@@ -8,17 +8,17 @@
   import Logger from '@/utils/logger'
 
   const props = defineProps({
-    // 是否在紧凑布局中使用（如登录页面）
+    // 是否在紧凑布局中使用（如Đăng nhập页面）
     compact: {
       type: Boolean,
       default: false,
     },
-    // 是否显示标签
+    // 是否Hiển thị标签
     showLabel: {
       type: Boolean,
       default: true,
     },
-    // 是否隐藏标签内容（仅显示图标）
+    // 是否隐藏标签内容（仅Hiển thị图标）
     iconOnly: {
       type: Boolean,
       default: false,
@@ -70,7 +70,7 @@
     const result = await inboundStore.switchInbound(index)
 
     if (result) {
-      // 成功后再更新本地UI状态
+      // Thành công后再更新本地UI状态
       selectedInbound.value = index
 
       message.success(
@@ -90,7 +90,7 @@
             await relaunch()
             return false
           } catch (error) {
-            Logger.error(`重启应用失败: ${error}`)
+            Logger.error(`重启应用Thất bại: ${error}`)
             return false
           }
         },

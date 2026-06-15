@@ -24,7 +24,7 @@ export const useAppCloseStore = defineStore('app-close', () => {
         closeType.value = savedCloseType as 'minimize' | 'exit'
       }
     } catch (error) {
-      Logger.error(`获取关闭类型设置失败: ${error}`)
+      Logger.error(`获取关闭类型设置Thất bại: ${error}`)
     }
   }
 
@@ -40,15 +40,15 @@ export const useAppCloseStore = defineStore('app-close', () => {
         // 如果设置为最小化，直接最隐藏
         await appWindow.hide()
       } else if (savedCloseType === 'exit') {
-        // 如果设置为退出，直接退出应用
+        // 如果设置为Thoát，直接Thoát应用
         await exit(0)
       } else {
-        // 如果没有设置或设置为其他值，显示确认模态窗
+        // 如果没有设置或设置为其他值，Hiển thị确认模态窗
         showConfirmModal.value = true
       }
     } catch (error) {
-      Logger.error(`检查关闭类型设置失败: ${error}`)
-      // 如果获取设置失败，显示确认模态窗
+      Logger.error(`检查关闭类型设置Thất bại: ${error}`)
+      // 如果获取设置Thất bại，Hiển thị确认模态窗
       showConfirmModal.value = true
     }
   }
@@ -86,29 +86,29 @@ export const useAppCloseStore = defineStore('app-close', () => {
       if (type === null) {
         // 如果类型为null，则清除设置
         await delUserData('system.close.type')
-        // 验证删除是否成功
+        // 验证删除是否Thành công
         const checkValue = await getUserData('system.close.type')
         if (checkValue === null) {
-          Logger.info('删除关闭类型设置成功')
+          Logger.info('删除关闭类型设置Thành công')
         } else {
-          Logger.warn(`删除关闭类型设置后验证失败，仍存在值: ${checkValue}`)
+          Logger.warn(`删除关闭类型设置后验证Thất bại，仍存在值: ${checkValue}`)
         }
         closeType.value = 'exit' // 恢复默认值
       } else {
         // 保存设置
         await setUserData('system.close.type', type)
-        // 验证保存是否成功
+        // 验证保存是否Thành công
         const checkValue = await getUserData('system.close.type')
         if (checkValue === type) {
-          Logger.info(`保存关闭类型设置成功: ${type}`)
+          Logger.info(`保存关闭类型设置Thành công: ${type}`)
         } else {
-          Logger.warn(`保存关闭类型设置后验证失败，预期:${type}, 实际:${checkValue}`)
+          Logger.warn(`保存关闭类型设置后验证Thất bại，预期:${type}, 实际:${checkValue}`)
         }
         closeType.value = type
       }
       return true
     } catch (error) {
-      Logger.error(`保存关闭类型设置失败: ${error}`)
+      Logger.error(`保存关闭类型设置Thất bại: ${error}`)
       return false
     }
   }
