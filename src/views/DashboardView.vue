@@ -1157,7 +1157,7 @@
     <n-modal
       v-model:show="showAdminPrivilegeModal"
       preset="dialog"
-      title="需要权限"
+      title="Yêu cầu quyền"
       :closable="false"
       :mask-closable="false"
       :close-on-esc="false"
@@ -1165,16 +1165,17 @@
     >
       <template #header>
         <n-space align="center">
-          <span>需要权限</span>
+          <span>Yêu cầu quyền</span>
         </n-space>
       </template>
       <div style="margin: 24px 0">
-        <p>本程序需要足够的文件访问权限才能正常运行。</p>
+        <p>Ứng dụng này cần quyền truy cập tệp để hoạt động bình thường.</p>
         <p
           v-if="appStore.currentPlatform === 'windows'"
           style="margin-top: 12px; color: #999"
         >
-          请右键点击程序图标，选择"以管理员身份运行"后重新启动程序。
+          Vui lòng chuột phải vào biểu tượng ứng dụng, chọn "Chạy với quyền Administrator" và khởi
+          động lại.
         </p>
         <template v-else-if="appStore.currentPlatform === 'macos'">
           <div
@@ -1185,12 +1186,12 @@
               align-items: center;
             "
           >
-            <span style="color: #666">完全磁盘访问权限：</span>
+            <span style="color: #666">Quyền truy cập đĩa đầy đủ:</span>
             <n-button
               size="small"
               type="primary"
               @click="handleRequestFullDiskAccess"
-              >授予权限</n-button
+              >Cấp quyền</n-button
             >
           </div>
         </template>
@@ -1198,7 +1199,7 @@
           v-else
           style="margin-top: 12px; color: #999"
         >
-          请确保本程序有足够的文件访问权限。
+          Vui lòng đảm bảo ứng dụng có đủ quyền truy cập tệp.
         </p>
       </div>
       <template #action>
@@ -1207,12 +1208,12 @@
             <n-button
               type="info"
               @click="open('https://docs.52ai.org/troubleshooting/macos/permissions')"
-              >查看文档</n-button
+              >Xem tài liệu</n-button
             >
             <n-button
               type="default"
               @click="handleExit"
-              >退出程序</n-button
+              >Thoát chương trình</n-button
             >
           </template>
           <template v-else>
@@ -1220,7 +1221,7 @@
               type="error"
               block
               @click="handleExit"
-              >退出程序</n-button
+              >Thoát chương trình</n-button
             >
           </template>
         </n-space>
@@ -1232,7 +1233,7 @@
       v-model:show="appStore.showDisclaimerModal"
       preset="card"
       style="width: 600px; max-width: 90vw"
-      title="免责声明"
+      title="Tuyên bố miễn trừ trách nhiệm"
       :closable="false"
       :mask-closable="false"
     >
@@ -1248,8 +1249,8 @@
           >
             {{
               appStore.canConfirmDisclaimer
-                ? '我已阅读并同意'
-                : `请等待 ${appStore.disclaimerCountdown} 秒`
+                ? 'Tôi đã đọc và đồng ý'
+                : `Vui lòng đợi ${appStore.disclaimerCountdown} giây`
             }}
           </n-button>
         </n-space>

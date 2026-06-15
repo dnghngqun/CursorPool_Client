@@ -5,6 +5,8 @@ import {
   dateZhCN,
   enUS,
   dateEnUS,
+  viVN,
+  dateViVN,
   jaJP,
   dateJaJP,
   frFR,
@@ -22,7 +24,16 @@ import { messages } from './messages'
 import { getUserData, setUserData } from '@/api'
 import Logger from '@/utils/logger'
 
-export type Language = 'zh-CN' | 'en-US' | 'ja-JP' | 'fr-FR' | 'de-DE' | 'ko-KR' | 'ru-RU' | 'es-AR'
+export type Language =
+  | 'vi-VN'
+  | 'zh-CN'
+  | 'en-US'
+  | 'ja-JP'
+  | 'fr-FR'
+  | 'de-DE'
+  | 'ko-KR'
+  | 'ru-RU'
+  | 'es-AR'
 
 interface LocaleConfig {
   name: string
@@ -31,6 +42,11 @@ interface LocaleConfig {
 }
 
 export const locales: Record<Language, LocaleConfig> = {
+  'vi-VN': {
+    name: 'Tiếng Việt',
+    locale: viVN,
+    dateLocale: dateViVN,
+  },
   'zh-CN': {
     name: '简体中文',
     locale: zhCN,
@@ -73,38 +89,23 @@ export const locales: Record<Language, LocaleConfig> = {
   },
 }
 
-// 默认使用英文
-export const currentLang = ref<Language>('en-US')
+// Force sử dụng tiếng Việt
+export const currentLang = ref<Language>('vi-VN')
 
-// 初始化语言设置
+// Khởi tạo ngôn ngữ (ép buộc tiếng Việt)
 export async function initLanguage() {
+  currentLang.value = 'vi-VN'
   try {
-    // 从后端获取语言设置
-    const lang = (await getUserData('user.info.lang')) as Language | null
-
-    // 如果后端存在语言设置且为受支持的语言则使用该设置
-    if (lang && Object.keys(locales).includes(lang)) {
-      currentLang.value = lang
-    } else {
-      // 如果不存在或不受支持，则使用英文并保存到后端
-      await setUserData('user.info.lang', 'en-US')
-    }
+    await setUserData('user.info.lang', 'vi-VN')
   } catch (error) {
-    Logger.error(`初始化语言设置失败: ${error}`)
+    // Ignore error
   }
 }
 
 export function useI18n() {
   const setLanguage = async (lang: Language) => {
-    // 更新当前语言状态
-    currentLang.value = lang
-
-    // 保存到后端数据库
-    try {
-      await setUserData('user.info.lang', lang)
-    } catch (err) {
-      Logger.error(`同步语言设置失败: ${err}`)
-    }
+    // Luôn giữ tiếng Việt
+    currentLang.value = 'vi-VN'
   }
 
   // 添加t函数用于翻译
